@@ -20,8 +20,6 @@ devtools::install_github("ihrke/rmedsem")
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
-
 ``` r
 library(rmedsem)
 
@@ -40,10 +38,10 @@ print(out)
 #> 
 #>                         Sobel         Delta    Monte.Carlo
 #> Indirect effect        0.2506        0.2506         0.2506
-#> Std. Err.              0.0456        0.0456         0.0452
-#> z-value                5.5006        5.4935         5.5257
-#> p-value              3.79e-08      3.94e-08       3.28e-08
-#> CI              [0.161, 0.34] [0.161, 0.34] [0.161, 0.341]
+#> Std. Err.              0.0456        0.0456         0.0457
+#> z-value                5.5006        5.4935         5.4894
+#> p-value              3.79e-08      3.94e-08       4.03e-08
+#> CI              [0.161, 0.34] [0.161, 0.34] [0.165, 0.342]
 #> 
 #> Baron and Kenny approach to testing mediation
 #>    STEP 1 - 'math:read' (X -> M) with B=0.662 and p=0.000
