@@ -17,3 +17,5 @@ Imports:
     lavaan,
     mvtnorm,
     tibble
+URL: https://github.com/ihrke/rmedsem
+BugReports: https://github.com/ihrke/rmedsem/issues
