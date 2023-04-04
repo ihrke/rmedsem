@@ -29,6 +29,7 @@ You can install the development version of rmedsem from [GitHub](https://github.
 devtools::install_github("ihrke/rmedsem")
 ```
 
+
 ## Example
 
 ```{r example}
