@@ -31,7 +31,6 @@ devtools::install_github("ihrke/rmedsem")
 
 ## Example
 
-
 ```{r example}
 library(rmedsem)
 
