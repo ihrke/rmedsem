@@ -1,4 +1,3 @@
-
 #' Calculate a mediation analysis for an SEM.
 #'
 #' @param mod A fitted SEM model (lavaan).
@@ -24,12 +23,11 @@
 #' read ~ math
 #' science ~ read + math
 #' "
-#' summary(mod <- lavaan::sem(mod.txt, data=data))
+#' mod <- lavaan::sem(mod.txt, data=data)
 #' out <- rmedsem(mod, indep="math", med="read", dep="science",
 #'                standardized=TRUE, mcreps=5000,
 #'                approach = c("bk","zlc"))
 #' print(out)
-#' summary(out)
 #'
 rmedsem <- function(mod, indep, med, dep, standardized=FALSE, mcreps=NULL,
                     approach="bk", p.threshold=0.05,
@@ -118,9 +116,9 @@ rmedsem <- function(mod, indep, med, dep, standardized=FALSE, mcreps=NULL,
 
   res <- list(standardized=standardized,
               vars =list(med=med, indep=indep, dep=dep),
-              sobel=c(prodterm, sobel_se,sobel_z, sobel_pv, sobel_lci, sobel_uci),
-              delta=c(prodterm, delta_se,delta_z, delta_pv, delta_lci, delta_uci),
-              montc=c(prodterm, montc_se,montc_z, montc_pv, montc_lci, montc_uci),
+              sobel=c(coef=prodterm, se=sobel_se, zval=sobel_z, pval=sobel_pv, lower=sobel_lci, upper=sobel_uci),
+              delta=c(coef=prodterm, se=delta_se, zval=delta_z, pval=delta_pv, lower=delta_lci, upper=delta_uci),
+              montc=c(coef=prodterm, se=montc_se, zval=montc_z, pval=montc_pv, lower=montc_lci, upper=montc_uci),
               med.approach=approach,
               effect.size=es,
               med.data=list(sig_thresh=p.threshold,
@@ -131,19 +129,35 @@ rmedsem <- function(mod, indep, med, dep, standardized=FALSE, mcreps=NULL,
   return(res)
 }
 
-#' @export
-summary.rmedsem <- function(res, digits=3){
-
+#' indent s by indent many spaces; merge into a single string
+pre_indent_merge <- function(s, indent){
+  indstr <- strrep(" ", indent)
+  sapply(s, \(.x) paste0(indstr,.x,collapse="")) |> paste0(collapse="")
 }
 
+#' Function for printing `rmedsem` objects
+#'
+#' @param res the `rmedsem` object to print
+#' @param digits an integer, number of digits to print in table
+#' @return `rmedsem` obect `res`
+#'
 #' @export
 print.rmedsem <- function(res, digits=3){
+  # indentation
+  indent <- 3
+  indstr <- strrep(" ", indent)
+  indent.conclusion <- indent + 9
+  indcstr <- strrep(" ", indent.conclusion)
+  formatstr <- "%5.3f" # format for real numbers
+
   cat(sprintf("Significance testing of indirect effect (%s)\n",
               ifelse(res$standardized, "standardized", "unstandardized")))
+  cat(with(res$vars, sprintf("Mediation effect: '%s' -> '%s' -> '%s'\n\n",
+                             indep,med,dep)))
   ## print the tests
   rowlab <- c("Indirect effect", "Std. Err.", "z-value", "p-value", "CI")
-  mat <- data.frame(Estimates=rowlab,
-                Sobel=c( format(res$sobel[1:3], digit=digits),
+
+  mat <- data.frame(Sobel=c( format(res$sobel[1:3], digit=digits),
                          format(res$sobel[4], digit=digits),
                          sprintf("[%s, %s]", format(res$sobel[5],digits=digits),
                                  format(res$sobel[6],digits=digits))),
@@ -151,12 +165,14 @@ print.rmedsem <- function(res, digits=3){
                          format(res$delta[4], digit=digits),
                          sprintf("[%s, %s]", format(res$delta[5],digits=digits),
                                  format(res$delta[6],digits=digits))),
-                `Monte Carlo`=c( format(res$montc[1:3], digit=digits),
+                `Monte-Carlo`=c( format(res$montc[1:3], digit=digits),
                                  format(res$montc[4], digit=digits),
                                  sprintf("[%s, %s]", format(res$montc[5],digits=digits),
                                          format(res$montc[6],digits=digits)))
   )
+  rownames(mat) <- rowlab
   print( mat )
+  cat("\n")
 
   ## print the steps from BK or ZLC
   d <- res$med.data
@@ -164,36 +180,42 @@ print.rmedsem <- function(res, digits=3){
 
   if("bk" %in% res$med.approach){ # BK
     cat("Baron and Kenny approach to testing mediation\n")
-
+    step1 <- sprintf("%sSTEP 1 - '%s:%s' (X -> M) with B=%5.3f and p=%5.3f\n",
+                     indstr, res$vars$indep, res$vars$med, d$coefs$moi, d$pvals$moi)
+    step2 <- sprintf("%sSTEP 2 - '%s:%s' (M -> Y) with B=%5.3f and p=%5.3f\n",
+                     indstr, res$vars$med,   res$vars$dep, d$coefs$dom, d$pvals$dom)
+    step3 <- sprintf("%sSTEP 3 - '%s:%s' (X -> Y) with B=%5.3f and p=%5.3f\n",
+                     indstr, res$vars$indep, res$vars$dep, d$coefs$doi, d$pvals$doi)
     if(d$pvals$moi>pth | d$pvals$dom>pth){
-      cat(sprintf("  STEP 1 - '%s:%s' (X -> M) with B=%5.3f and p=%5.3f\n", res$vars$indep, res$vars$med, d$coefs$moi, d$pvals$moi))
-      cat(sprintf("  STEP 2 - '%s:%s' (M -> Y) with B=%5.3f and p=%5.3f\n", res$vars$med,   res$vars$dep, d$coefs$dom, d$pvals$dom))
-      cat("           As either STEP 1 or STEP 2 (or both) are not significant,\n")
-      cat("           there is no mediation!")
+      conclusion <- c(
+        "As either STEP 1 or STEP 2 (or both) are not significant,\n",
+        "there is no mediation.\n"
+      ) |> pre_indent_merge(indent.conclusion)
+      cat(step1,step2,conclusion, sep="")
     } else if(d$pvals$moi<pth & d$pvals$dom<pth & res$sobel[4] > pth){
-      cat(sprintf("  STEP 1 - '%s:%s' (X -> M) with B=%5.3f and p=%5.3f\n", res$vars$indep, res$vars$med, d$coefs$moi, d$pvals$moi))
-      cat(sprintf("  STEP 2 - '%s:%s' (M -> Y) with B=%5.3f and p=%5.3f\n", res$vars$med,   res$vars$dep, d$coefs$dom, d$pvals$dom))
-      cat(sprintf("  STEP 3 - '%s:%s' (X -> Y) with B=%5.3f and p=%5.3f\n", res$vars$indep, res$vars$dep, d$coefs$doi, d$pvals$doi))
-      cat("           As STEP 1, STEP 2 and the Sobel's test above are significant\n")
-      cat("           and STEP 3 is not significant the mediation is complete!")
+      conclusion <- c(
+        "As STEP 1, STEP 2 and the Sobel's test above are significant\n",
+        "and STEP 3 is not significant the mediation is complete.\n"
+      ) |> pre_indent_merge(indent.conclusion)
+      cat(step1,step2,step3,conclusion, sep="")
     } else if(d$pvals$moi<pth & d$pvals$dom<pth & res$sobel[4] < pth & d$pvals$doi<pth){
-      cat(sprintf("  STEP 1 - '%s:%s' (X -> M) with B=%5.3f and p=%5.3f\n", res$vars$indep, res$vars$med, d$coefs$moi, d$pvals$moi))
-      cat(sprintf("  STEP 2 - '%s:%s' (M -> Y) with B=%5.3f and p=%5.3f\n", res$vars$med,   res$vars$dep, d$coefs$dom, d$pvals$dom))
-      cat(sprintf("  STEP 3 - '%s:%s' (X -> Y) with B=%5.3f and p=%5.3f\n", res$vars$indep, res$vars$dep, d$coefs$doi, d$pvals$doi))
-      cat("           As STEP 1, STEP 2 and STEP 3 as well as the Sobel's test above\n")
-      cat("           are significant the mediation is partial!")
+      conclusion <- c(
+        "As STEP 1, STEP 2 and STEP 3 as well as the Sobel's test above\n",
+        "are significant the mediation is partial.\n"
+      ) |> pre_indent_merge(indent.conclusion)
+      cat(step1,step2,step3,conclusion, sep="")
     } else if(d$pvals$moi<pth & d$pvals$dom<pth & res$sobel[4] > pth & d$pvals$doi<pth){
-      cat(sprintf("  STEP 1 - '%s:%s' (X -> M) with B=%5.3f and p=%5.3f\n", res$vars$indep, res$vars$med, d$coefs$moi, d$pvals$moi))
-      cat(sprintf("  STEP 2 - '%s:%s' (M -> Y) with B=%5.3f and p=%5.3f\n", res$vars$med,   res$vars$dep, d$coefs$dom, d$pvals$dom))
-      cat(sprintf("  STEP 3 - '%s:%s' (X -> Y) with B=%5.3f and p=%5.3f\n", res$vars$indep, res$vars$dep, d$coefs$doi, d$pvals$doi))
-      cat("           As STEP 1, STEP 2 and STEP 3 are all significant and the\n")
-      cat("           Sobel's test above is not significant the mediation is partial!")
+      conclusion <- c(
+        "As STEP 1, STEP 2 and STEP 3 are all significant and the\n",
+        "Sobel's test above is not significant the mediation is partial.\n"
+      ) |> pre_indent_merge(indent.conclusion)
+      cat(step1,step2,step3,conclusion, sep="")
     } else if(d$pvals$moi<pth & d$pvals$dom<pth & res$sobel[4] > pth & d$pvals$doi>pth){
-      cat(sprintf("  STEP 1 - '%s:%s' (X -> M) with B=%5.3f and p=%5.3f\n", res$vars$indep, res$vars$med, d$coefs$moi, d$pvals$moi))
-      cat(sprintf("  STEP 2 - '%s:%s' (M -> Y) with B=%5.3f and p=%5.3f\n", res$vars$med,   res$vars$dep, d$coefs$dom, d$pvals$dom))
-      cat(sprintf("  STEP 3 - '%s:%s' (X -> Y) with B=%5.3f and p=%5.3f\n", res$vars$indep, res$vars$dep, d$coefs$doi, d$pvals$doi))
-      cat("           As STEP 1 and STEP 2 are significant and neither STEP 3 nor\n")
-      cat("           the Sobel's test above is significant the mediation is partial!")
+      conclusion <- c(
+        "As STEP 1 and STEP 2 are significant and neither STEP 3 nor\n",
+        "the Sobel's test above is significant the mediation is partial.\n"
+      ) |> pre_indent_merge(indent.conclusion)
+      cat(step1,step2,step3,conclusion, sep="")
     }
     cat("\n")
   }
@@ -201,44 +223,57 @@ print.rmedsem <- function(res, digits=3){
   if("zlc" %in% res$med.approach){ # ZLC
     cat("Zhao, Lynch & Chen's approach to testing mediation\n")
     axbxc <- with(d$coefs, moi*dom*doi)
+    step1 <- sprintf("  STEP 1 - '%s:%s' (X -> Y) with B=%5.3f and p=%5.3f\n",
+                     res$vars$indep, res$vars$dep, d$coefs$doi, d$pvals$doi)
     if(res$montc[4] < pth & d$pvals$doi > pth){
-      cat(sprintf("  STEP 1 - '%s:%s' (X -> Y) with B=%5.3f and p=%5.3f\n", res$vars$indep, res$vars$dep, d$coefs$doi, d$pvals$doi))
-      cat("           As the Monte Carlo test above is significant and STEP 1 is not\n")
-      cat("           significant you have indirect-only mediation (full mediation)!")
+      conclusion <- c(
+        "As the Monte Carlo test above is significant and STEP 1 is not\n",
+        "significant there indirect-only mediation (full mediation).\n"
+      ) |> pre_indent_merge(indent.conclusion)
     } else if(res$montc[4] > pth & d$pvals$doi < pth){
-      cat(sprintf("  STEP 1 - '%s:%s' (X -> Y) with B=%5.3f and p=%5.3f\n", res$vars$indep, res$vars$dep, d$coefs$doi, d$pvals$doi))
-      cat("           As the Monte Carlo test above is not significant and STEP 1 is\n")
-      cat("           significant you have direct-only nonmediation (no mediation)!")
+      conclusion <- c(
+        "As the Monte Carlo test above is not significant and STEP 1 is\n",
+        "significant there is direct-only nonmediation (no mediation).\n"
+      ) |> pre_indent_merge(indent.conclusion)
     } else if(res$montc[4] > pth & d$pvals$doi > pth){
-      cat(sprintf("  STEP 1 - '%s:%s' (X -> Y) with B=%5.3f and p=%5.3f\n", res$vars$indep, res$vars$dep, d$coefs$doi, d$pvals$doi))
-      cat("           As the Monte Carlo test above is not significant and STEP 1 is\n")
-      cat("           not significant you have no effect nonmediation (no mediation)!")
+      conclusion <- c(
+        "As the Monte Carlo test above is not significant and STEP 1 is\n",
+        "not significant there is no effect nonmediation (no mediation).\n"
+      ) |> pre_indent_merge(indent.conclusion)
     } else if(res$montc[4] < pth & d$pvals$doi < pth & axbxc > 0){
-      cat(sprintf("  STEP 1 - '%s:%s' (X -> Y) with B=%5.3f and p=%5.3f\n", res$vars$indep, res$vars$dep, d$coefs$doi, d$pvals$doi))
-      cat("           As the Monte Carlo test above is significant, STEP 1 is\n")
-      cat("           significant and their coefficients point in same direction,\n")
-      cat("           you have complementary mediation (partial mediation)!")
+      conclusion <- c(
+        "As the Monte Carlo test above is significant, STEP 1 is\n",
+        "significant and their coefficients point in same direction,\n",
+        "there is complementary mediation (partial mediation).\n"
+      ) |> pre_indent_merge(indent.conclusion)
     } else if(res$montc[4] < pth & d$pvals$doi < pth & axbxc < 0){
-      cat(sprintf("  STEP 1 - '%s:%s' (X -> Y) with B=%5.3f and p=%5.3f\n", res$vars$indep, res$vars$dep, d$coefs$doi, d$pvals$doi))
-      cat("           As the Monte Carlo test above is significant, STEP 1 is\n")
-      cat("           significant and their coefficients point in opposite\n")
-      cat("           direction, you have competitive mediation (partial mediation)!")
+      conclusion <- c(
+        "As the Monte Carlo test above is significant, STEP 1 is\n",
+        "significant and their coefficients point in opposite\n",
+        "direction, there is competitive mediation (partial mediation).\n"
+      ) |> pre_indent_merge(indent.conclusion)
     }
+    cat(step1, conclusion, sep="")
     cat("\n")
   }
 
   es=res$effect.size
+  if(length(es)>0){
+    cat("Effect sizes\n")
+  }
+  indesstr = strrep(" ", indent+6)
   if("RIT" %in% names(es)){
-    cat(sprintf("  RIT  =   (Indirect effect / Total effect)\n"))
-    with(es$RIT, cat(sprintf("           (%5.3f/%5.3f) = %5.3f\n", ind_eff, tot_eff, es)))
-    with(es$RIT, cat(sprintf("           Meaning that about %3.0f%% of the effect of '%s'\n", es*100, res$vars$indep)))
-    with(es$RIT, cat(sprintf("           on '%s' is mediated by '%s'!\n", res$vars$dep, res$vars$med)))
+    cat(sprintf("%sRIT = (Indirect effect / Total effect)\n", indstr))
+
+    with(es$RIT, cat(sprintf("%s(%5.3f/%5.3f) = %5.3f\n", indesstr, ind_eff, tot_eff, es)))
+    with(es$RIT, cat(sprintf("%sMeaning that about %3.0f%% of the effect of '%s'\n", indesstr, es*100, res$vars$indep)))
+    with(es$RIT, cat(sprintf("%son '%s' is mediated by '%s'\n", indesstr, res$vars$dep, res$vars$med)))
   }
   if("RID" %in% names(es)){
-    cat(sprintf("  RID  =   (Indirect effect / Direct effect)\n"))
-    with(es$RID, cat(sprintf("           (%5.3f/%5.3f) = %5.3f\n", ind_eff, dir_eff, es)))
-    with(es$RID, cat(sprintf("           That is, the mediated effect is about %3.1f times as\n", es)))
-    with(es$RID, cat(sprintf("           large as the direct effect of '%s' on '%s'!", res$vars$indep, res$vars$dep)))
+    cat(sprintf("%sRID = (Indirect effect / Direct effect)\n", indstr))
+    with(es$RID, cat(sprintf("%s(%5.3f/%5.3f) = %5.3f\n", indesstr, ind_eff, dir_eff, es)))
+    with(es$RID, cat(sprintf("%sThat is, the mediated effect is about %3.1f times as\n", indesstr, es)))
+    with(es$RID, cat(sprintf("%slarge as the direct effect of '%s' on '%s'", indesstr, res$vars$indep, res$vars$dep)))
   }
 }
 

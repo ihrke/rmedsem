@@ -30,20 +30,20 @@ mod.txt <- "
 read ~ math
 science ~ read + math
 "
-summary(mod <- lavaan::sem(mod.txt, data=data))
-#> Length  Class   Mode 
-#>      1 lavaan     S4
+mod <- lavaan::sem(mod.txt, data=data)
 out <- rmedsem(mod, indep="math", med="read", dep="science", 
                standardized=T, mcreps=5000,
                approach = c("bk","zlc"))
-out
+print(out)
 #> Significance testing of indirect effect (standardized)
-#>         Estimates         Sobel         Delta    Monte.Carlo
-#> 1 Indirect effect        0.2506        0.2506         0.2506
-#> 2       Std. Err.        0.0456        0.0456         0.0458
-#> 3         z-value        5.5006        5.4935         5.4612
-#> 4         p-value      3.79e-08      3.94e-08       4.73e-08
-#> 5              CI [0.161, 0.34] [0.161, 0.34] [0.161, 0.339]
+#>  math -> read -> science
+#>            Estimates         Sobel         Delta    Monte.Carlo
+#> coef Indirect effect        0.2506        0.2506         0.2506
+#> se         Std. Err.        0.0456        0.0456         0.0458
+#> zval         z-value        5.5006        5.4935         5.4984
+#> pval         p-value      3.79e-08      3.94e-08       3.83e-08
+#>                   CI [0.161, 0.34] [0.161, 0.34] [0.163, 0.344]
+#> 
 #> Baron and Kenny approach to testing mediation
 #>   STEP 1 - 'math:read' (X -> M) with B=0.662 and p=0.000
 #>   STEP 2 - 'read:science' (M -> Y) with B=0.378 and p=0.000

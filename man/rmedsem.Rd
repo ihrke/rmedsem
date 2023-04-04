@@ -50,11 +50,10 @@ mod.txt <- "
 read ~ math
 science ~ read + math
 "
-summary(mod <- lavaan::sem(mod.txt, data=data))
+mod <- lavaan::sem(mod.txt, data=data)
 out <- rmedsem(mod, indep="math", med="read", dep="science",
                standardized=TRUE, mcreps=5000,
                approach = c("bk","zlc"))
 print(out)
-summary(out)
 
 }
