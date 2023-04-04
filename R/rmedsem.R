@@ -26,12 +26,12 @@
 #' "
 #' summary(mod <- lavaan::sem(mod.txt, data=data))
 #' out <- rmedsem(mod, indep="math", med="read", dep="science",
-#'                standardized=T, mcreps=5000,
+#'                standardized=TRUE, mcreps=5000,
 #'                approach = c("bk","zlc"))
 #' print(out)
 #' summary(out)
 #'
-rmedsem <- function(mod, indep, med, dep, standardized=F, mcreps=NULL,
+rmedsem <- function(mod, indep, med, dep, standardized=FALSE, mcreps=NULL,
                     approach="bk", p.threshold=0.05,
                     effect.size=c("RIT","RID")){
   # for testing
@@ -142,7 +142,7 @@ print.rmedsem <- function(res, digits=3){
               ifelse(res$standardized, "standardized", "unstandardized")))
   ## print the tests
   rowlab <- c("Indirect effect", "Std. Err.", "z-value", "p-value", "CI")
-  mat <- tibble(Estimates=rowlab,
+  mat <- data.frame(Estimates=rowlab,
                 Sobel=c( format(res$sobel[1:3], digit=digits),
                          format(res$sobel[4], digit=digits),
                          sprintf("[%s, %s]", format(res$sobel[5],digits=digits),

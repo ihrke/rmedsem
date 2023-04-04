@@ -9,7 +9,7 @@ rmedsem(
   indep,
   med,
   dep,
-  standardized = F,
+  standardized = FALSE,
   mcreps = NULL,
   approach = "bk",
   p.threshold = 0.05,
@@ -52,7 +52,7 @@ science ~ read + math
 "
 summary(mod <- lavaan::sem(mod.txt, data=data))
 out <- rmedsem(mod, indep="math", med="read", dep="science",
-               standardized=T, mcreps=5000,
+               standardized=TRUE, mcreps=5000,
                approach = c("bk","zlc"))
 print(out)
 summary(out)
