@@ -16,5 +16,5 @@ Imports:
     haven,
     lavaan,
     mvtnorm
-URL: https://github.com/ihrke/rmedsem
+URL: https://github.com/ihrke/rmedsem, https://ihrke.github.io/rmedsem/
 BugReports: https://github.com/ihrke/rmedsem/issues
