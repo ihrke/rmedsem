@@ -18,7 +18,7 @@ You can install the development version of rmedsem from
 devtools::install_github("ihrke/rmedsem")
 ```
 
-## Example
+## Example 1
 
 ``` r
 library(rmedsem)
@@ -65,4 +65,55 @@ print(out)
 #>          (0.251/0.380) = 0.659
 #>          That is, the mediated effect is about 0.7 times as
 #>          large as the direct effect of 'math' on 'science'
+
+#Example 2
+lavaan::PoliticalDemocracy
+#
+model02 <- "
+  # measurement model
+    ind60 =~ x1 + x2 + x3
+    dem60 =~ y1 + y2 + y3 + y4
+    dem65 =~ y5 + y6 + y7 + y8
+  # regressions
+    dem60 ~ ind60
+    dem65 ~ ind60 + dem60
+"
+mod <- sem(model02, data=PoliticalDemocracy)
+out <- rmedsem(mod, indep="ind60", med="dem60", dep="dem65",
+               standardized=T, mcreps=5000,
+               approach = c("bk","zlc"))
+print(out)
+
+## Example 3 
+load(file="workout.Rdata")
+model03 <- "
+   Attractive =~ face + sexy
+   Appearance =~ body + appear + attract
+   Muscle =~ muscle + strength + endur
+   Weight =~ lweight + calories + cweight
+   Appearance ~ Attractive + age
+   Muscle ~ Appearance + Attractive + age
+   Weight ~ Appearance + Attractive + age
+"
+mod <- sem(model03, data=workout)
+out1 <- rmedsem(mod, indep="Attractive", med="Appearance", dep="Muscle",
+               standardized=T, mcreps=5000,
+               approach = c("bk","zlc"))
+print(out1)
+#
+out2 <- rmedsem(mod, indep="Attractive", med="Appearance", dep="Weight",
+               standardized=T, mcreps=5000,
+               approach = c("bk","zlc"))
+print(out2)
+#
+out3 <- rmedsem(mod, indep="age", med="Appearance", dep="Muscle",
+                standardized=T, mcreps=5000,
+                approach = c("bk","zlc"))
+print(out3)
+#
+out4 <- rmedsem(mod, indep="age", med="Appearance", dep="Weight",
+                standardized=T, mcreps=5000,
+                approach = c("bk","zlc"))
+print(out4)
+
 ```
