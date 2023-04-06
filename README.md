@@ -6,7 +6,50 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of rmedsem is to …
+The goal of rmedsem is to conduct a mediation analysis based on a model (including observed or latent variables as well as combination of observed and latent variables) estimated using lavaan's -sem- function. There are two methods medsem uses as the basis for its procedures. The first method is the commonly known Baron and Kenny approach which is adjusted by Iacobucci et al. (2007) for use with structural equation modelling. The second approach is that of Zhao et al. (2010).
+  
+    Adjusted Baron and Kenny's approach (default)
+
+    1)If both or one of the X->M and M->Y coefficients is not significant, there is no mediation
+
+    2)When both of the X->M and M->Y coefficients are significant, there is "some" mediation
+
+    2a)If the Sobel's z-test is significant and the X->Y coefficient is not significant, then there is complete mediation
+
+    2b)If both the Sobel's z-test and the X->Y coefficients are significant, then there is partial mediation
+
+    2c)If the Sobel's z-test is not significant but the X->Y coefficient is significant, then there is partial mediation
+
+    2d)If neither Sobel's z-test nor the X->Y coefficient are significant, then there is partial mediation
+
+    Zhao, Lynch & Chen's approach
+
+    1)If neither Monte Carlo z-test nor the X->Y coefficient are significant, then there is no-effect nonmediation (i.e. no mediation)
+
+    2)If Monte Carlo z-test is not significant and X->Y coefficient is significant, then there is direct-only nonmediation (i.e. no mediation)
+
+    3)If Monte Carlo z-test is significant and X->Y coefficient is not significant, then there is indirect-only mediation (i.e. full mediation)
+
+    4)If both of the Monte Carlo z-test and X-Y coefficient are significant and their coefficients point in same direction, then there is complementary
+    mediation (i.e. partial mediation)
+
+    5)If both of the Monte Carlo z-test and X-Y coefficient are significant and their coefficients point in opposite direction, then there is
+    competitive mediation (i.e. partial mediation)
+
+    Note: Zhao et al. suggest bootstrap test of the indirect effect, medsem uses the Monte Carlo test instead as it is less time-consuming and still
+    acceptable (see Jose(2013), page 122).
+
+References 
+
+    Iacobucci, D., Saldanha, N., & Deng, X. (2007). A Mediation on Mediation: Evidence That Structural Equation Models Perform Better Than Regressions.
+    Journal of Consumer Psychology, 17(2), 140-154.
+
+    Jose, P. E. (2013). Doing Statistical Mediation & Moderation.  London: Guilford.
+
+    MacKinnon, D. P. (2008). Introduction to statistical mediation analysis. New York: Lawrence Erlbaum.
+
+    Zhao, X., Lynch, J. G. Jr., & Chen, Q. (2010). Reconsidering Baron and Kenny: Myths and Truths about Mediation Analysis. Journal of Consumer
+    Research, 37(August), 197-206.
 
 ## Installation
 
