@@ -18,3 +18,6 @@ Imports:
     mvtnorm
 URL: https://github.com/ihrke/rmedsem, https://ihrke.github.io/rmedsem/
 BugReports: https://github.com/ihrke/rmedsem/issues
+Depends: 
+    R (>= 2.10)
+LazyData: true
