@@ -19,14 +19,15 @@ modelling. The second approach is that of Zhao et al. (2010).
 1)  If both or one of the X-\>M and M-\>Y coefficients is not
     significant, there is no mediation
 2)  When both of the X-\>M and M-\>Y coefficients are significant, there
-    is “some” mediation 2a) If the Sobel’s z-test is significant and the
-    X-\>Y coefficient is not significant, then there is complete
-    mediation 2b) If both the Sobel’s z-test and the X-\>Y coefficients
-    are significant, then there is partial mediation 2c) If the Sobel’s
-    z-test is not significant but the X-\>Y coefficient is significant,
-    then there is partial mediation 2d) If neither Sobel’s z-test nor
-    the X-\>Y coefficient are significant, then there is partial
-    mediation
+    is “some” mediation
+    1)  If the Sobel’s z-test is significant and the X-\>Y coefficient
+        is not significant, then there is complete mediation
+    2)  If both the Sobel’s z-test and the X-\>Y coefficients are
+        significant, then there is partial mediation
+    3)  If the Sobel’s z-test is not significant but the X-\>Y
+        coefficient is significant, then there is partial mediation
+    4)  If neither Sobel’s z-test nor the X-\>Y coefficient are
+        significant, then there is partial mediation
 
 ### Zhao, Lynch & Chen’s approach
 
@@ -97,10 +98,10 @@ print(out)
 #> 
 #>                         Sobel         Delta    Monte.Carlo
 #> Indirect effect        0.2506        0.2506         0.2506
-#> Std. Err.              0.0456        0.0456         0.0464
-#> z-value                5.5006        5.4935         5.4050
-#> p-value              3.79e-08      3.94e-08       6.48e-08
-#> CI              [0.161, 0.34] [0.161, 0.34] [0.161, 0.345]
+#> Std. Err.              0.0456        0.0456         0.0458
+#> z-value                5.5006        5.4935         5.4946
+#> p-value              3.79e-08      3.94e-08       3.92e-08
+#> CI              [0.161, 0.34] [0.161, 0.34] [0.164, 0.343]
 #> 
 #> Baron and Kenny approach to testing mediation
 #>    STEP 1 - 'math:read' (X -> M) with B=0.662 and p=0.000
@@ -146,12 +147,12 @@ print(out)
 #> Significance testing of indirect effect (standardized)
 #> Mediation effect: 'ind60' -> 'dem60' -> 'dem65'
 #> 
-#>                          Sobel          Delta  Monte.Carlo
-#> Indirect effect         0.4091         0.4091        0.409
-#> Std. Err.               0.0956         0.0957        0.096
-#> z-value                 4.2817         4.2761        4.243
-#> p-value               1.85e-05        1.9e-05      2.2e-05
-#> CI              [0.222, 0.596] [0.222, 0.597] [0.222, 0.6]
+#>                          Sobel          Delta    Monte.Carlo
+#> Indirect effect         0.4091         0.4091         0.4091
+#> Std. Err.               0.0956         0.0957         0.0971
+#> z-value                 4.2817         4.2761         4.2309
+#> p-value               1.85e-05        1.9e-05       2.33e-05
+#> CI              [0.222, 0.596] [0.222, 0.597] [0.222, 0.603]
 #> 
 #> Baron and Kenny approach to testing mediation
 #>    STEP 1 - 'ind60:dem60' (X -> M) with B=0.448 and p=0.000
@@ -201,10 +202,10 @@ print(out1)
 #> 
 #>                            Sobel              Delta      Monte.Carlo
 #> Indirect effect           0.0654             0.0654           0.0654
-#> Std. Err.                 0.0331             0.0336           0.0346
-#> z-value                   1.9748             1.9448           1.8828
-#> p-value                   0.0483             0.0518           0.0597
-#> CI              [0.000491, 0.13] [-0.000511, 0.131] [0.00422, 0.138]
+#> Std. Err.                 0.0331             0.0336           0.0336
+#> z-value                   1.9748             1.9448           1.9480
+#> p-value                   0.0483             0.0518           0.0514
+#> CI              [0.000491, 0.13] [-0.000511, 0.131] [0.00628, 0.137]
 #> 
 #> Baron and Kenny approach to testing mediation
 #> 
@@ -232,12 +233,12 @@ print(out2)
 #> Significance testing of indirect effect (standardized)
 #> Mediation effect: 'Attractive' -> 'Appearance' -> 'Weight'
 #> 
-#>                           Sobel            Delta     Monte.Carlo
-#> Indirect effect          0.0979           0.0979          0.0979
-#> Std. Err.                0.0470           0.0473          0.0473
-#> z-value                  2.0810           2.0705          2.0970
-#> p-value                  0.0374           0.0384           0.036
-#> CI              [0.00569, 0.19] [0.00523, 0.191] [0.0113, 0.195]
+#>                           Sobel            Delta      Monte.Carlo
+#> Indirect effect          0.0979           0.0979           0.0979
+#> Std. Err.                0.0470           0.0473           0.0468
+#> z-value                  2.0810           2.0705           2.0775
+#> p-value                  0.0374           0.0384           0.0378
+#> CI              [0.00569, 0.19] [0.00523, 0.191] [0.00621, 0.194]
 #> 
 #> Baron and Kenny approach to testing mediation
 #> 
@@ -267,10 +268,10 @@ print(out3)
 #> 
 #>                             Sobel             Delta       Monte.Carlo
 #> Indirect effect           -0.1602             -0.16           -0.1602
-#> Std. Err.                  0.0397              0.04            0.0399
-#> z-value                   -4.0391             -4.01           -3.9961
-#> p-value                  5.37e-05          6.08e-05          6.44e-05
-#> CI              [-0.238, -0.0825] [-0.239, -0.0819] [-0.244, -0.0877]
+#> Std. Err.                  0.0397              0.04            0.0395
+#> z-value                   -4.0391             -4.01           -4.0403
+#> p-value                  5.37e-05          6.08e-05          5.34e-05
+#> CI              [-0.238, -0.0825] [-0.239, -0.0819] [-0.244, -0.0881]
 #> 
 #> Baron and Kenny approach to testing mediation
 #> 
@@ -300,10 +301,10 @@ print(out4)
 #> 
 #>                            Sobel           Delta      Monte.Carlo
 #> Indirect effect          -0.2397         -0.2397          -0.2397
-#> Std. Err.                 0.0453          0.0455           0.0458
-#> z-value                  -5.2867         -5.2670          -5.2043
-#> p-value                 1.25e-07        1.39e-07         1.95e-07
-#> CI              [-0.329, -0.151] [-0.329, -0.15] [-0.333, -0.154]
+#> Std. Err.                 0.0453          0.0455           0.0457
+#> z-value                  -5.2867         -5.2670          -5.2395
+#> p-value                 1.25e-07        1.39e-07         1.61e-07
+#> CI              [-0.329, -0.151] [-0.329, -0.15] [-0.334, -0.155]
 #> 
 #> Baron and Kenny approach to testing mediation
 #>    STEP 1 - 'age:Appearance' (X -> M) with B=-0.387 and p=0.000
