@@ -129,6 +129,7 @@ rmedsem <- function(mod, indep, med, dep, standardized=FALSE, mcreps=NULL,
 }
 
 #' indent s by indent many spaces; merge into a single string
+#'
 pre_indent_merge <- function(s, indent){
   indstr <- strrep(" ", indent)
   sapply(s, \(.x) paste0(indstr,.x,collapse="")) |> paste0(collapse="")

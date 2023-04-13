@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# rmedsem
+# rmedsem <a href="https://ihrke.github.io/rmedsem/"><img src="man/figures/logo.png" align="right" height="139" /></a>
 
 <!-- badges: start -->
 <!-- badges: end -->
@@ -97,10 +97,10 @@ print(out)
 #> 
 #>                         Sobel         Delta    Monte.Carlo
 #> Indirect effect        0.2506        0.2506         0.2506
-#> Std. Err.              0.0456        0.0456         0.0458
-#> z-value                5.5006        5.4935         5.4880
-#> p-value              3.79e-08      3.94e-08       4.06e-08
-#> CI              [0.161, 0.34] [0.161, 0.34] [0.163, 0.342]
+#> Std. Err.              0.0456        0.0456         0.0464
+#> z-value                5.5006        5.4935         5.4050
+#> p-value              3.79e-08      3.94e-08       6.48e-08
+#> CI              [0.161, 0.34] [0.161, 0.34] [0.161, 0.345]
 #> 
 #> Baron and Kenny approach to testing mediation
 #>    STEP 1 - 'math:read' (X -> M) with B=0.662 and p=0.000
@@ -146,12 +146,12 @@ print(out)
 #> Significance testing of indirect effect (standardized)
 #> Mediation effect: 'ind60' -> 'dem60' -> 'dem65'
 #> 
-#>                          Sobel          Delta    Monte.Carlo
-#> Indirect effect         0.4091         0.4091         0.4091
-#> Std. Err.               0.0956         0.0957         0.0956
-#> z-value                 4.2817         4.2761         4.2827
-#> p-value               1.85e-05        1.9e-05       1.85e-05
-#> CI              [0.222, 0.596] [0.222, 0.597] [0.227, 0.599]
+#>                          Sobel          Delta  Monte.Carlo
+#> Indirect effect         0.4091         0.4091        0.409
+#> Std. Err.               0.0956         0.0957        0.096
+#> z-value                 4.2817         4.2761        4.243
+#> p-value               1.85e-05        1.9e-05      2.2e-05
+#> CI              [0.222, 0.596] [0.222, 0.597] [0.222, 0.6]
 #> 
 #> Baron and Kenny approach to testing mediation
 #>    STEP 1 - 'ind60:dem60' (X -> M) with B=0.448 and p=0.000
@@ -201,10 +201,10 @@ print(out1)
 #> 
 #>                            Sobel              Delta      Monte.Carlo
 #> Indirect effect           0.0654             0.0654           0.0654
-#> Std. Err.                 0.0331             0.0336           0.0335
-#> z-value                   1.9748             1.9448           1.9451
-#> p-value                   0.0483             0.0518           0.0518
-#> CI              [0.000491, 0.13] [-0.000511, 0.131] [0.00489, 0.135]
+#> Std. Err.                 0.0331             0.0336           0.0346
+#> z-value                   1.9748             1.9448           1.8828
+#> p-value                   0.0483             0.0518           0.0597
+#> CI              [0.000491, 0.13] [-0.000511, 0.131] [0.00422, 0.138]
 #> 
 #> Baron and Kenny approach to testing mediation
 #> 
@@ -232,12 +232,12 @@ print(out2)
 #> Significance testing of indirect effect (standardized)
 #> Mediation effect: 'Attractive' -> 'Appearance' -> 'Weight'
 #> 
-#>                           Sobel            Delta      Monte.Carlo
-#> Indirect effect          0.0979           0.0979           0.0979
-#> Std. Err.                0.0470           0.0473           0.0478
-#> z-value                  2.0810           2.0705           2.0698
-#> p-value                  0.0374           0.0384           0.0385
-#> CI              [0.00569, 0.19] [0.00523, 0.191] [0.00618, 0.195]
+#>                           Sobel            Delta     Monte.Carlo
+#> Indirect effect          0.0979           0.0979          0.0979
+#> Std. Err.                0.0470           0.0473          0.0473
+#> z-value                  2.0810           2.0705          2.0970
+#> p-value                  0.0374           0.0384           0.036
+#> CI              [0.00569, 0.19] [0.00523, 0.191] [0.0113, 0.195]
 #> 
 #> Baron and Kenny approach to testing mediation
 #> 
@@ -267,10 +267,10 @@ print(out3)
 #> 
 #>                             Sobel             Delta       Monte.Carlo
 #> Indirect effect           -0.1602             -0.16           -0.1602
-#> Std. Err.                  0.0397              0.04            0.0404
-#> z-value                   -4.0391             -4.01           -3.9562
-#> p-value                  5.37e-05          6.08e-05          7.61e-05
-#> CI              [-0.238, -0.0825] [-0.239, -0.0819] [-0.247, -0.0882]
+#> Std. Err.                  0.0397              0.04            0.0399
+#> z-value                   -4.0391             -4.01           -3.9961
+#> p-value                  5.37e-05          6.08e-05          6.44e-05
+#> CI              [-0.238, -0.0825] [-0.239, -0.0819] [-0.244, -0.0877]
 #> 
 #> Baron and Kenny approach to testing mediation
 #> 
@@ -300,9 +300,9 @@ print(out4)
 #> 
 #>                            Sobel           Delta      Monte.Carlo
 #> Indirect effect          -0.2397         -0.2397          -0.2397
-#> Std. Err.                 0.0453          0.0455           0.0454
-#> z-value                  -5.2867         -5.2670          -5.2854
-#> p-value                 1.25e-07        1.39e-07         1.25e-07
+#> Std. Err.                 0.0453          0.0455           0.0458
+#> z-value                  -5.2867         -5.2670          -5.2043
+#> p-value                 1.25e-07        1.39e-07         1.95e-07
 #> CI              [-0.329, -0.151] [-0.329, -0.15] [-0.333, -0.154]
 #> 
 #> Baron and Kenny approach to testing mediation
