@@ -19,3 +19,13 @@
 #'    \item{sexy}{How well does the following describe you as a person - sexy}
 #' }
 "workout"
+
+
+#' The HSBdemo dataset is a dataset based off 200 entering high school students.
+#'
+#' @format ## `hsbdemo`
+#' A data frame with 20 rows and 13 columns:
+#' \describe{
+#'  \item{}
+#' }
+"hsbdemo"

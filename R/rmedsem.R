@@ -18,12 +18,11 @@
 #'
 #' @examples
 #'
-#' data <- haven::read_stata("https://stats.idre.ucla.edu/stat/data/hsbdemo.dta")
 #' mod.txt <- "
 #' read ~ math
 #' science ~ read + math
 #' "
-#' mod <- lavaan::sem(mod.txt, data=data)
+#' mod <- lavaan::sem(mod.txt, data=rmedsem::hsbdemo)
 #' out <- rmedsem(mod, indep="math", med="read", dep="science",
 #'                standardized=TRUE, mcreps=5000,
 #'                approach = c("bk","zlc"))
