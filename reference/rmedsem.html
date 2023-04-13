@@ -111,20 +111,47 @@ is significant or not</p></dd>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">haven</span><span class="fu">::</span><span class="fu"><a href="https://haven.tidyverse.org/reference/read_dta.html" class="external-link">read_stata</a></span><span class="op">(</span><span class="st">"https://stats.idre.ucla.edu/stat/data/hsbdemo.dta"</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in open.connection(con, "rb"):</span> Timeout was reached: [stats.idre.ucla.edu] Connection timeout after 10001 ms</span>
 <span class="r-in"><span><span class="va">mod.txt</span> <span class="op">&lt;-</span> <span class="st">"</span></span></span>
 <span class="r-in"><span><span class="st">read ~ math</span></span></span>
 <span class="r-in"><span><span class="st">science ~ read + math</span></span></span>
 <span class="r-in"><span><span class="st">"</span></span></span>
-<span class="r-in"><span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu">lavaan</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">sem</a></span><span class="op">(</span><span class="va">mod.txt</span>, data<span class="op">=</span><span class="va">data</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in lavaan::lavaan(model = mod.txt, data = data, model.type = "sem",     int.ov.free = TRUE, int.lv.free = FALSE, auto.fix.first = TRUE,     auto.fix.single = TRUE, auto.var = TRUE, auto.cov.lv.x = TRUE,     auto.cov.y = TRUE, auto.th = TRUE, auto.delta = TRUE, auto.efa = TRUE):</span> lavaan ERROR: data is a function; it should be a data.frame</span>
+<span class="r-in"><span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu">lavaan</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">sem</a></span><span class="op">(</span><span class="va">mod.txt</span>, data<span class="op">=</span><span class="fu">rmedsem</span><span class="fu">::</span><span class="va"><a href="hsbdemo.html">hsbdemo</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">out</span> <span class="op">&lt;-</span> <span class="fu">rmedsem</span><span class="op">(</span><span class="va">mod</span>, indep<span class="op">=</span><span class="st">"math"</span>, med<span class="op">=</span><span class="st">"read"</span>, dep<span class="op">=</span><span class="st">"science"</span>,</span></span>
 <span class="r-in"><span>               standardized<span class="op">=</span><span class="cn">TRUE</span>, mcreps<span class="op">=</span><span class="fl">5000</span>,</span></span>
 <span class="r-in"><span>               approach <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"bk"</span>,<span class="st">"zlc"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in h(simpleError(msg, call)):</span> error in evaluating the argument 'object' in selecting a method for function 'nobs': object 'mod' not found</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">out</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in print(out):</span> object 'out' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Significance testing of indirect effect (standardized)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Mediation effect: 'math' -&gt; 'read' -&gt; 'science'</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                         Sobel         Delta    Monte.Carlo</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Indirect effect        0.2506        0.2506          0.251</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Std. Err.              0.0456        0.0456          0.046</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> z-value                5.5006        5.4935          5.442</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> p-value              3.79e-08      3.94e-08       5.26e-08</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> CI              [0.161, 0.34] [0.161, 0.34] [0.159, 0.341]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Baron and Kenny approach to testing mediation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    STEP 1 - 'math:read' (X -&gt; M) with B=0.662 and p=0.000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    STEP 2 - 'read:science' (M -&gt; Y) with B=0.378 and p=0.000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    STEP 3 - 'math:science' (X -&gt; Y) with B=0.380 and p=0.000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             As STEP 1, STEP 2 and STEP 3 as well as the Sobel's test above</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             are significant the mediation is partial.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Zhao, Lynch &amp; Chen's approach to testing mediation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   STEP 1 - 'math:science' (X -&gt; Y) with B=0.380 and p=0.000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             As the Monte Carlo test above is significant, STEP 1 is</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             significant and their coefficients point in same direction,</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             there is complementary mediation (partial mediation).</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Effect sizes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    RIT = (Indirect effect / Total effect)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          (0.251/0.631) = 0.397</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          Meaning that about  40% of the effect of 'math'</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          on 'science' is mediated by 'read'</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    RID = (Indirect effect / Direct effect)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          (0.251/0.380) = 0.659</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          That is, the mediated effect is about 0.7 times as</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          large as the direct effect of 'math' on 'science'</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
