@@ -10,6 +10,12 @@
     <loc>https://ihrke.github.io/rmedsem/LICENSE.html</loc>
   </url>
   <url>
+    <loc>https://ihrke.github.io/rmedsem/NOTES.html</loc>
+  </url>
+  <url>
+    <loc>https://ihrke.github.io/rmedsem/TODO.html</loc>
+  </url>
+  <url>
     <loc>https://ihrke.github.io/rmedsem/authors.html</loc>
   </url>
   <url>
@@ -28,7 +34,10 @@
     <loc>https://ihrke.github.io/rmedsem/reference/print.rmedsem.html</loc>
   </url>
   <url>
-    <loc>https://ihrke.github.io/rmedsem/reference/rmedsem.html</loc>
+    <loc>https://ihrke.github.io/rmedsem/reference/rmedsem.cSEMResults.html</loc>
+  </url>
+  <url>
+    <loc>https://ihrke.github.io/rmedsem/reference/rmedsem.lavaan.html</loc>
   </url>
   <url>
     <loc>https://ihrke.github.io/rmedsem/reference/workout.html</loc>
