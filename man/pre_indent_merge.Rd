@@ -6,6 +6,14 @@
 \usage{
 pre_indent_merge(s, indent)
 }
+\arguments{
+\item{s}{a string}
+
+\item{indent}{an integer how much to indent s}
+}
+\value{
+indented string
+}
 \description{
 indent s by indent many spaces; merge into a single string
 }
