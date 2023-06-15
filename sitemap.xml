@@ -16,6 +16,15 @@
     <loc>https://ihrke.github.io/rmedsem/TODO.html</loc>
   </url>
   <url>
+    <loc>https://ihrke.github.io/rmedsem/articles/estimation_methods.html</loc>
+  </url>
+  <url>
+    <loc>https://ihrke.github.io/rmedsem/articles/index.html</loc>
+  </url>
+  <url>
+    <loc>https://ihrke.github.io/rmedsem/articles/mediation_technical.html</loc>
+  </url>
+  <url>
     <loc>https://ihrke.github.io/rmedsem/authors.html</loc>
   </url>
   <url>
@@ -31,10 +40,22 @@
     <loc>https://ihrke.github.io/rmedsem/reference/pre_indent_merge.html</loc>
   </url>
   <url>
+    <loc>https://ihrke.github.io/rmedsem/reference/print.rmedsem.blavaan.html</loc>
+  </url>
+  <url>
     <loc>https://ihrke.github.io/rmedsem/reference/print.rmedsem.html</loc>
   </url>
   <url>
+    <loc>https://ihrke.github.io/rmedsem/reference/print.rmedsem.lavaan.csem.html</loc>
+  </url>
+  <url>
+    <loc>https://ihrke.github.io/rmedsem/reference/rmedsem.blavaan.html</loc>
+  </url>
+  <url>
     <loc>https://ihrke.github.io/rmedsem/reference/rmedsem.cSEMResults.html</loc>
+  </url>
+  <url>
+    <loc>https://ihrke.github.io/rmedsem/reference/rmedsem.html</loc>
   </url>
   <url>
     <loc>https://ihrke.github.io/rmedsem/reference/rmedsem.lavaan.html</loc>

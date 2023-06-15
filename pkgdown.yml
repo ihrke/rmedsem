@@ -1,8 +1,10 @@
 pandoc: 2.19.2
 pkgdown: 2.0.7
 pkgdown_sha: ~
-articles: {}
-last_built: 2023-06-13T10:28Z
+articles:
+  estimation_methods: estimation_methods.html
+  mediation_technical: mediation_technical.html
+last_built: 2023-06-15T11:42Z
 urls:
   reference: https://ihrke.github.io/rmedsem/reference
   article: https://ihrke.github.io/rmedsem/articles
