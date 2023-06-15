@@ -1,0 +1,206 @@
+---
+title: "Examples using the supported estimation methods"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+
+```{r setup}
+library(rmedsem)
+```
+
+The currently supported estimation methods are:
+
+- covariance-based SEM estimated with the
+  [lavaan](https://lavaan.ugent.be/) package
+- PLS-SEM estimated using [cSEM](https://m-e-rademaker.github.io/cSEM/)
+- Bayesian SEM estimated using
+  [blavaan](https://ecmerkle.github.io/blavaan/index.html)
+
+
+## Lavaan
+
+### Example 1 (lavaan)
+
+```{r, message=F}
+library(lavaan)
+library(rmedsem)
+
+mod.txt <- "
+read ~ math
+science ~ read + math
+"
+mod <- lavaan::sem(mod.txt, data=rmedsem::hsbdemo)
+out <- rmedsem(mod, indep="math", med="read", dep="science", 
+               standardized=T, mcreps=5000,
+               approach = c("bk","zlc"))
+print(out)
+```
+
+
+### Example 2 (lavaan)
+
+```{r}
+model02 <- "
+  # measurement model
+    ind60 =~ x1 + x2 + x3
+    dem60 =~ y1 + y2 + y3 + y4
+    dem65 =~ y5 + y6 + y7 + y8
+  # regressions
+    dem60 ~ ind60
+    dem65 ~ ind60 + dem60
+"
+mod <- sem(model02, data=lavaan::PoliticalDemocracy)
+out <- rmedsem(mod, indep="ind60", med="dem60", dep="dem65",
+               standardized=T, mcreps=5000,
+               approach = c("bk","zlc"))
+print(out)
+```
+
+
+### Example 3 (lavaan) 
+
+```{r}
+model03 <- "
+   Attractive =~ face + sexy
+   Appearance =~ body + appear + attract
+   Muscle =~ muscle + strength + endur
+   Weight =~ lweight + calories + cweight
+   Appearance ~ Attractive + age
+   Muscle ~ Appearance + Attractive + age
+   Weight ~ Appearance + Attractive + age
+"
+mod <- sem(model03, data=rmedsem::workout)
+rmedsem(mod, indep="Attractive", med="Appearance", dep="Muscle",
+       standardized=T, mcreps=5000,
+       approach = c("bk","zlc"))
+```
+
+```{r}
+rmedsem(mod, indep="Attractive", med="Appearance", dep="Weight",
+        standardized=T, mcreps=5000,
+        approach = c("bk","zlc"))
+```
+
+```{r}
+rmedsem(mod, indep="age", med="Appearance", dep="Muscle",
+        standardized=T, mcreps=5000,
+        approach = c("bk","zlc"))
+```
+
+```{r}
+rmedsem(mod, indep="age", med="Appearance", dep="Weight",
+        standardized=T, mcreps=5000,
+        approach = c("bk","zlc"))
+```
+
+
+## cSEM
+
+
+### Example 1 (cSEM)
+
+```{r}
+library(cSEM)
+library(rmedsem)
+
+mod.txt <- "
+# need to use single-item measurement models for PLS-SEM
+Read =~ read
+Math =~ math
+Science =~ science
+
+# the actual path model
+Read ~ Math
+Science ~ Read + Math
+"
+mod <- cSEM::csem(.model=mod.txt, .data=rmedsem::hsbdemo,
+                 .resample_method = "bootstrap", .R = 200)
+rmedsem(mod, indep="Math", med="Read", dep="Science", 
+        approach = c("bk", "zlc"))
+```
+
+
+### Example 2 (cSEM)
+
+```{r}
+model02 <- "
+  # measurement model
+    ind60 =~ x1 + x2 + x3
+    dem60 =~ y1 + y2 + y3 + y4
+    dem65 =~ y5 + y6 + y7 + y8
+  # regressions
+    dem60 ~ ind60
+    dem65 ~ ind60 + dem60
+"
+mod <- cSEM::csem(.model=model02, .data=lavaan::PoliticalDemocracy,
+                  .resample_method = "bootstrap", .R = 200)
+rmedsem(mod, indep="ind60", med="dem60", dep="dem65",
+        approach = c("bk","zlc"))
+```
+
+
+### Example 3 (cSEM) 
+
+```{r}
+model03 <- "
+   Attractive =~ face + sexy
+   Appearance =~ body + appear + attract
+   Muscle =~ muscle + strength + endur
+   Weight =~ lweight + calories + cweight
+   Age =~ age ## need single-indicator LV for cSEM
+   Appearance ~ Attractive + Age
+   Muscle ~ Appearance + Attractive + Age
+   Weight ~ Appearance + Attractive + Age
+"
+mod <- cSEM::csem(.model=model03, .data=na.omit(rmedsem::workout), 
+                  .resample_method = "bootstrap", .R = 200)
+rmedsem(mod, indep="Attractive", med="Appearance", dep="Muscle",
+        approach = c("bk","zlc"))
+```
+
+
+
+## blavaan
+
+### Example 1 (blavaan)
+
+```{r, message=F}
+library(blavaan)
+library(rmedsem)
+
+mod.txt <- "
+read ~ math
+science ~ read + math
+"
+mod <- bsem(mod.txt, data=rmedsem::hsbdemo, 
+            n.chains=3, burnin=500, sample=500, 
+            bcontrol = list(cores = 3))
+rmedsem(mod, indep="math", med="read", dep="science", 
+        approach = c("bk","zlc"))
+print(out)
+```
+
+### Example 2 (blavaan)
+
+```{r, message=F}
+model02 <- "
+ # measurement model
+   ind60 =~ x1 + x2 + x3
+   dem60 =~ y1 + y2 + y3 + y4
+   dem65 =~ y5 + y6 + y7 + y8
+ # regressions
+   dem60 ~ ind60
+   dem65 ~ ind60 + dem60
+"
+mod <- bsem(model02, data=lavaan::PoliticalDemocracy, std.lv=T,
+           meanstructure=T, n.chains=3,
+           save.lvs=T, burnin=1000, sample=1000, bcontrol = list(cores = 3))
+rmedsem(mod,  indep="ind60", med="dem60", dep="dem65")
+```
+

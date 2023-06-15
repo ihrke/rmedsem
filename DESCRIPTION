@@ -1,6 +1,6 @@
 Package: rmedsem
 Title: Statistical Mediation Analysis for SEMs
-Version: 0.0.0.9000
+Version: 0.1
 Authors@R: c(
     person("Mehmet", "Mehmetoglu", email="mehmet.mehmetoglu@ntnu.no", role = c("aut"),
            comment = c(ORCID = "0000-0002-6092-8551")),
@@ -21,3 +21,5 @@ BugReports: https://github.com/ihrke/rmedsem/issues
 Depends: 
     R (>= 2.10)
 LazyData: true
+Suggests: 
+    rmarkdown
