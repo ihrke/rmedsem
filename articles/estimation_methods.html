@@ -120,17 +120,17 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;                         Sobel         Delta    Monte-Carlo</span></span>
 <span><span class="co">#&gt; Indirect effect        0.2506        0.2506         0.2506</span></span>
-<span><span class="co">#&gt; Std. Err.              0.0456        0.0456         0.0449</span></span>
-<span><span class="co">#&gt; z-value                5.5006        5.4935         5.5644</span></span>
-<span><span class="co">#&gt; p-value              3.79e-08      3.94e-08       2.63e-08</span></span>
-<span><span class="co">#&gt; CI              [0.161, 0.34] [0.161, 0.34] [0.163, 0.338]</span></span>
+<span><span class="co">#&gt; Std. Err.              0.0456        0.0456         0.0451</span></span>
+<span><span class="co">#&gt; z-value                5.5006        5.4935         5.5444</span></span>
+<span><span class="co">#&gt; p-value              3.79e-08      3.94e-08       2.95e-08</span></span>
+<span><span class="co">#&gt; CI              [0.161, 0.34] [0.161, 0.34] [0.165, 0.341]</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Baron and Kenny approach to testing mediation</span></span>
 <span><span class="co">#&gt;    STEP 1 - 'math:read' (X -&gt; M) with B=0.662 and p=0.000</span></span>
 <span><span class="co">#&gt;    STEP 2 - 'read:science' (M -&gt; Y) with B=0.378 and p=0.000</span></span>
 <span><span class="co">#&gt;    STEP 3 - 'math:science' (X -&gt; Y) with B=0.380 and p=0.000</span></span>
-<span><span class="co">#&gt;             As STEP 1, STEP 2 and STEP 3 as well as the Sobel's test above</span></span>
-<span><span class="co">#&gt;             are significant the mediation is partial.</span></span>
+<span><span class="co">#&gt;             As STEP 1, STEP 2 and the Sobel's test above are significant</span></span>
+<span><span class="co">#&gt;             and STEP 3 is not significant the mediation is complete.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Zhao, Lynch &amp; Chen's approach to testing mediation</span></span>
 <span><span class="co">#&gt; Based on p-value estimated using Monte-Carlo</span></span>
@@ -173,17 +173,17 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;                          Sobel          Delta    Monte-Carlo</span></span>
 <span><span class="co">#&gt; Indirect effect         0.4091         0.4091         0.4091</span></span>
-<span><span class="co">#&gt; Std. Err.               0.0956         0.0957         0.0973</span></span>
-<span><span class="co">#&gt; z-value                 4.2817         4.2761         4.1978</span></span>
-<span><span class="co">#&gt; p-value               1.85e-05        1.9e-05        2.7e-05</span></span>
-<span><span class="co">#&gt; CI              [0.222, 0.596] [0.222, 0.597] [0.221, 0.605]</span></span>
+<span><span class="co">#&gt; Std. Err.               0.0956         0.0957         0.0962</span></span>
+<span><span class="co">#&gt; z-value                 4.2817         4.2761         4.2418</span></span>
+<span><span class="co">#&gt; p-value               1.85e-05        1.9e-05       2.22e-05</span></span>
+<span><span class="co">#&gt; CI              [0.222, 0.596] [0.222, 0.597] [0.222, 0.602]</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Baron and Kenny approach to testing mediation</span></span>
 <span><span class="co">#&gt;    STEP 1 - 'ind60:dem60' (X -&gt; M) with B=0.448 and p=0.000</span></span>
 <span><span class="co">#&gt;    STEP 2 - 'dem60:dem65' (M -&gt; Y) with B=0.913 and p=0.000</span></span>
 <span><span class="co">#&gt;    STEP 3 - 'ind60:dem65' (X -&gt; Y) with B=0.146 and p=0.038</span></span>
-<span><span class="co">#&gt;             As STEP 1, STEP 2 and STEP 3 as well as the Sobel's test above</span></span>
-<span><span class="co">#&gt;             are significant the mediation is partial.</span></span>
+<span><span class="co">#&gt;             As STEP 1, STEP 2 and the Sobel's test above are significant</span></span>
+<span><span class="co">#&gt;             and STEP 3 is not significant the mediation is complete.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Zhao, Lynch &amp; Chen's approach to testing mediation</span></span>
 <span><span class="co">#&gt; Based on p-value estimated using Monte-Carlo</span></span>
@@ -227,12 +227,17 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;                            Sobel              Delta      Monte-Carlo</span></span>
 <span><span class="co">#&gt; Indirect effect           0.0654             0.0654           0.0654</span></span>
-<span><span class="co">#&gt; Std. Err.                 0.0331             0.0336           0.0338</span></span>
-<span><span class="co">#&gt; z-value                   1.9748             1.9448           1.9251</span></span>
-<span><span class="co">#&gt; p-value                   0.0483             0.0518           0.0542</span></span>
-<span><span class="co">#&gt; CI              [0.000491, 0.13] [-0.000511, 0.131] [0.00448, 0.139]</span></span>
+<span><span class="co">#&gt; Std. Err.                 0.0331             0.0336           0.0343</span></span>
+<span><span class="co">#&gt; z-value                   1.9748             1.9448           1.9291</span></span>
+<span><span class="co">#&gt; p-value                   0.0483             0.0518           0.0537</span></span>
+<span><span class="co">#&gt; CI              [0.000491, 0.13] [-0.000511, 0.131] [0.00444, 0.139]</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Baron and Kenny approach to testing mediation</span></span>
+<span><span class="co">#&gt;    STEP 1 - 'Attractive:Appearance' (X -&gt; M) with B=0.158 and p=0.033</span></span>
+<span><span class="co">#&gt;    STEP 2 - 'Appearance:Muscle' (M -&gt; Y) with B=0.414 and p=0.000</span></span>
+<span><span class="co">#&gt;    STEP 3 - 'Attractive:Muscle' (X -&gt; Y) with B=-0.014 and p=0.850</span></span>
+<span><span class="co">#&gt;             As STEP 1, STEP 2 and the Sobel's test above are significant</span></span>
+<span><span class="co">#&gt;             and STEP 3 is not significant the mediation is complete.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Zhao, Lynch &amp; Chen's approach to testing mediation</span></span>
 <span><span class="co">#&gt; Based on p-value estimated using Monte-Carlo</span></span>
@@ -259,12 +264,17 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;                           Sobel            Delta      Monte-Carlo</span></span>
 <span><span class="co">#&gt; Indirect effect          0.0979           0.0979           0.0979</span></span>
-<span><span class="co">#&gt; Std. Err.                0.0470           0.0473           0.0476</span></span>
-<span><span class="co">#&gt; z-value                  2.0810           2.0705           2.0395</span></span>
-<span><span class="co">#&gt; p-value                  0.0374           0.0384           0.0414</span></span>
-<span><span class="co">#&gt; CI              [0.00569, 0.19] [0.00523, 0.191] [0.00368, 0.192]</span></span>
+<span><span class="co">#&gt; Std. Err.                0.0470           0.0473           0.0470</span></span>
+<span><span class="co">#&gt; z-value                  2.0810           2.0705           2.0826</span></span>
+<span><span class="co">#&gt; p-value                  0.0374           0.0384           0.0373</span></span>
+<span><span class="co">#&gt; CI              [0.00569, 0.19] [0.00523, 0.191] [0.00958, 0.193]</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Baron and Kenny approach to testing mediation</span></span>
+<span><span class="co">#&gt;    STEP 1 - 'Attractive:Appearance' (X -&gt; M) with B=0.158 and p=0.033</span></span>
+<span><span class="co">#&gt;    STEP 2 - 'Appearance:Weight' (M -&gt; Y) with B=0.619 and p=0.000</span></span>
+<span><span class="co">#&gt;    STEP 3 - 'Attractive:Weight' (X -&gt; Y) with B=-0.125 and p=0.073</span></span>
+<span><span class="co">#&gt;             As STEP 1, STEP 2 and the Sobel's test above are significant</span></span>
+<span><span class="co">#&gt;             and STEP 3 is not significant the mediation is complete.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Zhao, Lynch &amp; Chen's approach to testing mediation</span></span>
 <span><span class="co">#&gt; Based on p-value estimated using Monte-Carlo</span></span>
@@ -291,12 +301,17 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;                             Sobel             Delta       Monte-Carlo</span></span>
 <span><span class="co">#&gt; Indirect effect           -0.1602             -0.16           -0.1602</span></span>
-<span><span class="co">#&gt; Std. Err.                  0.0397              0.04            0.0402</span></span>
-<span><span class="co">#&gt; z-value                   -4.0391             -4.01           -3.9887</span></span>
-<span><span class="co">#&gt; p-value                  5.37e-05          6.08e-05          6.64e-05</span></span>
-<span><span class="co">#&gt; CI              [-0.238, -0.0825] [-0.239, -0.0819] [-0.245, -0.0904]</span></span>
+<span><span class="co">#&gt; Std. Err.                  0.0397              0.04            0.0399</span></span>
+<span><span class="co">#&gt; z-value                   -4.0391             -4.01           -3.9904</span></span>
+<span><span class="co">#&gt; p-value                  5.37e-05          6.08e-05           6.6e-05</span></span>
+<span><span class="co">#&gt; CI              [-0.238, -0.0825] [-0.239, -0.0819] [-0.245, -0.0903]</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Baron and Kenny approach to testing mediation</span></span>
+<span><span class="co">#&gt;    STEP 1 - 'age:Appearance' (X -&gt; M) with B=-0.387 and p=0.000</span></span>
+<span><span class="co">#&gt;    STEP 2 - 'Appearance:Muscle' (M -&gt; Y) with B=0.414 and p=0.000</span></span>
+<span><span class="co">#&gt;    STEP 3 - 'age:Muscle' (X -&gt; Y) with B=-0.147 and p=0.065</span></span>
+<span><span class="co">#&gt;             As STEP 1, STEP 2 and the Sobel's test above are significant</span></span>
+<span><span class="co">#&gt;             and STEP 3 is not significant the mediation is complete.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Zhao, Lynch &amp; Chen's approach to testing mediation</span></span>
 <span><span class="co">#&gt; Based on p-value estimated using Monte-Carlo</span></span>
@@ -324,16 +339,16 @@
 <span><span class="co">#&gt;                            Sobel           Delta      Monte-Carlo</span></span>
 <span><span class="co">#&gt; Indirect effect          -0.2397         -0.2397          -0.2397</span></span>
 <span><span class="co">#&gt; Std. Err.                 0.0453          0.0455           0.0453</span></span>
-<span><span class="co">#&gt; z-value                  -5.2867         -5.2670          -5.2971</span></span>
-<span><span class="co">#&gt; p-value                 1.25e-07        1.39e-07         1.18e-07</span></span>
-<span><span class="co">#&gt; CI              [-0.329, -0.151] [-0.329, -0.15] [-0.334, -0.156]</span></span>
+<span><span class="co">#&gt; z-value                  -5.2867         -5.2670          -5.2853</span></span>
+<span><span class="co">#&gt; p-value                 1.25e-07        1.39e-07         1.26e-07</span></span>
+<span><span class="co">#&gt; CI              [-0.329, -0.151] [-0.329, -0.15] [-0.333, -0.155]</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Baron and Kenny approach to testing mediation</span></span>
 <span><span class="co">#&gt;    STEP 1 - 'age:Appearance' (X -&gt; M) with B=-0.387 and p=0.000</span></span>
 <span><span class="co">#&gt;    STEP 2 - 'Appearance:Weight' (M -&gt; Y) with B=0.619 and p=0.000</span></span>
 <span><span class="co">#&gt;    STEP 3 - 'age:Weight' (X -&gt; Y) with B=0.341 and p=0.000</span></span>
-<span><span class="co">#&gt;             As STEP 1, STEP 2 and STEP 3 as well as the Sobel's test above</span></span>
-<span><span class="co">#&gt;             are significant the mediation is partial.</span></span>
+<span><span class="co">#&gt;             As STEP 1, STEP 2 and the Sobel's test above are significant</span></span>
+<span><span class="co">#&gt;             and STEP 3 is not significant the mediation is complete.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Zhao, Lynch &amp; Chen's approach to testing mediation</span></span>
 <span><span class="co">#&gt; Based on p-value estimated using Monte-Carlo</span></span>
@@ -381,7 +396,7 @@
 <span><span class="st">Read ~ Math</span></span>
 <span><span class="st">Science ~ Read + Math</span></span>
 <span><span class="st">"</span></span>
-<span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu">cSEM</span><span class="fu">::</span><span class="fu"><a href="https://m-e-rademaker.github.io/cSEM/reference/csem.html" class="external-link">csem</a></span><span class="op">(</span>.model<span class="op">=</span><span class="va">mod.txt</span>, .data<span class="op">=</span><span class="fu">rmedsem</span><span class="fu">::</span><span class="va"><a href="../reference/hsbdemo.html">hsbdemo</a></span>,</span>
+<span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu">cSEM</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/cSEM/man/csem.html" class="external-link">csem</a></span><span class="op">(</span>.model<span class="op">=</span><span class="va">mod.txt</span>, .data<span class="op">=</span><span class="fu">rmedsem</span><span class="fu">::</span><span class="va"><a href="../reference/hsbdemo.html">hsbdemo</a></span>,</span>
 <span>                 .resample_method <span class="op">=</span> <span class="st">"bootstrap"</span>, .R <span class="op">=</span> <span class="fl">200</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/rmedsem.html">rmedsem</a></span><span class="op">(</span><span class="va">mod</span>, indep<span class="op">=</span><span class="st">"Math"</span>, med<span class="op">=</span><span class="st">"Read"</span>, dep<span class="op">=</span><span class="st">"Science"</span>, </span>
 <span>        approach <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"bk"</span>, <span class="st">"zlc"</span><span class="op">)</span><span class="op">)</span></span>
@@ -389,19 +404,19 @@
 <span><span class="co">#&gt; Model estimated with package 'cSEM'</span></span>
 <span><span class="co">#&gt; Mediation effect: 'Math' -&gt; 'Read' -&gt; 'Science'</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;                          Sobel          Delta     Bootstrap</span></span>
-<span><span class="co">#&gt; Indirect effect         0.2506         0.2506        0.2506</span></span>
-<span><span class="co">#&gt; Std. Err.               0.0535         0.0536        0.0528</span></span>
-<span><span class="co">#&gt; z-value                 4.6872         4.6798        4.7474</span></span>
-<span><span class="co">#&gt; p-value               2.77e-06       2.87e-06      2.06e-06</span></span>
-<span><span class="co">#&gt; CI              [0.146, 0.355] [0.146, 0.356] [0.15, 0.356]</span></span>
+<span><span class="co">#&gt;                          Sobel          Delta      Bootstrap</span></span>
+<span><span class="co">#&gt; Indirect effect          0.251         0.2506         0.2506</span></span>
+<span><span class="co">#&gt; Std. Err.                0.049         0.0491         0.0463</span></span>
+<span><span class="co">#&gt; z-value                  5.113         5.1046         5.4168</span></span>
+<span><span class="co">#&gt; p-value               3.18e-07       3.31e-07       6.07e-08</span></span>
+<span><span class="co">#&gt; CI              [0.155, 0.347] [0.154, 0.347] [0.152, 0.334]</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Baron and Kenny approach to testing mediation</span></span>
 <span><span class="co">#&gt;    STEP 1 - 'Math:Read' (X -&gt; M) with B=0.662 and p=0.000</span></span>
 <span><span class="co">#&gt;    STEP 2 - 'Read:Science' (M -&gt; Y) with B=0.378 and p=0.000</span></span>
 <span><span class="co">#&gt;    STEP 3 - 'Math:Science' (X -&gt; Y) with B=0.380 and p=0.000</span></span>
-<span><span class="co">#&gt;             As STEP 1, STEP 2 and STEP 3 as well as the Sobel's test above</span></span>
-<span><span class="co">#&gt;             are significant the mediation is partial.</span></span>
+<span><span class="co">#&gt;             As STEP 1, STEP 2 and the Sobel's test above are significant</span></span>
+<span><span class="co">#&gt;             and STEP 3 is not significant the mediation is complete.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Zhao, Lynch &amp; Chen's approach to testing mediation</span></span>
 <span><span class="co">#&gt; Based on p-value estimated using Bootstrap</span></span>
@@ -433,7 +448,7 @@
 <span><span class="st">    dem60 ~ ind60</span></span>
 <span><span class="st">    dem65 ~ ind60 + dem60</span></span>
 <span><span class="st">"</span></span>
-<span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu">cSEM</span><span class="fu">::</span><span class="fu"><a href="https://m-e-rademaker.github.io/cSEM/reference/csem.html" class="external-link">csem</a></span><span class="op">(</span>.model<span class="op">=</span><span class="va">model02</span>, .data<span class="op">=</span><span class="fu">lavaan</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/lavaan/man/PoliticalDemocracy.html" class="external-link">PoliticalDemocracy</a></span>,</span>
+<span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu">cSEM</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/cSEM/man/csem.html" class="external-link">csem</a></span><span class="op">(</span>.model<span class="op">=</span><span class="va">model02</span>, .data<span class="op">=</span><span class="fu">lavaan</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/lavaan/man/PoliticalDemocracy.html" class="external-link">PoliticalDemocracy</a></span>,</span>
 <span>                  .resample_method <span class="op">=</span> <span class="st">"bootstrap"</span>, .R <span class="op">=</span> <span class="fl">200</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/rmedsem.html">rmedsem</a></span><span class="op">(</span><span class="va">mod</span>, indep<span class="op">=</span><span class="st">"ind60"</span>, med<span class="op">=</span><span class="st">"dem60"</span>, dep<span class="op">=</span><span class="st">"dem65"</span>,</span>
 <span>        approach <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"bk"</span>,<span class="st">"zlc"</span><span class="op">)</span><span class="op">)</span></span>
@@ -441,23 +456,23 @@
 <span><span class="co">#&gt; Model estimated with package 'cSEM'</span></span>
 <span><span class="co">#&gt; Mediation effect: 'ind60' -&gt; 'dem60' -&gt; 'dem65'</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;                          Sobel          Delta      Bootstrap</span></span>
-<span><span class="co">#&gt; Indirect effect         0.3988         0.3988         0.3988</span></span>
-<span><span class="co">#&gt; Std. Err.               0.0949         0.0951         0.0892</span></span>
-<span><span class="co">#&gt; z-value                 4.2010         4.1951         4.4692</span></span>
-<span><span class="co">#&gt; p-value               2.66e-05       2.73e-05       7.85e-06</span></span>
-<span><span class="co">#&gt; CI              [0.213, 0.585] [0.212, 0.585] [0.247, 0.574]</span></span>
+<span><span class="co">#&gt;                          Sobel          Delta     Bootstrap</span></span>
+<span><span class="co">#&gt; Indirect effect          0.399         0.3988        0.3988</span></span>
+<span><span class="co">#&gt; Std. Err.                0.089         0.0892        0.0801</span></span>
+<span><span class="co">#&gt; z-value                  4.479         4.4722        4.9787</span></span>
+<span><span class="co">#&gt; p-value               7.49e-06       7.74e-06       6.4e-07</span></span>
+<span><span class="co">#&gt; CI              [0.224, 0.573] [0.224, 0.574] [0.272, 0.58]</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Baron and Kenny approach to testing mediation</span></span>
 <span><span class="co">#&gt;    STEP 1 - 'ind60:dem60' (X -&gt; M) with B=0.439 and p=0.000</span></span>
 <span><span class="co">#&gt;    STEP 2 - 'dem60:dem65' (M -&gt; Y) with B=0.909 and p=0.000</span></span>
-<span><span class="co">#&gt;    STEP 3 - 'ind60:dem65' (X -&gt; Y) with B=0.159 and p=0.024</span></span>
-<span><span class="co">#&gt;             As STEP 1, STEP 2 and STEP 3 as well as the Sobel's test above</span></span>
-<span><span class="co">#&gt;             are significant the mediation is partial.</span></span>
+<span><span class="co">#&gt;    STEP 3 - 'ind60:dem65' (X -&gt; Y) with B=0.159 and p=0.031</span></span>
+<span><span class="co">#&gt;             As STEP 1, STEP 2 and the Sobel's test above are significant</span></span>
+<span><span class="co">#&gt;             and STEP 3 is not significant the mediation is complete.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Zhao, Lynch &amp; Chen's approach to testing mediation</span></span>
 <span><span class="co">#&gt; Based on p-value estimated using Bootstrap</span></span>
-<span><span class="co">#&gt;   STEP 1 - 'ind60:dem65' (X -&gt; Y) with B=0.159 and p=0.024</span></span>
+<span><span class="co">#&gt;   STEP 1 - 'ind60:dem65' (X -&gt; Y) with B=0.159 and p=0.031</span></span>
 <span><span class="co">#&gt;             As the Bootstrap test above is significant, STEP 1 is</span></span>
 <span><span class="co">#&gt;             significant and their coefficients point in same direction,</span></span>
 <span><span class="co">#&gt;             there is complementary mediation (partial mediation).</span></span>
@@ -486,7 +501,7 @@
 <span><span class="st">   Muscle ~ Appearance + Attractive + Age</span></span>
 <span><span class="st">   Weight ~ Appearance + Attractive + Age</span></span>
 <span><span class="st">"</span></span>
-<span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu">cSEM</span><span class="fu">::</span><span class="fu"><a href="https://m-e-rademaker.github.io/cSEM/reference/csem.html" class="external-link">csem</a></span><span class="op">(</span>.model<span class="op">=</span><span class="va">model03</span>, .data<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/na.fail.html" class="external-link">na.omit</a></span><span class="op">(</span><span class="fu">rmedsem</span><span class="fu">::</span><span class="va"><a href="../reference/workout.html">workout</a></span><span class="op">)</span>, </span>
+<span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu">cSEM</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/cSEM/man/csem.html" class="external-link">csem</a></span><span class="op">(</span>.model<span class="op">=</span><span class="va">model03</span>, .data<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/na.fail.html" class="external-link">na.omit</a></span><span class="op">(</span><span class="fu">rmedsem</span><span class="fu">::</span><span class="va"><a href="../reference/workout.html">workout</a></span><span class="op">)</span>, </span>
 <span>                  .resample_method <span class="op">=</span> <span class="st">"bootstrap"</span>, .R <span class="op">=</span> <span class="fl">200</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/rmedsem.html">rmedsem</a></span><span class="op">(</span><span class="va">mod</span>, indep<span class="op">=</span><span class="st">"Attractive"</span>, med<span class="op">=</span><span class="st">"Appearance"</span>, dep<span class="op">=</span><span class="st">"Muscle"</span>,</span>
 <span>        approach <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"bk"</span>,<span class="st">"zlc"</span><span class="op">)</span><span class="op">)</span></span>
@@ -495,17 +510,22 @@
 <span><span class="co">#&gt; Mediation effect: 'Attractive' -&gt; 'Appearance' -&gt; 'Muscle'</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;                           Sobel           Delta        Bootstrap</span></span>
-<span><span class="co">#&gt; Indirect effect          0.1124          0.1124           0.1124</span></span>
-<span><span class="co">#&gt; Std. Err.                0.0385          0.0388           0.0407</span></span>
-<span><span class="co">#&gt; z-value                  2.9202          2.8934           2.7599</span></span>
-<span><span class="co">#&gt; p-value                  0.0035         0.00381          0.00578</span></span>
-<span><span class="co">#&gt; CI              [0.0369, 0.188] [0.0362, 0.188] [0.0485, -0.262]</span></span>
+<span><span class="co">#&gt; Indirect effect           0.112          0.1124           0.1124</span></span>
+<span><span class="co">#&gt; Std. Err.                 0.041          0.0414           0.0426</span></span>
+<span><span class="co">#&gt; z-value                   2.742          2.7152           2.6394</span></span>
+<span><span class="co">#&gt; p-value                  0.0061         0.00662          0.00831</span></span>
+<span><span class="co">#&gt; CI              [0.0321, 0.193] [0.0313, 0.193] [0.0519, -0.281]</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Baron and Kenny approach to testing mediation</span></span>
+<span><span class="co">#&gt;    STEP 1 - 'Attractive:Appearance' (X -&gt; M) with B=0.236 and p=0.002</span></span>
+<span><span class="co">#&gt;    STEP 2 - 'Appearance:Muscle' (M -&gt; Y) with B=0.475 and p=0.000</span></span>
+<span><span class="co">#&gt;    STEP 3 - 'Attractive:Muscle' (X -&gt; Y) with B=-0.010 and p=0.908</span></span>
+<span><span class="co">#&gt;             As STEP 1, STEP 2 and the Sobel's test above are significant</span></span>
+<span><span class="co">#&gt;             and STEP 3 is not significant the mediation is complete.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Zhao, Lynch &amp; Chen's approach to testing mediation</span></span>
 <span><span class="co">#&gt; Based on p-value estimated using Bootstrap</span></span>
-<span><span class="co">#&gt;   STEP 1 - 'Attractive:Muscle' (X -&gt; Y) with B=-0.010 and p=0.901</span></span>
+<span><span class="co">#&gt;   STEP 1 - 'Attractive:Muscle' (X -&gt; Y) with B=-0.010 and p=0.908</span></span>
 <span><span class="co">#&gt;             As the Bootstrap test above is significant and STEP 1 is not</span></span>
 <span><span class="co">#&gt;             significant there indirect-only mediation (full mediation).</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -546,14 +566,14 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Prior (regression coefs): normal(0,10)</span></span>
 <span><span class="co">#&gt;                          Bayes</span></span>
-<span><span class="co">#&gt; Indirect effect         0.2481</span></span>
-<span><span class="co">#&gt; Std. Err.               0.0459</span></span>
-<span><span class="co">#&gt; z-value                 5.4050</span></span>
+<span><span class="co">#&gt; Indirect effect         0.2487</span></span>
+<span><span class="co">#&gt; Std. Err.               0.0447</span></span>
+<span><span class="co">#&gt; z-value                 5.5588</span></span>
 <span><span class="co">#&gt; P(z&gt;0)                  1.0000</span></span>
 <span><span class="co">#&gt; P(z&lt;0)                  0.0000</span></span>
 <span><span class="co">#&gt; ER+                          ∞</span></span>
 <span><span class="co">#&gt; ER-                          0</span></span>
-<span><span class="co">#&gt; HDI             [0.155, 0.338]</span></span>
+<span><span class="co">#&gt; HDI             [0.161, 0.337]</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">out</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Significance testing of indirect effect (standardized)</span></span>
 <span><span class="co">#&gt; Model estimated with package 'lavaan'</span></span>
@@ -561,17 +581,17 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;                          Sobel          Delta    Monte-Carlo</span></span>
 <span><span class="co">#&gt; Indirect effect         0.4091         0.4091         0.4091</span></span>
-<span><span class="co">#&gt; Std. Err.               0.0956         0.0957         0.0973</span></span>
-<span><span class="co">#&gt; z-value                 4.2817         4.2761         4.1978</span></span>
-<span><span class="co">#&gt; p-value               1.85e-05        1.9e-05        2.7e-05</span></span>
-<span><span class="co">#&gt; CI              [0.222, 0.596] [0.222, 0.597] [0.221, 0.605]</span></span>
+<span><span class="co">#&gt; Std. Err.               0.0956         0.0957         0.0962</span></span>
+<span><span class="co">#&gt; z-value                 4.2817         4.2761         4.2418</span></span>
+<span><span class="co">#&gt; p-value               1.85e-05        1.9e-05       2.22e-05</span></span>
+<span><span class="co">#&gt; CI              [0.222, 0.596] [0.222, 0.597] [0.222, 0.602]</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Baron and Kenny approach to testing mediation</span></span>
 <span><span class="co">#&gt;    STEP 1 - 'ind60:dem60' (X -&gt; M) with B=0.448 and p=0.000</span></span>
 <span><span class="co">#&gt;    STEP 2 - 'dem60:dem65' (M -&gt; Y) with B=0.913 and p=0.000</span></span>
 <span><span class="co">#&gt;    STEP 3 - 'ind60:dem65' (X -&gt; Y) with B=0.146 and p=0.038</span></span>
-<span><span class="co">#&gt;             As STEP 1, STEP 2 and STEP 3 as well as the Sobel's test above</span></span>
-<span><span class="co">#&gt;             are significant the mediation is partial.</span></span>
+<span><span class="co">#&gt;             As STEP 1, STEP 2 and the Sobel's test above are significant</span></span>
+<span><span class="co">#&gt;             and STEP 3 is not significant the mediation is complete.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Zhao, Lynch &amp; Chen's approach to testing mediation</span></span>
 <span><span class="co">#&gt; Based on p-value estimated using Monte-Carlo</span></span>
@@ -614,14 +634,14 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Prior (regression coefs): normal(0,10)</span></span>
 <span><span class="co">#&gt;                          Bayes</span></span>
-<span><span class="co">#&gt; Indirect effect       0.387774</span></span>
-<span><span class="co">#&gt; Std. Err.             0.097002</span></span>
-<span><span class="co">#&gt; z-value               3.997581</span></span>
+<span><span class="co">#&gt; Indirect effect       0.390731</span></span>
+<span><span class="co">#&gt; Std. Err.             0.099400</span></span>
+<span><span class="co">#&gt; z-value               3.930907</span></span>
 <span><span class="co">#&gt; P(z&gt;0)                0.999667</span></span>
 <span><span class="co">#&gt; P(z&lt;0)                0.000333</span></span>
 <span><span class="co">#&gt; ER+                   3.00e+03</span></span>
 <span><span class="co">#&gt; ER-                   3.33e-04</span></span>
-<span><span class="co">#&gt; HDI             [0.186, 0.567]</span></span></code></pre></div>
+<span><span class="co">#&gt; HDI             [0.191, 0.576]</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
