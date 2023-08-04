@@ -99,7 +99,7 @@ print.rmedsem.lavaan.csem <- function(res, digits=3, indent=3){
         "there is no mediation.\n"
       ) |> pre_indent_merge(indent.conclusion)
       cat(step1,step2,conclusion, sep="")
-    } else if(d$pvals$moi<pth & d$pvals$dom<pth & res$sobel[4] > pth){
+    } else if(d$pvals$moi<pth & d$pvals$dom<pth & res$sobel[4] < pth){
       conclusion <- c(
         "As STEP 1, STEP 2 and the Sobel's test above are significant\n",
         "and STEP 3 is not significant the mediation is complete.\n"

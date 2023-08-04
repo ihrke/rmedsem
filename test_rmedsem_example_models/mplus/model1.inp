@@ -1,0 +1,22 @@
+DATA:
+FILE = "test_rmedsem_example_models/mplus/model1_b06d86eecc808e7067ed66d61fd76292.dat";
+ 
+VARIABLE:
+NAMES = readhigh math science; 
+ MISSING=.;
+ 
+                    CATEGORICAL ARE readhigh;
+                    
+ANALYSIS:
+BOOTSTRAP=100;
+MODEL:
+
+    readhigh on math;
+    science on readhigh math;
+                    
+MODEL INDIRECT:
+
+     science IND readhigh math(1 -1);
+    
+OUTPUT:
+sampstat stdyx mod cinterval(bcbootstrap);
