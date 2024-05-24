@@ -67,3 +67,32 @@ out4 <- rmedsem(mod, indep="age", med="Appearance", dep="Weight",
 print(out4)
 
 
+
+## for paper
+model <- "
+   Attractive =~ face + sexy
+   Appearance =~ body + appear + attract
+   Muscle =~ muscle + strength + endur
+   Appearance ~ Attractive
+   Muscle ~ Appearance + Attractive
+"
+library(lavaan)
+mod <- lavaan::sem(model, data=rmedsem::workout)
+summary(mod)
+library(rmedsem)
+rmedsem(mod, indep="Attractive", med="Appearance", dep="Muscle",
+        approach=c("zlc","bk"))
+
+library(cSEM)
+library(blavaan)
+mod.lav  <- lavaan::sem(model, data=rmedsem::workout)
+mod.csem <- cSEM::csem(model, .data=na.omit(rmedsem::workout))
+mod.blav <- blavaan::bsem(model, data=rmedsem::workout, save.lvs=T)
+
+rmedsem(mod.lav, indep="Attractive", med="Appearance", dep="Muscle",
+        approach=c("zlc","bk"))
+rmedsem(mod.csem, indep="Attractive", med="Appearance", dep="Muscle",
+        approach=c("zlc","bk"))
+rmedsem(mod.blav, indep="Attractive", med="Appearance", dep="Muscle",
+        approach=c("zlc","bk"))
+
