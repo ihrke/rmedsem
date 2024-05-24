@@ -22,7 +22,7 @@ print.rmedsem.blavaan <- function(res, digits=3, indent=3){
   indcstr <- strrep(" ", indent.conclusion)
   formatstr <- "%5.3f" # format for real numbers
 
-  cat(sprintf("Prior (regression coefs): %s\n", blavInspect(mod, "dp")["beta"]))
+  cat(sprintf("Prior (regression coefs): %s\n", res$prior$beta))
 
   # indentation
   indstr <- strrep(" ", indent)

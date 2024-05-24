@@ -54,12 +54,14 @@ rmedsem.blavaan <- function(mod, indep, med, dep,
   ERpos <- bayes_proppos/(1-bayes_proppos)
   ERneg <- bayes_propneg/(1-bayes_propneg)
 
+  prior_beta <- blavInspect(mod, "dp")["beta"]
   res <- list(package="blavaan", standardized=T,
               vars =list(med=med, indep=indep, dep=dep),
               bayes=c(coef=bayes_coef, se=bayes_se, zval=bayes_z,
                       pvpos=bayes_proppos, pvneg=bayes_propneg,
                       ERpos=ERpos, ERneg=ERneg,
-                      lower=bayes_lci, upper=bayes_uci)
+                      lower=bayes_lci, upper=bayes_uci),
+              prior=list(beta=prior_beta)
               #med.approach=approach,
               #effect.size=es,
               #med.data=list(sig_thresh=p.threshold,
