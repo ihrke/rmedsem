@@ -86,13 +86,10 @@ rmedsem(mod, indep="Attractive", med="Appearance", dep="Muscle",
 library(cSEM)
 library(blavaan)
 mod.lav  <- lavaan::sem(model, data=rmedsem::workout)
-mod.csem <- cSEM::csem(model, .data=na.omit(rmedsem::workout))
+mod.csem <- cSEM::csem(model, .data=na.omit(rmedsem::workout), .disattenuate = F)
 mod.blav <- blavaan::bsem(model, data=rmedsem::workout, save.lvs=T)
 
-rmedsem(mod.lav, indep="Attractive", med="Appearance", dep="Muscle",
-        approach=c("zlc","bk"))
-rmedsem(mod.csem, indep="Attractive", med="Appearance", dep="Muscle",
-        approach=c("zlc","bk"))
-rmedsem(mod.blav, indep="Attractive", med="Appearance", dep="Muscle",
-        approach=c("zlc","bk"))
-
+rmedsem(mod.lav, indep="Attractive", med="Appearance", dep="Muscle")
+rmedsem(mod.csem, indep="Attractive", med="Appearance", dep="Muscle")
+res <- rmedsem(mod.blav, indep="Attractive", med="Appearance", dep="Muscle")
+res

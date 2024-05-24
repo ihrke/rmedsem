@@ -41,7 +41,50 @@ print.rmedsem.blavaan <- function(res, digits=3, indent=3){
   print( mat )
   cat("\n")
 
+  es=res$effect.size
+  print_effectsize(es, indent, digits)
+
 }
+
+
+#' Function for printing the effect size from the estimation methods
+#'
+#' @param res the `rmedsem` object to print
+#' @param digits an integer, number of digits to print in table
+#' @return `rmedsem` obect `res`
+#'
+print_effectsize <- function(es, digits=3, indent=3){
+  # indentation
+  indstr <- strrep(" ", indent)
+  indent.conclusion <- indent + 9
+  indcstr <- strrep(" ", indent.conclusion)
+  formatstr <- "%5.3f" # format for real numbers
+
+  if(length(es)>0){
+    cat("Effect sizes\n")
+  }
+  indesstr = strrep(" ", indent+6)
+  if("RIT" %in% names(es)){
+    cat(sprintf("%sRIT = (Indirect effect / Total effect)\n", indstr))
+    if(abs(es$RIT$tot_eff)<0.2){
+      ## According to https://davidakenny.net/cm/mediate.htm, we should only
+      ## calculate RIT if the total effect is > +-.2
+      with(es$RIT, cat(sprintf("%sTotal effect %5.3f is too small to calculate RIT\n", indesstr, tot_eff)))
+    } else {
+      with(es$RIT, cat(sprintf("%s(%5.3f/%5.3f) = %5.3f\n", indesstr, ind_eff, tot_eff, es)))
+      with(es$RIT, cat(sprintf("%sMeaning that about %3.0f%% of the effect of '%s'\n", indesstr, es*100, res$vars$indep)))
+      with(es$RIT, cat(sprintf("%son '%s' is mediated by '%s'\n", indesstr, res$vars$dep, res$vars$med)))
+    }
+  }
+  if("RID" %in% names(es)){
+    cat(sprintf("%sRID = (Indirect effect / Direct effect)\n", indstr))
+    with(es$RID, cat(sprintf("%s(%5.3f/%5.3f) = %5.3f\n", indesstr, ind_eff, dir_eff, es)))
+    with(es$RID, cat(sprintf("%sThat is, the mediated effect is about %3.1f times as\n", indesstr, es)))
+    with(es$RID, cat(sprintf("%slarge as the direct effect of '%s' on '%s'", indesstr, res$vars$indep, res$vars$dep)))
+  }
+
+}
+
 
 #' Function for printing `rmedsem` objects
 #'
@@ -175,28 +218,7 @@ print.rmedsem.lavaan.csem <- function(res, digits=3, indent=3){
   }
 
   es=res$effect.size
-  if(length(es)>0){
-    cat("Effect sizes\n")
-  }
-  indesstr = strrep(" ", indent+6)
-  if("RIT" %in% names(es)){
-    cat(sprintf("%sRIT = (Indirect effect / Total effect)\n", indstr))
-    if(abs(es$RIT$tot_eff)<0.2){
-      ## According to https://davidakenny.net/cm/mediate.htm, we should only
-      ## calculate RIT if the total effect is > +-.2
-      with(es$RIT, cat(sprintf("%sTotal effect %5.3f is too small to calculate RIT\n", indesstr, tot_eff)))
-    } else {
-      with(es$RIT, cat(sprintf("%s(%5.3f/%5.3f) = %5.3f\n", indesstr, ind_eff, tot_eff, es)))
-      with(es$RIT, cat(sprintf("%sMeaning that about %3.0f%% of the effect of '%s'\n", indesstr, es*100, res$vars$indep)))
-      with(es$RIT, cat(sprintf("%son '%s' is mediated by '%s'\n", indesstr, res$vars$dep, res$vars$med)))
-    }
-  }
-  if("RID" %in% names(es)){
-    cat(sprintf("%sRID = (Indirect effect / Direct effect)\n", indstr))
-    with(es$RID, cat(sprintf("%s(%5.3f/%5.3f) = %5.3f\n", indesstr, ind_eff, dir_eff, es)))
-    with(es$RID, cat(sprintf("%sThat is, the mediated effect is about %3.1f times as\n", indesstr, es)))
-    with(es$RID, cat(sprintf("%slarge as the direct effect of '%s' on '%s'", indesstr, res$vars$indep, res$vars$dep)))
-  }
+  print_effectsize(es, indent, digits)
 }
 
 

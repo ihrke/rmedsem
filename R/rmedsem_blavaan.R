@@ -48,6 +48,13 @@ rmedsem.blavaan <- function(mod, indep, med, dep,
   bayes_uci <- bayes_qs[2]
   bayes_se <- stats::sd(ptsamp)
   bayes_z <- bayes_coef/bayes_se
+
+  # direct effect samples
+  desamp <- draws[,doi]
+  RITsamp <- ptsamp/(ptsamp+desamp)
+  RIT <- median(RITsamp)
+  RID <- bayes_coef/mean(desamp)
+
   # Bayesian p-values and evidence ratios
   bayes_proppos <- sum(ptsamp>0)/nsamp
   bayes_propneg <- sum(ptsamp<0)/nsamp
@@ -55,15 +62,29 @@ rmedsem.blavaan <- function(mod, indep, med, dep,
   ERneg <- bayes_propneg/(1-bayes_propneg)
 
   prior_beta <- blavInspect(mod, "dp")["beta"]
+
+  #
+  es <- list()
+  ind_eff <- abs(bayes_coef)
+  tot_eff <- abs(bayes_coef+mean(desamp))
+  dir_eff <- abs(mean(desamp))
+  if("RIT" %in% effect.size ){
+    es$RIT=list(es=ind_eff/tot_eff, ind_eff=ind_eff, tot_eff=tot_eff)
+  }
+  if("RID" %in% effect.size ){
+    es$RID=list(es=ind_eff/dir_eff, ind_eff=ind_eff, dir_eff=dir_eff)
+  }
+
+
   res <- list(package="blavaan", standardized=T,
               vars =list(med=med, indep=indep, dep=dep),
               bayes=c(coef=bayes_coef, se=bayes_se, zval=bayes_z,
                       pvpos=bayes_proppos, pvneg=bayes_propneg,
                       ERpos=ERpos, ERneg=ERneg,
                       lower=bayes_lci, upper=bayes_uci),
-              prior=list(beta=prior_beta)
+              prior=list(beta=prior_beta),
               #med.approach=approach,
-              #effect.size=es,
+              effect.size=es
               #med.data=list(sig_thresh=p.threshold,
               #              coefs=list(moi=coef_moi, dom=coef_dom, doi=coef_doi),
               #              pvals=list(moi=pval_moi, dom=pval_dom, doi=pval_doi))
