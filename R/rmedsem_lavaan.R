@@ -29,7 +29,7 @@
 #' print(out)
 #'
 rmedsem.lavaan <- function(mod, indep, med, dep, standardized=FALSE, mcreps=NULL,
-                           approach="bk", p.threshold=0.05,
+                           approach=c("bk", "zlc"), p.threshold=0.05,
                            effect.size=c("RIT","RID")){
   # for testing
   #indep="math"; med="read"; dep="science";

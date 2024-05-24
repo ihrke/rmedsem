@@ -29,7 +29,7 @@
 #' print(out)
 #'
 rmedsem.blavaan <- function(mod, indep, med, dep,
-                            approach="bk", p.threshold=0.05,
+                            approach=c("bk", "zlc"), p.threshold=0.05,
                             effect.size=c("RIT","RID")){
   ## convergence check
   if(max(blavInspect(mod, "rhat"))>1.05)
