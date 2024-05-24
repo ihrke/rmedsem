@@ -78,7 +78,7 @@
 </h1>
 </div>
 <!-- badges: start -->
-<!-- badges: end -->
+<!-- badges: end   -->
 <p>The goal of rmedsem is to conduct a mediation analysis based on a structural equation model (SEM), including observed and/or latent variables as well as combination of observed and latent variables. The package supports:</p>
 <ul>
 <li>covariance-based SEM estimated with the <a href="https://lavaan.ugent.be/" class="external-link">lavaan</a> package</li>
@@ -101,8 +101,10 @@
 <h2 id="getting-started">Getting started<a class="anchor" aria-label="anchor" href="#getting-started"></a>
 </h2>
 <p>We start with a simple example using the <code>hsbdemo</code> dataset included in <code>rmedsem</code>. In this model, we include only observed variables and have a simple case in which mathematical skills <code>math</code> directly affect performance in science-related areas <code>science</code> and where part of this association is mediated thrugh their abiliy to <code>read</code>.</p>
-<p><img src="reference/figures/README-unnamed-chunk-2-1.png" width="100%"></p>
-<p>We can express this model in <code>lavaan</code> syntax as follows:</p>
+<div id="htmlwidget-5e8516ebd26e90d30cb2" class="grViz html-widget html-fill-item" style="width:100%;height:480px;">
+
+</div>
+<script type="application/json" data-for="htmlwidget-5e8516ebd26e90d30cb2">{"x":{"diagram":"\ndigraph {\n  rankdir=LR;\n    math -> read;\n    read -> science;\n    math -> science;\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script><p>We can express this model in <code>lavaan</code> syntax as follows:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mod.txt</span> <span class="op">&lt;-</span> <span class="st">"</span></span>
 <span><span class="st">  read ~ math</span></span>
@@ -122,18 +124,18 @@
 <span><span class="co">#&gt; Mediation effect: 'math' -&gt; 'read' -&gt; 'science'</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;                          Sobel          Delta    Monte-Carlo</span></span>
-<span><span class="co">#&gt; Indirect effect         0.2649         0.2649          0.265</span></span>
-<span><span class="co">#&gt; Std. Err.               0.0522         0.0523          0.050</span></span>
-<span><span class="co">#&gt; z-value                 5.0732         5.0597          5.334</span></span>
-<span><span class="co">#&gt; p-value               3.91e-07        4.2e-07       9.61e-08</span></span>
-<span><span class="co">#&gt; CI              [0.163, 0.367] [0.162, 0.367] [0.177, 0.369]</span></span>
+<span><span class="co">#&gt; Indirect effect         0.2649         0.2649         0.2649</span></span>
+<span><span class="co">#&gt; Std. Err.               0.0522         0.0523         0.0519</span></span>
+<span><span class="co">#&gt; z-value                 5.0732         5.0597         5.0608</span></span>
+<span><span class="co">#&gt; p-value               3.91e-07        4.2e-07       4.17e-07</span></span>
+<span><span class="co">#&gt; CI              [0.163, 0.367] [0.162, 0.367] [0.164, 0.374]</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Baron and Kenny approach to testing mediation</span></span>
 <span><span class="co">#&gt;    STEP 1 - 'math:read' (X -&gt; M) with B=0.725 and p=0.000</span></span>
 <span><span class="co">#&gt;    STEP 2 - 'read:science' (M -&gt; Y) with B=0.365 and p=0.000</span></span>
 <span><span class="co">#&gt;    STEP 3 - 'math:science' (X -&gt; Y) with B=0.402 and p=0.000</span></span>
-<span><span class="co">#&gt;             As STEP 1, STEP 2 and STEP 3 as well as the Sobel's test above</span></span>
-<span><span class="co">#&gt;             are significant the mediation is partial.</span></span>
+<span><span class="co">#&gt;             As STEP 1, STEP 2 and the Sobel's test above are significant</span></span>
+<span><span class="co">#&gt;             and STEP 3 is not significant the mediation is complete.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Effect sizes</span></span>
 <span><span class="co">#&gt;    RIT = (Indirect effect / Total effect)</span></span>
@@ -155,10 +157,10 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;                         Sobel         Delta    Monte-Carlo</span></span>
 <span><span class="co">#&gt; Indirect effect        0.2506        0.2506         0.2506</span></span>
-<span><span class="co">#&gt; Std. Err.              0.0456        0.0456         0.0461</span></span>
-<span><span class="co">#&gt; z-value                5.5006        5.4935         5.3949</span></span>
-<span><span class="co">#&gt; p-value              3.79e-08      3.94e-08       6.86e-08</span></span>
-<span><span class="co">#&gt; CI              [0.161, 0.34] [0.161, 0.34] [0.171, 0.351]</span></span>
+<span><span class="co">#&gt; Std. Err.              0.0456        0.0456         0.0464</span></span>
+<span><span class="co">#&gt; z-value                5.5006        5.4935         5.4706</span></span>
+<span><span class="co">#&gt; p-value              3.79e-08      3.94e-08       4.48e-08</span></span>
+<span><span class="co">#&gt; CI              [0.161, 0.34] [0.161, 0.34] [0.164, 0.358]</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Zhao, Lynch &amp; Chen's approach to testing mediation</span></span>
 <span><span class="co">#&gt; Based on p-value estimated using Monte-Carlo</span></span>
@@ -199,12 +201,17 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;                            Sobel            Delta     Monte-Carlo</span></span>
 <span><span class="co">#&gt; Indirect effect           0.1196           0.1196          0.1196</span></span>
-<span><span class="co">#&gt; Std. Err.                 0.0589           0.0601          0.0528</span></span>
-<span><span class="co">#&gt; z-value                   2.0305           1.9909          2.2569</span></span>
-<span><span class="co">#&gt; p-value                   0.0423           0.0465           0.024</span></span>
-<span><span class="co">#&gt; CI              [0.00416, 0.235] [0.00186, 0.237] [0.0287, 0.223]</span></span>
+<span><span class="co">#&gt; Std. Err.                 0.0589           0.0601          0.0544</span></span>
+<span><span class="co">#&gt; z-value                   2.0305           1.9909          2.0717</span></span>
+<span><span class="co">#&gt; p-value                   0.0423           0.0465          0.0383</span></span>
+<span><span class="co">#&gt; CI              [0.00416, 0.235] [0.00186, 0.237] [0.0259, 0.219]</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Baron and Kenny approach to testing mediation</span></span>
+<span><span class="co">#&gt;    STEP 1 - 'Attractive:Appearance' (X -&gt; M) with B=0.287 and p=0.022</span></span>
+<span><span class="co">#&gt;    STEP 2 - 'Appearance:Muscle' (M -&gt; Y) with B=0.417 and p=0.000</span></span>
+<span><span class="co">#&gt;    STEP 3 - 'Attractive:Muscle' (X -&gt; Y) with B=-0.025 and p=0.850</span></span>
+<span><span class="co">#&gt;             As STEP 1, STEP 2 and the Sobel's test above are significant</span></span>
+<span><span class="co">#&gt;             and STEP 3 is not significant the mediation is complete.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Zhao, Lynch &amp; Chen's approach to testing mediation</span></span>
 <span><span class="co">#&gt; Based on p-value estimated using Monte-Carlo</span></span>
@@ -214,9 +221,7 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Effect sizes</span></span>
 <span><span class="co">#&gt;    RIT = (Indirect effect / Total effect)</span></span>
-<span><span class="co">#&gt;          (0.120/0.094) = 1.269</span></span>
-<span><span class="co">#&gt;          Meaning that about 127% of the effect of 'Attractive'</span></span>
-<span><span class="co">#&gt;          on 'Muscle' is mediated by 'Appearance'</span></span>
+<span><span class="co">#&gt;          Total effect 0.094 is too small to calculate RIT</span></span>
 <span><span class="co">#&gt;    RID = (Indirect effect / Direct effect)</span></span>
 <span><span class="co">#&gt;          (0.120/0.025) = 4.714</span></span>
 <span><span class="co">#&gt;          That is, the mediated effect is about 4.7 times as</span></span>
@@ -231,10 +236,10 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;                           Sobel           Delta     Monte-Carlo</span></span>
 <span><span class="co">#&gt; Indirect effect           0.224           0.224           0.224</span></span>
-<span><span class="co">#&gt; Std. Err.                 0.103           0.104           0.104</span></span>
-<span><span class="co">#&gt; z-value                   2.177           2.158           2.110</span></span>
-<span><span class="co">#&gt; p-value                  0.0295          0.0309          0.0349</span></span>
-<span><span class="co">#&gt; CI              [0.0223, 0.425] [0.0205, 0.427] [0.0344, 0.438]</span></span>
+<span><span class="co">#&gt; Std. Err.                 0.103           0.104           0.102</span></span>
+<span><span class="co">#&gt; z-value                   2.177           2.158           2.188</span></span>
+<span><span class="co">#&gt; p-value                  0.0295          0.0309          0.0287</span></span>
+<span><span class="co">#&gt; CI              [0.0223, 0.425] [0.0205, 0.427] [0.0615, 0.442]</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Zhao, Lynch &amp; Chen's approach to testing mediation</span></span>
 <span><span class="co">#&gt; Based on p-value estimated using Monte-Carlo</span></span>
@@ -244,9 +249,7 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Effect sizes</span></span>
 <span><span class="co">#&gt;    RIT = (Indirect effect / Total effect)</span></span>
-<span><span class="co">#&gt;          (0.224/0.062) = 3.628</span></span>
-<span><span class="co">#&gt;          Meaning that about 363% of the effect of 'Attractive'</span></span>
-<span><span class="co">#&gt;          on 'Weight' is mediated by 'Appearance'</span></span>
+<span><span class="co">#&gt;          Total effect 0.062 is too small to calculate RIT</span></span>
 <span><span class="co">#&gt;    RID = (Indirect effect / Direct effect)</span></span>
 <span><span class="co">#&gt;          (0.224/0.285) = 0.784</span></span>
 <span><span class="co">#&gt;          That is, the mediated effect is about 0.8 times as</span></span>
