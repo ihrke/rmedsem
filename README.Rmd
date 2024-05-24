@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 # rmedsem <a href="https://ihrke.github.io/rmedsem/"><img src="man/figures/logo.png" align="right" height="139" /></a>
 
 <!-- badges: start -->
-<!-- badges: end -->
+<!-- badges: end   -->
 
 
 The goal of rmedsem is to conduct a mediation analysis based on a structural equation model (SEM), including observed and/or latent variables as well as combination of observed and latent variables. The package supports: 
