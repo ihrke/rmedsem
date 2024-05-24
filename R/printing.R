@@ -181,10 +181,15 @@ print.rmedsem.lavaan.csem <- function(res, digits=3, indent=3){
   indesstr = strrep(" ", indent+6)
   if("RIT" %in% names(es)){
     cat(sprintf("%sRIT = (Indirect effect / Total effect)\n", indstr))
-
-    with(es$RIT, cat(sprintf("%s(%5.3f/%5.3f) = %5.3f\n", indesstr, ind_eff, tot_eff, es)))
-    with(es$RIT, cat(sprintf("%sMeaning that about %3.0f%% of the effect of '%s'\n", indesstr, es*100, res$vars$indep)))
-    with(es$RIT, cat(sprintf("%son '%s' is mediated by '%s'\n", indesstr, res$vars$dep, res$vars$med)))
+    if(abs(es$RIT$tot_eff)<0.2){
+      ## According to https://davidakenny.net/cm/mediate.htm, we should only
+      ## calculate RIT if the total effect is > +-.2
+      with(es$RIT, cat(sprintf("%sTotal effect %5.3f is too small to calculate RIT\n", indesstr, tot_eff)))
+    } else {
+      with(es$RIT, cat(sprintf("%s(%5.3f/%5.3f) = %5.3f\n", indesstr, ind_eff, tot_eff, es)))
+      with(es$RIT, cat(sprintf("%sMeaning that about %3.0f%% of the effect of '%s'\n", indesstr, es*100, res$vars$indep)))
+      with(es$RIT, cat(sprintf("%son '%s' is mediated by '%s'\n", indesstr, res$vars$dep, res$vars$med)))
+    }
   }
   if("RID" %in% names(es)){
     cat(sprintf("%sRID = (Indirect effect / Direct effect)\n", indstr))

@@ -45,7 +45,7 @@ model03 <- "
    Muscle ~ Appearance + Attractive + age
    Weight ~ Appearance + Attractive + age
 "
-mod <- sem(model03, data=workout)
+mod <- sem(model03, data=rmedsem::workout)
 out1 <- rmedsem(mod, indep="Attractive", med="Appearance", dep="Muscle",
                standardized=T, mcreps=5000,
                approach = c("bk","zlc"))

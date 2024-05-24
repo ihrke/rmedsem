@@ -6,3 +6,6 @@
 - include more sophisticated effect-sizes?
 
 - compare to: http://afhayes.com/introduction-to-mediation-moderation-and-conditional-process-analysis.html
+
+- Bayesian estimation is missing effect-sizes
+- 
