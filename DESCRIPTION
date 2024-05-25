@@ -17,7 +17,9 @@ Imports:
     cSEM,
     lavaan,
     mvtnorm,
-    HDInterval
+    HDInterval,
+    ggplot2,
+    dplyr
 URL: https://github.com/ihrke/rmedsem, https://ihrke.github.io/rmedsem/
 BugReports: https://github.com/ihrke/rmedsem/issues
 Depends: 

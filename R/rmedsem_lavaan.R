@@ -43,7 +43,10 @@ rmedsem.lavaan <- function(mod, indep, med, dep, standardized=FALSE, mcreps=NULL
   V <- lavaan::vcov(mod)
   moi <- sprintf("%s~%s", med, indep)
   dom <- sprintf("%s~%s", dep, med)
+  doi <- sprintf("%s~%s", dep, indep)
   corrmoidom = abs(V[moi,dom])
+  corrmoidoi = abs(V[moi,doi])
+  corrdomdoi = abs(V[dom,doi])
 
   if(standardized){
     coefs <- lavaan::standardizedsolution(mod)
@@ -69,6 +72,8 @@ rmedsem.lavaan <- function(mod, indep, med, dep, standardized=FALSE, mcreps=NULL
   se_doi   <- with(coefs, se[lhs==dep & rhs==indep])
   var_doi  <- se_doi^2
   pval_doi <- with(coefs, pvalue[lhs==dep & rhs==indep])
+  lci_doi <- coef_doi - 1.959964*se_doi
+  uci_doi <- coef_doi + 1.959964*se_doi
 
   prodterm <- coef_moi * coef_dom
 
@@ -99,6 +104,23 @@ rmedsem.lavaan <- function(mod, indep, med, dep, standardized=FALSE, mcreps=NULL
   montc_qs <- stats::quantile(prod_coef, c(0.025, 0.975))
   montc_lci <- montc_qs[1]
   montc_uci <- montc_qs[2]
+  names(montc_lci) <- NULL
+  names(montc_uci) <- NULL
+
+  # TE = IND + DE
+  coef_tot <- coef_doi + prodterm
+  sigma <- matrix(c(se_moi, corrmoidom, corrmoidoi,
+                    corrmoidom, se_dom, corrdomdoi,
+                    corrmoidoi, corrdomdoi, se_doi), nrow=3, ncol=3, byrow = F)
+  coefx <- mvtnorm::rmvnorm(n=mcreps, mean=c(coef_moi, coef_dom, coef_doi), sigma = sigma**2)
+  tot_eff_samp <- (coefx[,1]*coefx[,2])+coefx[,3]
+  coef_tot <- mean(tot_eff_samp)
+  se_tot <- stats::sd(tot_eff_samp)
+  tot_qs <- stats::quantile(tot_eff_samp, c(0.025, 0.975))
+  lci_tot <- tot_qs[1]
+  uci_tot <- tot_qs[2]
+  names(lci_tot) <- NULL
+  names(uci_tot) <- NULL
 
   #
   es <- list()
@@ -115,6 +137,9 @@ rmedsem.lavaan <- function(mod, indep, med, dep, standardized=FALSE, mcreps=NULL
 
   res <- list(package="lavaan", standardized=standardized,
               vars =list(med=med, indep=indep, dep=dep),
+              est.methods = c("sobel","delta", "montc"),
+              direct.effect = c(coef=coef_doi, se=se_doi, pval=pval_doi, lower=lci_doi, upper=uci_doi),
+              total.effect = c(coef=coef_tot, se=se_tot, lower=lci_tot, upper=uci_tot),
               sobel=c(coef=prodterm, se=sobel_se, zval=sobel_z, pval=sobel_pv, lower=sobel_lci, upper=sobel_uci),
               delta=c(coef=prodterm, se=delta_se, zval=delta_z, pval=delta_pv, lower=delta_lci, upper=delta_uci),
               montc=c(coef=prodterm, se=montc_se, zval=montc_z, pval=montc_pv, lower=montc_lci, upper=montc_uci),

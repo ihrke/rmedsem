@@ -46,6 +46,8 @@ rmedsem.blavaan <- function(mod, indep, med, dep,
   bayes_qs <- stats::quantile(ptsamp, c(0.025, 0.975))
   bayes_lci <- bayes_qs[1]
   bayes_uci <- bayes_qs[2]
+  names(bayes_lci) <- NULL
+  names(bayes_uci) <- NULL
   bayes_se <- stats::sd(ptsamp)
   bayes_z <- bayes_coef/bayes_se
 
@@ -54,6 +56,25 @@ rmedsem.blavaan <- function(mod, indep, med, dep,
   RITsamp <- ptsamp/(ptsamp+desamp)
   RIT <- median(RITsamp)
   RID <- bayes_coef/mean(desamp)
+
+  # direct effect estimates
+  coef_doi <- mean(desamp)
+  se_doi <- stats::sd(desamp)
+  qs_doi <- stats::quantile(desamp, c(0.025, 0.975))
+  lci_doi <- qs_doi[1]
+  uci_doi <- qs_doi[2]
+  names(lci_doi) <- NULL
+  names(uci_doi) <- NULL
+
+  # total effect
+  totsamp <- ptsamp+desamp
+  coef_tot <- mean(totsamp)
+  se_tot <- stats::sd(totsamp)
+  qs_tot <- stats::quantile(totsamp, c(0.025, 0.975))
+  lci_tot <- qs_tot[1]
+  uci_tot <- qs_tot[2]
+  names(lci_tot) <- NULL
+  names(uci_tot) <- NULL
 
   # Bayesian p-values and evidence ratios
   bayes_proppos <- sum(ptsamp>0)/nsamp
@@ -78,7 +99,11 @@ rmedsem.blavaan <- function(mod, indep, med, dep,
 
   res <- list(package="blavaan", standardized=T,
               vars =list(med=med, indep=indep, dep=dep),
+              direct.effect = c(coef=coef_doi, se=se_doi, pval=pval_doi, lower=lci_doi, upper=uci_doi),
+              total.effect =  c(coef=coef_tot, se=se_tot, lower=lci_tot, upper=uci_tot),
+              est.methods=c("bayes"),
               bayes=c(coef=bayes_coef, se=bayes_se, zval=bayes_z,
+                      pval=min(bayes_proppos, bayes_propneg),
                       pvpos=bayes_proppos, pvneg=bayes_propneg,
                       ERpos=ERpos, ERneg=ERneg,
                       lower=bayes_lci, upper=bayes_uci),

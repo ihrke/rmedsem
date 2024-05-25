@@ -47,6 +47,15 @@ rmedsem.cSEMResults <- function(mod, indep, med, dep,
   se_doi   <- with(coefs, Std_err[Name==doi])
   var_doi  <- se_doi^2
   pval_doi <- with(coefs, p_value[Name==doi])
+  lci_doi <- coef_doi - 1.959964*se_doi
+  uci_doi <- coef_doi + 1.959964*se_doi
+
+  # Total effect
+  totix <- which(smod$Estimates$Effect_estimates$Total_effect$Name==doi)
+  coef_tot <- smod$Estimates$Effect_estimates$Total_effect$Estimate[totix]
+  se_tot <- smod$Estimates$Effect_estimates$Total_effect$Std_err[totix]
+  lci_tot <- smod$Estimates$Effect_estimates$Total_effect$`CI_percentile.95%L`[totix]
+  uci_tot <- smod$Estimates$Effect_estimates$Total_effect$`CI_percentile.95%U`[totix]
 
   prodterm <- coef_moi * coef_dom
 
@@ -83,6 +92,9 @@ rmedsem.cSEMResults <- function(mod, indep, med, dep,
 
   res <- list(package="cSEM", standardized=TRUE,
               vars =list(med=med, indep=indep, dep=dep),
+              est.methods=c("sobel","delta","boot"),
+              direct.effect = c(coef=coef_doi, se=se_doi, pval=pval_doi, lower=lci_doi, upper=uci_doi),
+              total.effect =  c(coef=coef_tot, se=se_tot, lower=lci_tot, upper=uci_tot),
               sobel=c(coef=prodterm, se=sobel_se, zval=sobel_z, pval=sobel_pv, lower=sobel_lci, upper=sobel_uci),
               delta=c(coef=prodterm, se=delta_se, zval=delta_z, pval=delta_pv, lower=delta_lci, upper=delta_uci),
               boot=c(coef=prodterm, se=boot_se, zval=boot_z, pval=boot_pv, lower=boot_lci, upper=boot_uci),
