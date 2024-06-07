@@ -37,6 +37,12 @@
     <loc>https://ihrke.github.io/rmedsem/reference/index.html</loc>
   </url>
   <url>
+    <loc>https://ihrke.github.io/rmedsem/reference/plot_coef.html</loc>
+  </url>
+  <url>
+    <loc>https://ihrke.github.io/rmedsem/reference/plot_effect.html</loc>
+  </url>
+  <url>
     <loc>https://ihrke.github.io/rmedsem/reference/pre_indent_merge.html</loc>
   </url>
   <url>
@@ -47,6 +53,9 @@
   </url>
   <url>
     <loc>https://ihrke.github.io/rmedsem/reference/print.rmedsem.lavaan.csem.html</loc>
+  </url>
+  <url>
+    <loc>https://ihrke.github.io/rmedsem/reference/print_effectsize.html</loc>
   </url>
   <url>
     <loc>https://ihrke.github.io/rmedsem/reference/rmedsem.blavaan.html</loc>
