@@ -25,7 +25,7 @@ rmedsem.cSEMResults <- function(mod, indep, med, dep,
   dom <- sprintf("%s ~ %s", dep, med)
   doi <- sprintf("%s ~ %s", dep, indep)
 
-  mod <- resamplecSEMResults(mod)
+  mod <- cSEM::resamplecSEMResults(mod)
   #imod <- cSEM::infer(mod)
   smod <- cSEM::summarize(mod)
   coefs <- smod$Estimates$Path_estimates

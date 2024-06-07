@@ -53,7 +53,8 @@ print.rmedsem.blavaan <- function(res, digits=3, indent=3){
 #' @param digits an integer, number of digits to print in table
 #' @return `rmedsem` obect `res`
 #'
-print_effectsize <- function(es, digits=3, indent=3){
+print_effectsize <- function(res, digits=3, indent=3){
+  es=res$effect.size
   # indentation
   indstr <- strrep(" ", indent)
   indent.conclusion <- indent + 9
@@ -217,8 +218,7 @@ print.rmedsem.lavaan.csem <- function(res, digits=3, indent=3){
     cat("\n")
   }
 
-  es=res$effect.size
-  print_effectsize(es, indent, digits)
+  print_effectsize(res, indent, digits)
 }
 
 

@@ -32,9 +32,9 @@ rmedsem.blavaan <- function(mod, indep, med, dep,
                             approach=c("bk", "zlc"), p.threshold=0.05,
                             effect.size=c("RIT","RID")){
   ## convergence check
-  if(max(blavInspect(mod, "rhat"))>1.05)
+  if(max(blavaan::blavInspect(mod, "rhat"))>1.05)
     warning("Some Rhat>1.05, check convergence!")
-  draws <- standardizedposterior(mod)
+  draws <- blavaan::standardizedposterior(mod)
   moi <- sprintf("%s~%s", med, indep)
   dom <- sprintf("%s~%s", dep, med)
   doi <- sprintf("%s~%s", dep, indep)
@@ -60,6 +60,7 @@ rmedsem.blavaan <- function(mod, indep, med, dep,
   # direct effect estimates
   coef_doi <- mean(desamp)
   se_doi <- stats::sd(desamp)
+  pval_doi <- 1-mean(desamp>0)
   qs_doi <- stats::quantile(desamp, c(0.025, 0.975))
   lci_doi <- qs_doi[1]
   uci_doi <- qs_doi[2]
@@ -82,7 +83,7 @@ rmedsem.blavaan <- function(mod, indep, med, dep,
   ERpos <- bayes_proppos/(1-bayes_proppos)
   ERneg <- bayes_propneg/(1-bayes_propneg)
 
-  prior_beta <- blavInspect(mod, "dp")["beta"]
+  prior_beta <- blavaan::blavInspect(mod, "dp")["beta"]
 
   #
   es <- list()

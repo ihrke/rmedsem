@@ -11,7 +11,7 @@
   dep,
   standardized = FALSE,
   mcreps = NULL,
-  approach = "bk",
+  approach = c("bk", "zlc"),
   p.threshold = 0.05,
   effect.size = c("RIT", "RID")
 )

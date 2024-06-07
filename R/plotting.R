@@ -1,9 +1,10 @@
-#' Function for plotting `rmedsem` objects.
+#' Function for plotting the effect size for fitted `rmedsem` objects.
 #'
 #' @param res the `rmedsem` object to print
-#' @return
+#' @return `ggplot` object of the plot
+#' @export
 #'
-plot.rmedsem <- function(res, description=TRUE){
+plot_effect <- function(res, description=TRUE){
   es <- res$effect.size
   effs <- data.frame(
     eff=c("indirect", "direct"), #"total"),
@@ -36,6 +37,12 @@ plot.rmedsem <- function(res, description=TRUE){
     ggplot2::theme(plot.caption = ggplot2::element_text(hjust = 0))
 }
 
+#' Function for plotting the coefficients for fitted `rmedsem` objects.
+#'
+#' @param res the `rmedsem` object to print
+#' @return `ggplot` object of the plot
+#' @export
+#'
 plot_coef <- function(res){
   purrr::map_dfr(res$est.methods, \(method){
     data.frame(method=method, effect="indirect", res[[method]][c("coef","lower","upper")] |> t())
