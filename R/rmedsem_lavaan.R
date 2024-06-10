@@ -28,7 +28,7 @@
 #'                approach = c("bk","zlc"))
 #' print(out)
 #'
-rmedsem.lavaan <- function(mod, indep, med, dep, standardized=FALSE, mcreps=NULL,
+rmedsem.lavaan <- function(mod, indep, med, dep, standardized=TRUE, mcreps=NULL,
                            approach=c("bk", "zlc"), p.threshold=0.05,
                            effect.size=c("RIT","RID")){
   # for testing
