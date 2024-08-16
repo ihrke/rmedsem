@@ -9,7 +9,7 @@
   indep,
   med,
   dep,
-  standardized = FALSE,
+  standardized = TRUE,
   mcreps = NULL,
   approach = c("bk", "zlc"),
   p.threshold = 0.05,

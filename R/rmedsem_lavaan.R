@@ -88,7 +88,9 @@ rmedsem.lavaan <- function(mod, indep, med, dep, standardized=TRUE, mcreps=NULL,
   # in the DELTA METHOD below, it seems like normaly theory limits
   # are used there as well, that is 1.959964 is used
 
-  delta_se <- sqrt( (coef_dom^2)*var_moi + (coef_moi^2)*var_dom + (var_moi*var_dom) )
+  #delta_se <- sqrt( (coef_dom^2)*var_moi + (coef_moi^2)*var_dom + (var_moi*var_dom) )
+  delta_se <- sqrt( (coef_dom^2)*var_moi + (coef_moi^2)*var_dom + 2*coef_dom*coef_moi*corrmoidom )
+
   delta_z  <- prodterm/delta_se
   delta_pv  <- 2*(1-stats::pnorm(abs(delta_z)))
   delta_lci <- prodterm - 1.959964*delta_se

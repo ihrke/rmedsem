@@ -18,8 +18,8 @@ plot_effect <- function(res, description=TRUE){
   descr.label <- ""
   if(description){
     descr.label <- sprintf("Total effect=%.3f\nThat means %.1f%% of the total effect of '%s' on '%s' is mediated by '%s'.",
-                           es$RIT$tot_eff, 100*es$RIT$ind_eff/es$RIT$tot_eff, res$vars$indep,
-                           res$vars$dep, res$vars$med)
+                           es$RIT$tot_eff, 100*es$RIT$ind_eff/es$RIT$tot_eff,
+                           res$vars$indep, res$vars$dep, res$vars$med)
   }
 
   ggplot2::ggplot(effs, ggplot2::aes(x="", y=value, fill=eff)) +

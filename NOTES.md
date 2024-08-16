@@ -1,5 +1,13 @@
 # Notes
 
+MATTHIAS:
+
+- add a warning to the output under "Effect sizes" in case that the indirect effect is larger than the total effect
+- that care should be taken in interpreting the effect size estimates
+- add such a warning to the plot_effect() function as well
+
+- fix website
+
 ## Improvements
 
 - catch misspecifications by the user, for example:
@@ -30,6 +38,14 @@ med_results <- rmedsem(est.full.lpa.mod4, indep="Attractive",
                        approach = c("bk", "zlc"))
 print(med_results)
 ```
+
+## Bootstrap vs. Monte-Carlo
+
+- implement bootstrap also for CB-SEM
+- implement monte carlo also for cSEM
+- allow options for both methods in the same function
+- also add bias-corrected bootstrap and accelerated bias-corrected bootstrap (see Preacher & Selig, 2012)
+
 
 ## Standard errors
 
