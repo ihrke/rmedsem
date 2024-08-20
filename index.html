@@ -99,7 +99,6 @@
 <p>Once specified, we can use <code>lavaan</code> to fit the model using CB-SEM:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://lavaan.ugent.be" class="external-link">lavaan</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: package 'lavaan' was built under R version 4.3.3</span></span>
 <span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu">lavaan</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">sem</a></span><span class="op">(</span><span class="va">mod.txt</span>, data<span class="op">=</span><span class="fu">rmedsem</span><span class="fu">::</span><span class="va"><a href="reference/hsbdemo.html">hsbdemo</a></span><span class="op">)</span></span></code></pre></div>
 <p>We can inspect the estimated coefficients using <code>lavaan</code>s methods (<code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> etc). To run the mediation analysis, we use <code><a href="reference/rmedsem.html">rmedsem()</a></code> and specify the independent variable (<code>indep="math"</code>), the mediator (<code>med="red"</code>) and the dependent variable (<code>dep="science"</code>). The output is captured in an output object <code>out</code> which implements a printing function (<code><a href="reference/print.rmedsem.html">print.rmedsem()</a></code>) to show a summary of the results:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
@@ -110,12 +109,12 @@
 <span><span class="co">#&gt; Model estimated with package 'lavaan'</span></span>
 <span><span class="co">#&gt; Mediation effect: 'math' -&gt; 'read' -&gt; 'science'</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;                         Sobel         Delta    Monte-Carlo</span></span>
-<span><span class="co">#&gt; Indirect effect        0.2506        0.2506         0.2506</span></span>
-<span><span class="co">#&gt; Std. Err.              0.0456        0.0456         0.0489</span></span>
-<span><span class="co">#&gt; z-value                5.5006        5.5006         5.1390</span></span>
-<span><span class="co">#&gt; p-value              3.79e-08      3.79e-08       2.76e-07</span></span>
-<span><span class="co">#&gt; CI              [0.161, 0.34] [0.161, 0.34] [0.162, 0.346]</span></span>
+<span><span class="co">#&gt;                         Sobel         Delta   Monte-Carlo</span></span>
+<span><span class="co">#&gt; Indirect effect        0.2506        0.2506        0.2506</span></span>
+<span><span class="co">#&gt; Std. Err.              0.0456        0.0456        0.0451</span></span>
+<span><span class="co">#&gt; z-value                5.5006        5.5006        5.5009</span></span>
+<span><span class="co">#&gt; p-value              3.79e-08      3.79e-08      3.78e-08</span></span>
+<span><span class="co">#&gt; CI              [0.161, 0.34] [0.161, 0.34] [0.17, 0.352]</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Baron and Kenny approach to testing mediation</span></span>
 <span><span class="co">#&gt;    STEP 1 - 'math:read' (X -&gt; M) with B=0.662 and p=0.000</span></span>
@@ -151,10 +150,10 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;                         Sobel         Delta    Monte-Carlo</span></span>
 <span><span class="co">#&gt; Indirect effect        0.2506        0.2506         0.2506</span></span>
-<span><span class="co">#&gt; Std. Err.              0.0456        0.0456         0.0449</span></span>
-<span><span class="co">#&gt; z-value                5.5006        5.5006         5.6198</span></span>
-<span><span class="co">#&gt; p-value              3.79e-08      3.79e-08       1.91e-08</span></span>
-<span><span class="co">#&gt; CI              [0.161, 0.34] [0.161, 0.34] [0.172, 0.336]</span></span>
+<span><span class="co">#&gt; Std. Err.              0.0456        0.0456         0.0418</span></span>
+<span><span class="co">#&gt; z-value                5.5006        5.5006         6.0087</span></span>
+<span><span class="co">#&gt; p-value              3.79e-08      3.79e-08       1.87e-09</span></span>
+<span><span class="co">#&gt; CI              [0.161, 0.34] [0.161, 0.34] [0.163, 0.328]</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Zhao, Lynch &amp; Chen's approach to testing mediation</span></span>
 <span><span class="co">#&gt; Based on p-value estimated using Monte-Carlo</span></span>
@@ -184,25 +183,21 @@
 <span><span class="st">   Weight ~ Appearance + Attractive + age</span></span>
 <span><span class="st">"</span></span>
 <span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">sem</a></span><span class="op">(</span><span class="va">model03</span>, data<span class="op">=</span><span class="fu">rmedsem</span><span class="fu">::</span><span class="va"><a href="reference/workout.html">workout</a></span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb7"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="co">#&gt; Warning in check_dep_version(): ABI version mismatch: </span></span>
-<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="co">#&gt; lme4 was built with Matrix ABI version 1</span></span>
-<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="co">#&gt; Current Matrix ABI version is 0</span></span>
-<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a><span class="co">#&gt; Please re-install lme4 from source or restore original 'Matrix' package</span></span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-9-1.png" width="100%"> Here, we have latent variables <code>Appearance</code>, <code>Attractiveness</code>, <code>Muscle</code> and <code>Weight</code> that measure the motivation of people going to a gym to workout.</p>
 <p>This model features several complex mediation pathways. We can use <code><a href="reference/rmedsem.html">rmedsem()</a></code> to investigate those one by one. We start by considering the pathway <code>Attractive</code> -&gt; <code>Appearance</code> -&gt; <code>Muscle</code> (the more attractive the person perceives her/himself, the more this will indirectly influence her/him to want to work out more to build up muscles):</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/rmedsem.html">rmedsem</a></span><span class="op">(</span><span class="va">mod</span>, indep<span class="op">=</span><span class="st">"Attractive"</span>, med<span class="op">=</span><span class="st">"Appearance"</span>, dep<span class="op">=</span><span class="st">"Muscle"</span>,</span>
 <span>        approach <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"bk"</span>,<span class="st">"zlc"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Significance testing of indirect effect (standardized)</span></span>
 <span><span class="co">#&gt; Model estimated with package 'lavaan'</span></span>
 <span><span class="co">#&gt; Mediation effect: 'Attractive' -&gt; 'Appearance' -&gt; 'Muscle'</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;                            Sobel              Delta      Monte-Carlo</span></span>
-<span><span class="co">#&gt; Indirect effect           0.0654             0.0654           0.0654</span></span>
-<span><span class="co">#&gt; Std. Err.                 0.0331             0.0338           0.0324</span></span>
-<span><span class="co">#&gt; z-value                   1.9748             1.9359           2.1201</span></span>
-<span><span class="co">#&gt; p-value                   0.0483             0.0529            0.034</span></span>
-<span><span class="co">#&gt; CI              [0.000491, 0.13] [-0.000814, 0.132] [0.00698, 0.132]</span></span>
+<span><span class="co">#&gt;                            Sobel              Delta     Monte-Carlo</span></span>
+<span><span class="co">#&gt; Indirect effect           0.0654             0.0654          0.0654</span></span>
+<span><span class="co">#&gt; Std. Err.                 0.0331             0.0338          0.0353</span></span>
+<span><span class="co">#&gt; z-value                   1.9748             1.9359          1.8912</span></span>
+<span><span class="co">#&gt; p-value                   0.0483             0.0529          0.0586</span></span>
+<span><span class="co">#&gt; CI              [0.000491, 0.13] [-0.000814, 0.132] [0.00578, 0.14]</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Baron and Kenny approach to testing mediation</span></span>
 <span><span class="co">#&gt;    STEP 1 - 'Attractive:Appearance' (X -&gt; M) with B=0.158 and p=0.033</span></span>
@@ -214,8 +209,8 @@
 <span><span class="co">#&gt; Zhao, Lynch &amp; Chen's approach to testing mediation</span></span>
 <span><span class="co">#&gt; Based on p-value estimated using Monte-Carlo</span></span>
 <span><span class="co">#&gt;   STEP 1 - 'Attractive:Muscle' (X -&gt; Y) with B=-0.014 and p=0.850</span></span>
-<span><span class="co">#&gt;             As the Monte-Carlo test above is significant and STEP 1 is not</span></span>
-<span><span class="co">#&gt;             significant there indirect-only mediation (full mediation).</span></span>
+<span><span class="co">#&gt;             As the Monte-Carlo test above is not significant and STEP 1 is</span></span>
+<span><span class="co">#&gt;             not significant there is no effect nonmediation (no mediation).</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Effect sizes</span></span>
 <span><span class="co">#&gt;    WARNING: Total effect is smaller than indirect effect!</span></span>
@@ -227,25 +222,25 @@
 <span><span class="co">#&gt;          That is, the mediated effect is about 4.7 times as</span></span>
 <span><span class="co">#&gt;          large as the direct effect of 'Attractive' on 'Muscle'</span></span></code></pre></div>
 <p>Similarly, we could investigate the pathway <code>Attractive</code> -&gt; <code>Appearance</code> -&gt; <code>Weight</code> (the more attractive the person perceives her/himself, the more this will indirectly influence her/him to want to work out more to lose weight):</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/rmedsem.html">rmedsem</a></span><span class="op">(</span><span class="va">mod</span>, indep<span class="op">=</span><span class="st">"Attractive"</span>, med<span class="op">=</span><span class="st">"Appearance"</span>, dep<span class="op">=</span><span class="st">"Weight"</span>,</span>
 <span>        approach <span class="op">=</span> <span class="st">"zlc"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Significance testing of indirect effect (standardized)</span></span>
 <span><span class="co">#&gt; Model estimated with package 'lavaan'</span></span>
 <span><span class="co">#&gt; Mediation effect: 'Attractive' -&gt; 'Appearance' -&gt; 'Weight'</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;                           Sobel            Delta     Monte-Carlo</span></span>
-<span><span class="co">#&gt; Indirect effect          0.0979           0.0979          0.0979</span></span>
-<span><span class="co">#&gt; Std. Err.                0.0470           0.0484          0.0466</span></span>
-<span><span class="co">#&gt; z-value                  2.0810           2.0228          2.2464</span></span>
-<span><span class="co">#&gt; p-value                  0.0374           0.0431          0.0247</span></span>
-<span><span class="co">#&gt; CI              [0.00569, 0.19] [0.00304, 0.193] [0.0149, 0.189]</span></span>
+<span><span class="co">#&gt;                           Sobel            Delta       Monte-Carlo</span></span>
+<span><span class="co">#&gt; Indirect effect          0.0979           0.0979            0.0979</span></span>
+<span><span class="co">#&gt; Std. Err.                0.0470           0.0484            0.0534</span></span>
+<span><span class="co">#&gt; z-value                  2.0810           2.0228            1.8183</span></span>
+<span><span class="co">#&gt; p-value                  0.0374           0.0431             0.069</span></span>
+<span><span class="co">#&gt; CI              [0.00569, 0.19] [0.00304, 0.193] [-0.00438, 0.199]</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Zhao, Lynch &amp; Chen's approach to testing mediation</span></span>
 <span><span class="co">#&gt; Based on p-value estimated using Monte-Carlo</span></span>
 <span><span class="co">#&gt;   STEP 1 - 'Attractive:Weight' (X -&gt; Y) with B=-0.125 and p=0.073</span></span>
-<span><span class="co">#&gt;             As the Monte-Carlo test above is significant and STEP 1 is not</span></span>
-<span><span class="co">#&gt;             significant there indirect-only mediation (full mediation).</span></span>
+<span><span class="co">#&gt;             As the Monte-Carlo test above is not significant and STEP 1 is</span></span>
+<span><span class="co">#&gt;             not significant there is no effect nonmediation (no mediation).</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Effect sizes</span></span>
 <span><span class="co">#&gt;    WARNING: Total effect is smaller than indirect effect!</span></span>
