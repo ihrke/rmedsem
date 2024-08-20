@@ -2,10 +2,6 @@
 
 MATTHIAS:
 
-- add a warning to the output under "Effect sizes" in case that the indirect effect is larger than the total effect
-- that care should be taken in interpreting the effect size estimates
-- add such a warning to the plot_effect() function as well
-
 - fix website
 
 ## Improvements

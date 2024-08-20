@@ -4,7 +4,7 @@
 \alias{as.data.frame.rmedsem}
 \title{Convert \code{rmedsem} object to data-frame.}
 \usage{
-\method{as.data.frame}{rmedsem}(res)
+\method{as.data.frame}{rmedsem}(res, ...)
 }
 \arguments{
 \item{res}{the \code{rmedsem} object}

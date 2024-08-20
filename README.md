@@ -1,5 +1,6 @@
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
+<!-- README.md is generated from README.Rmd. Please edit that file 
+use devtools::build_readme() to update README.md-->
 
 # rmedsem <a href="https://ihrke.github.io/rmedsem/"><img src="man/figures/logo.png" align="right" height="139" /></a>
 
@@ -44,8 +45,7 @@ simple case in which mathematical skills `math` directly affect
 performance in science-related areas `science` and where part of this
 association is mediated thrugh their abiliy to `read`.
 
-<div class="grViz html-widget html-fill-item" id="htmlwidget-5e8516ebd26e90d30cb2" style="width:100%;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-5e8516ebd26e90d30cb2">{"x":{"diagram":"\ndigraph {\n  rankdir=LR;\n    math -> read;\n    read -> science;\n    math -> science;\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
 
 We can express this model in `lavaan` syntax as follows:
 
@@ -60,6 +60,7 @@ Once specified, we can use `lavaan` to fit the model using CB-SEM:
 
 ``` r
 library(lavaan)
+#> Warning: package 'lavaan' was built under R version 4.3.3
 mod <- lavaan::sem(mod.txt, data=rmedsem::hsbdemo)
 ```
 
@@ -74,31 +75,38 @@ function (`print.rmedsem()`) to show a summary of the results:
 library(rmedsem)
 out <- rmedsem(mod, indep="math", med="read", dep="science")
 print(out)
-#> Significance testing of indirect effect (unstandardized)
+#> Significance testing of indirect effect (standardized)
 #> Model estimated with package 'lavaan'
 #> Mediation effect: 'math' -> 'read' -> 'science'
 #> 
-#>                          Sobel          Delta    Monte-Carlo
-#> Indirect effect         0.2649         0.2649         0.2649
-#> Std. Err.               0.0522         0.0523         0.0519
-#> z-value                 5.0732         5.0597         5.0608
-#> p-value               3.91e-07        4.2e-07       4.17e-07
-#> CI              [0.163, 0.367] [0.162, 0.367] [0.164, 0.374]
+#>                         Sobel         Delta    Monte-Carlo
+#> Indirect effect        0.2506        0.2506         0.2506
+#> Std. Err.              0.0456        0.0456         0.0489
+#> z-value                5.5006        5.5006         5.1390
+#> p-value              3.79e-08      3.79e-08       2.76e-07
+#> CI              [0.161, 0.34] [0.161, 0.34] [0.162, 0.346]
 #> 
 #> Baron and Kenny approach to testing mediation
-#>    STEP 1 - 'math:read' (X -> M) with B=0.725 and p=0.000
-#>    STEP 2 - 'read:science' (M -> Y) with B=0.365 and p=0.000
-#>    STEP 3 - 'math:science' (X -> Y) with B=0.402 and p=0.000
+#>    STEP 1 - 'math:read' (X -> M) with B=0.662 and p=0.000
+#>    STEP 2 - 'read:science' (M -> Y) with B=0.378 and p=0.000
+#>    STEP 3 - 'math:science' (X -> Y) with B=0.380 and p=0.000
 #>             As STEP 1, STEP 2 and the Sobel's test above are significant
 #>             and STEP 3 is not significant the mediation is complete.
 #> 
+#> Zhao, Lynch & Chen's approach to testing mediation
+#> Based on p-value estimated using Monte-Carlo
+#>   STEP 1 - 'math:science' (X -> Y) with B=0.380 and p=0.000
+#>             As the Monte-Carlo test above is significant, STEP 1 is
+#>             significant and their coefficients point in same direction,
+#>             there is complementary mediation (partial mediation).
+#> 
 #> Effect sizes
 #>    RIT = (Indirect effect / Total effect)
-#>          (0.265/0.667) = 0.397
+#>          (0.251/0.631) = 0.397
 #>          Meaning that about  40% of the effect of 'math'
 #>          on 'science' is mediated by 'read'
 #>    RID = (Indirect effect / Direct effect)
-#>          (0.265/0.402) = 0.659
+#>          (0.251/0.380) = 0.659
 #>          That is, the mediated effect is about 0.7 times as
 #>          large as the direct effect of 'math' on 'science'
 ```
@@ -121,10 +129,10 @@ rmedsem(mod, indep="math", med="read", dep="science",
 #> 
 #>                         Sobel         Delta    Monte-Carlo
 #> Indirect effect        0.2506        0.2506         0.2506
-#> Std. Err.              0.0456        0.0456         0.0464
-#> z-value                5.5006        5.4935         5.4706
-#> p-value              3.79e-08      3.94e-08       4.48e-08
-#> CI              [0.161, 0.34] [0.161, 0.34] [0.164, 0.358]
+#> Std. Err.              0.0456        0.0456         0.0449
+#> z-value                5.5006        5.5006         5.6198
+#> p-value              3.79e-08      3.79e-08       1.91e-08
+#> CI              [0.161, 0.34] [0.161, 0.34] [0.172, 0.336]
 #> 
 #> Zhao, Lynch & Chen's approach to testing mediation
 #> Based on p-value estimated using Monte-Carlo
@@ -160,7 +168,12 @@ model03 <- "
 mod <- sem(model03, data=rmedsem::workout)
 ```
 
-<img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" />
+    #> Warning in check_dep_version(): ABI version mismatch: 
+    #> lme4 was built with Matrix ABI version 1
+    #> Current Matrix ABI version is 0
+    #> Please re-install lme4 from source or restore original 'Matrix' package
+
+<img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />
 Here, we have latent variables `Appearance`, `Attractiveness`, `Muscle`
 and `Weight` that measure the motivation of people going to a gym to
 workout.
@@ -174,35 +187,37 @@ influence her/him to want to work out more to build up muscles):
 ``` r
 rmedsem(mod, indep="Attractive", med="Appearance", dep="Muscle",
         approach = c("bk","zlc"))
-#> Significance testing of indirect effect (unstandardized)
+#> Significance testing of indirect effect (standardized)
 #> Model estimated with package 'lavaan'
 #> Mediation effect: 'Attractive' -> 'Appearance' -> 'Muscle'
 #> 
-#>                            Sobel            Delta     Monte-Carlo
-#> Indirect effect           0.1196           0.1196          0.1196
-#> Std. Err.                 0.0589           0.0601          0.0544
-#> z-value                   2.0305           1.9909          2.0717
-#> p-value                   0.0423           0.0465          0.0383
-#> CI              [0.00416, 0.235] [0.00186, 0.237] [0.0259, 0.219]
+#>                            Sobel              Delta      Monte-Carlo
+#> Indirect effect           0.0654             0.0654           0.0654
+#> Std. Err.                 0.0331             0.0338           0.0324
+#> z-value                   1.9748             1.9359           2.1201
+#> p-value                   0.0483             0.0529            0.034
+#> CI              [0.000491, 0.13] [-0.000814, 0.132] [0.00698, 0.132]
 #> 
 #> Baron and Kenny approach to testing mediation
-#>    STEP 1 - 'Attractive:Appearance' (X -> M) with B=0.287 and p=0.022
-#>    STEP 2 - 'Appearance:Muscle' (M -> Y) with B=0.417 and p=0.000
-#>    STEP 3 - 'Attractive:Muscle' (X -> Y) with B=-0.025 and p=0.850
+#>    STEP 1 - 'Attractive:Appearance' (X -> M) with B=0.158 and p=0.033
+#>    STEP 2 - 'Appearance:Muscle' (M -> Y) with B=0.414 and p=0.000
+#>    STEP 3 - 'Attractive:Muscle' (X -> Y) with B=-0.014 and p=0.850
 #>             As STEP 1, STEP 2 and the Sobel's test above are significant
 #>             and STEP 3 is not significant the mediation is complete.
 #> 
 #> Zhao, Lynch & Chen's approach to testing mediation
 #> Based on p-value estimated using Monte-Carlo
-#>   STEP 1 - 'Attractive:Muscle' (X -> Y) with B=-0.025 and p=0.850
+#>   STEP 1 - 'Attractive:Muscle' (X -> Y) with B=-0.014 and p=0.850
 #>             As the Monte-Carlo test above is significant and STEP 1 is not
 #>             significant there indirect-only mediation (full mediation).
 #> 
 #> Effect sizes
+#>    WARNING: Total effect is smaller than indirect effect!
+#>             Effect sizes should not be interpreted.
 #>    RIT = (Indirect effect / Total effect)
-#>          Total effect 0.094 is too small to calculate RIT
+#>          Total effect 0.052 is too small to calculate RIT
 #>    RID = (Indirect effect / Direct effect)
-#>          (0.120/0.025) = 4.714
+#>          (0.065/0.014) = 4.714
 #>          That is, the mediated effect is about 4.7 times as
 #>          large as the direct effect of 'Attractive' on 'Muscle'
 ```
@@ -215,28 +230,30 @@ work out more to lose weight):
 ``` r
 rmedsem(mod, indep="Attractive", med="Appearance", dep="Weight",
         approach = "zlc")
-#> Significance testing of indirect effect (unstandardized)
+#> Significance testing of indirect effect (standardized)
 #> Model estimated with package 'lavaan'
 #> Mediation effect: 'Attractive' -> 'Appearance' -> 'Weight'
 #> 
-#>                           Sobel           Delta     Monte-Carlo
-#> Indirect effect           0.224           0.224           0.224
-#> Std. Err.                 0.103           0.104           0.102
-#> z-value                   2.177           2.158           2.188
-#> p-value                  0.0295          0.0309          0.0287
-#> CI              [0.0223, 0.425] [0.0205, 0.427] [0.0615, 0.442]
+#>                           Sobel            Delta     Monte-Carlo
+#> Indirect effect          0.0979           0.0979          0.0979
+#> Std. Err.                0.0470           0.0484          0.0466
+#> z-value                  2.0810           2.0228          2.2464
+#> p-value                  0.0374           0.0431          0.0247
+#> CI              [0.00569, 0.19] [0.00304, 0.193] [0.0149, 0.189]
 #> 
 #> Zhao, Lynch & Chen's approach to testing mediation
 #> Based on p-value estimated using Monte-Carlo
-#>   STEP 1 - 'Attractive:Weight' (X -> Y) with B=-0.285 and p=0.057
+#>   STEP 1 - 'Attractive:Weight' (X -> Y) with B=-0.125 and p=0.073
 #>             As the Monte-Carlo test above is significant and STEP 1 is not
 #>             significant there indirect-only mediation (full mediation).
 #> 
 #> Effect sizes
+#>    WARNING: Total effect is smaller than indirect effect!
+#>             Effect sizes should not be interpreted.
 #>    RIT = (Indirect effect / Total effect)
-#>          Total effect 0.062 is too small to calculate RIT
+#>          Total effect 0.027 is too small to calculate RIT
 #>    RID = (Indirect effect / Direct effect)
-#>          (0.224/0.285) = 0.784
+#>          (0.098/0.125) = 0.784
 #>          That is, the mediated effect is about 0.8 times as
 #>          large as the direct effect of 'Attractive' on 'Weight'
 ```

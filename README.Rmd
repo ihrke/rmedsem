@@ -3,7 +3,8 @@ output: github_document
 always_allow_html: true
 ---
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
+<!-- README.md is generated from README.Rmd. Please edit that file 
+use devtools::build_readme() to update README.md-->
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
@@ -53,7 +54,7 @@ In this model, we include only observed variables and have a simple case in whic
 mathematical skills `math` directly affect performance in science-related areas `science`
 and where part of this association is mediated thrugh their abiliy to `read`.
 
-```{r, echo=F}
+```{r, echo=F, warning=F, message=FALSE}
 library(DiagrammeR)
 grViz("
 digraph {
@@ -64,6 +65,16 @@ digraph {
 }")
 ```
 
+```{r, eval=F,echo=F, warning=F, message=FALSE}
+mod.txt <- "
+  read ~ math
+  science ~ read + math
+"
+library(lavaan)
+mod <- lavaan::sem(mod.txt, data=rmedsem::hsbdemo)
+semPlot::semPaths(mod)
+```
+
 We can express this model in `lavaan` syntax as follows:
 
 ```{r}
@@ -71,6 +82,7 @@ mod.txt <- "
   read ~ math
   science ~ read + math
 "
+
 ```
 
 Once specified, we can use `lavaan` to fit the model using CB-SEM:
