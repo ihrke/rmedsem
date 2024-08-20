@@ -43,9 +43,10 @@ model02 <- "
     dem60 ~ ind60
     dem65 ~ ind60 + dem60
 "
-mod <- blavaan::bsem(model02, data=lavaan::PoliticalDemocracy, std.lv=T,
-            meanstructure=T, n.chains=3,
-            save.lvs=T, burnin=1000, sample=1000, bcontrol = list(cores = 3))
+library(blavaan)
+mod <- bsem(model02, data=lavaan::PoliticalDemocracy, std.lv=TRUE,
+            meanstructure=TRUE, n.chains=1,
+            save.lvs=TRUE, burnin=500, sample=500)
 out <- rmedsem(mod,  indep="ind60", med="dem60", dep="dem65")
 print(out)
 

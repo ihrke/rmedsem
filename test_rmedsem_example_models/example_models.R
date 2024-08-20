@@ -45,7 +45,20 @@ model03 <- "
    Muscle ~ Appearance + Attractive + age
    Weight ~ Appearance + Attractive + age
 "
+model03.csem <- "
+   Attractive =~ face + sexy
+   Appearance =~ body + appear + attract
+   Muscle =~ muscle + strength + endur
+   Weight =~ lweight + calories + cweight
+   Age =~ age
+   Appearance ~ Attractive + Age
+   Muscle ~ Appearance + Attractive + Age
+   Weight ~ Appearance + Attractive + Age
+"
+
 mod <- sem(model03, data=rmedsem::workout)
+mod2 <- cSEM::csem(model03.csem, .data=na.omit(rmedsem::workout), .disattenuate = T)
+
 out1 <- rmedsem(mod, indep="Attractive", med="Appearance", dep="Muscle",
                standardized=T, mcreps=5000,
                approach = c("bk","zlc"))
@@ -93,3 +106,27 @@ res.lav <- rmedsem(mod.lav, indep="Attractive", med="Appearance", dep="Muscle")
 res.csem <- rmedsem(mod.csem, indep="Attractive", med="Appearance", dep="Muscle")
 res.blav <- rmedsem(mod.blav, indep="Attractive", med="Appearance", dep="Muscle")
 res
+
+
+
+model <- "
+EXPE ~ IMAG
+QUAL ~ EXPE
+VAL ~ EXPE + QUAL
+SAT ~ IMAG + EXPE + QUAL + VAL
+LOY ~ IMAG + SAT
+
+IMAG <~ imag1 + imag2 + imag3
+EXPE <~ expe1 + expe2 + expe3
+QUAL <~ qual1 + qual2 + qual3 + qual4 + qual5
+VAL <~ val1 + val2 + val3
+
+SAT =~ sat1 + sat2 + sat3 + sat4
+LOY =~ loy1 + loy2 + loy3 + loy4
+"
+
+res <- csem(.data = satisfaction, .model = model,.resample_method = 'bootstrap')
+cov(res$Estimates$Estimates_resample$Estimates1$Path_estimates$Resampled)
+
+
+

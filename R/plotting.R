@@ -12,7 +12,7 @@ plot_effect <- function(res, description=TRUE){
   )
 
   effs |>
-    dplyr::arrange(desc(eff)) |>
+    dplyr::arrange(dplyr::desc(eff)) |>
     dplyr::mutate(ypos = cumsum(value) - 0.5*value ) -> effs
 
   descr.label <- ""

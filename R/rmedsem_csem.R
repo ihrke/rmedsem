@@ -65,6 +65,12 @@ rmedsem.cSEMResults <- function(mod, indep, med, dep,
   sobel_lci <- prodterm - 1.959964*sobel_se
   sobel_uci <- prodterm + 1.959964*sobel_se
 
+  # see https://github.com/FloSchuberth/cSEM/issues/542 for how to get the
+  # covariance matrix of the path estimates for PLS-SEM based on
+  # bootstrapping
+  V <- stats::cov(smod$Estimates$Estimates_resample$Estimates1$Path_estimates$Resampled)
+  corrmoidom = abs(V[moi,dom])
+
   #delta_se <- sqrt( (coef_dom^2)*var_moi + (coef_moi^2)*var_dom + (var_moi*var_dom) )
   delta_se <- sqrt( (coef_dom^2)*var_moi + (coef_moi^2)*var_dom + 2*coef_dom*coef_moi*corrmoidom )
   delta_z  <- prodterm/delta_se

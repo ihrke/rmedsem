@@ -22,9 +22,10 @@
 #'     dem60 ~ ind60
 #'     dem65 ~ ind60 + dem60
 #' "
-#' mod <- blavaan::bsem(model02, data=lavaan::PoliticalDemocracy, std.lv=T,
-#'             meanstructure=T, n.chains=3,
-#'             save.lvs=T, burnin=1000, sample=1000, bcontrol = list(cores = 3))
+#' library(blavaan)
+#' mod <- bsem(model02, data=lavaan::PoliticalDemocracy, std.lv=TRUE,
+#'             meanstructure=TRUE, n.chains=1,
+#'             save.lvs=TRUE, burnin=500, sample=500)
 #' out <- rmedsem(mod,  indep="ind60", med="dem60", dep="dem65")
 #' print(out)
 #'
@@ -54,13 +55,13 @@ rmedsem.blavaan <- function(mod, indep, med, dep,
   # direct effect samples
   desamp <- draws[,doi]
   RITsamp <- ptsamp/(ptsamp+desamp)
-  RIT <- median(RITsamp)
-  RID <- bayes_coef/mean(desamp)
+  RIT <- stats::median(RITsamp)
+  RID <- bayes_coef/base::mean(desamp)
 
   # direct effect estimates
-  coef_doi <- mean(desamp)
+  coef_doi <- base::mean(desamp)
   se_doi <- stats::sd(desamp)
-  pval_doi <- 1-mean(desamp>0)
+  pval_doi <- 1-base::mean(desamp>0)
   qs_doi <- stats::quantile(desamp, c(0.025, 0.975))
   lci_doi <- qs_doi[1]
   uci_doi <- qs_doi[2]
