@@ -5,7 +5,6 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="rmedsem">
 <title>Examples using the supported estimation methods • rmedsem</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
@@ -15,59 +14,45 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.11/clipboard.min.js" integrity="sha512-7O5pXpc0oCRrxk8RUfDYFgn0nO1t+jLuIOQdOMRp4APB7uZ4vSjspzp5y6YDtDs4VzUSTbWzBFZ/LKJhnyFOKw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Examples using the supported estimation methods">
-<meta property="og:description" content="rmedsem">
-<meta property="og:image" content="https://ihrke.github.io/rmedsem/logo.png">
-<!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Examples using the supported estimation methods">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
-    
 
-    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light" data-bs-theme="light"><div class="container">
-    
+
+    <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
+
     <a class="navbar-brand me-2" href="../index.html">rmedsem</a>
 
     <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1</small>
 
-    
+
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="nav-item">
-  <a class="nav-link" href="../reference/index.html">Reference</a>
-</li>
+<li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="active nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/estimation_methods.html">Examples using the supported estimation methods</a>
-    <a class="dropdown-item" href="../articles/mediation_technical.html">Technical details of the estimation</a>
-  </div>
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
+<li><a class="dropdown-item" href="../articles/estimation_methods.html">Examples using the supported estimation methods</a></li>
+    <li><a class="dropdown-item" href="../articles/mediation_technical.html">Technical details of the estimation</a></li>
+  </ul>
 </li>
       </ul>
-<form class="form-inline my-2 my-lg-0" role="search">
-        <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
-</form>
-
-      <ul class="navbar-nav">
-<li class="nav-item">
-  <a class="external-link nav-link" href="https://github.com/ihrke/rmedsem/" aria-label="github">
-    <span class="fab fa fab fa-github fa-lg"></span>
-     
-  </a>
-</li>
+<ul class="navbar-nav">
+<li class="nav-item"><form class="form-inline" role="search">
+ <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
+</form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/ihrke/rmedsem/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
-    
+
   </div>
 </nav><div class="container template-article">
 
@@ -79,7 +64,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>Examples using the supported estimation methods</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/ihrke/rmedsem/blob/HEAD/vignettes/articles/estimation_methods.Rmd" class="external-link"><code>vignettes/articles/estimation_methods.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/ihrke/rmedsem/blob/master/vignettes/articles/estimation_methods.Rmd" class="external-link"><code>vignettes/articles/estimation_methods.Rmd</code></a></small>
       <div class="d-none name"><code>estimation_methods.Rmd</code></div>
     </div>
 
@@ -121,8 +106,8 @@
 <span><span class="co">#&gt;                         Sobel         Delta   Monte-Carlo</span></span>
 <span><span class="co">#&gt; Indirect effect        0.2506        0.2506        0.2506</span></span>
 <span><span class="co">#&gt; Std. Err.              0.0456        0.0456        0.0449</span></span>
-<span><span class="co">#&gt; z-value                5.5006        5.4935        5.5701</span></span>
-<span><span class="co">#&gt; p-value              3.79e-08      3.94e-08      2.55e-08</span></span>
+<span><span class="co">#&gt; z-value                5.5006        5.5006        5.5701</span></span>
+<span><span class="co">#&gt; p-value              3.79e-08      3.79e-08      2.55e-08</span></span>
 <span><span class="co">#&gt; CI              [0.161, 0.34] [0.161, 0.34] [0.164, 0.34]</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Baron and Kenny approach to testing mediation</span></span>
@@ -172,11 +157,11 @@
 <span><span class="co">#&gt; Mediation effect: 'ind60' -&gt; 'dem60' -&gt; 'dem65'</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;                          Sobel          Delta  Monte-Carlo</span></span>
-<span><span class="co">#&gt; Indirect effect         0.4091         0.4091       0.4091</span></span>
-<span><span class="co">#&gt; Std. Err.               0.0956         0.0957       0.0959</span></span>
-<span><span class="co">#&gt; z-value                 4.2817         4.2761       4.2465</span></span>
-<span><span class="co">#&gt; p-value               1.85e-05        1.9e-05     2.17e-05</span></span>
-<span><span class="co">#&gt; CI              [0.222, 0.596] [0.222, 0.597] [0.226, 0.6]</span></span>
+<span><span class="co">#&gt; Indirect effect         0.4091          0.409       0.4091</span></span>
+<span><span class="co">#&gt; Std. Err.               0.0956          0.116       0.0959</span></span>
+<span><span class="co">#&gt; z-value                 4.2817          3.524       4.2465</span></span>
+<span><span class="co">#&gt; p-value               1.85e-05       0.000425     2.17e-05</span></span>
+<span><span class="co">#&gt; CI              [0.222, 0.596] [0.182, 0.637] [0.226, 0.6]</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Baron and Kenny approach to testing mediation</span></span>
 <span><span class="co">#&gt;    STEP 1 - 'ind60:dem60' (X -&gt; M) with B=0.448 and p=0.000</span></span>
@@ -217,9 +202,8 @@
 <span><span class="st">"</span></span>
 <span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">sem</a></span><span class="op">(</span><span class="va">model03</span>, data<span class="op">=</span><span class="fu">rmedsem</span><span class="fu">::</span><span class="va"><a href="../reference/workout.html">workout</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning: lavaan-&gt;lav_object_post_check():  </span></span>
-<span><span class="co">#&gt;    some estimated ov variances are negative</span></span></code></pre></div>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/rmedsem.html">rmedsem</a></span><span class="op">(</span><span class="va">mod</span>, indep<span class="op">=</span><span class="st">"Attractive"</span>, med<span class="op">=</span><span class="st">"Appearance"</span>, dep<span class="op">=</span><span class="st">"Muscle"</span>,</span>
+<span><span class="co">#&gt;    some estimated ov variances are negative</span></span>
+<span><span class="fu"><a href="../reference/rmedsem.html">rmedsem</a></span><span class="op">(</span><span class="va">mod</span>, indep<span class="op">=</span><span class="st">"Attractive"</span>, med<span class="op">=</span><span class="st">"Appearance"</span>, dep<span class="op">=</span><span class="st">"Muscle"</span>,</span>
 <span>       standardized<span class="op">=</span><span class="cn">T</span>, mcreps<span class="op">=</span><span class="fl">5000</span>,</span>
 <span>       approach <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"bk"</span>,<span class="st">"zlc"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Significance testing of indirect effect (standardized)</span></span>
@@ -228,10 +212,10 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;                            Sobel              Delta      Monte-Carlo</span></span>
 <span><span class="co">#&gt; Indirect effect           0.0654             0.0654           0.0654</span></span>
-<span><span class="co">#&gt; Std. Err.                 0.0331             0.0336           0.0335</span></span>
-<span><span class="co">#&gt; z-value                   1.9748             1.9448           1.9641</span></span>
-<span><span class="co">#&gt; p-value                   0.0483             0.0518           0.0495</span></span>
-<span><span class="co">#&gt; CI              [0.000491, 0.13] [-0.000511, 0.131] [0.00453, 0.136]</span></span>
+<span><span class="co">#&gt; Std. Err.                 0.0331             0.0338           0.0335</span></span>
+<span><span class="co">#&gt; z-value                   1.9748             1.9359           1.9641</span></span>
+<span><span class="co">#&gt; p-value                   0.0483             0.0529           0.0495</span></span>
+<span><span class="co">#&gt; CI              [0.000491, 0.13] [-0.000814, 0.132] [0.00453, 0.136]</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Baron and Kenny approach to testing mediation</span></span>
 <span><span class="co">#&gt;    STEP 1 - 'Attractive:Appearance' (X -&gt; M) with B=0.158 and p=0.033</span></span>
@@ -253,7 +237,7 @@
 <span><span class="co">#&gt;          (0.065/0.014) = 4.714</span></span>
 <span><span class="co">#&gt;          That is, the mediated effect is about 4.7 times as</span></span>
 <span><span class="co">#&gt;          large as the direct effect of 'Attractive' on 'Muscle'</span></span></code></pre></div>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/rmedsem.html">rmedsem</a></span><span class="op">(</span><span class="va">mod</span>, indep<span class="op">=</span><span class="st">"Attractive"</span>, med<span class="op">=</span><span class="st">"Appearance"</span>, dep<span class="op">=</span><span class="st">"Weight"</span>,</span>
 <span>        standardized<span class="op">=</span><span class="cn">T</span>, mcreps<span class="op">=</span><span class="fl">5000</span>,</span>
 <span>        approach <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"bk"</span>,<span class="st">"zlc"</span><span class="op">)</span><span class="op">)</span></span>
@@ -263,10 +247,10 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;                           Sobel            Delta      Monte-Carlo</span></span>
 <span><span class="co">#&gt; Indirect effect          0.0979           0.0979           0.0979</span></span>
-<span><span class="co">#&gt; Std. Err.                0.0470           0.0473           0.0472</span></span>
-<span><span class="co">#&gt; z-value                  2.0810           2.0705           2.0716</span></span>
-<span><span class="co">#&gt; p-value                  0.0374           0.0384           0.0383</span></span>
-<span><span class="co">#&gt; CI              [0.00569, 0.19] [0.00523, 0.191] [0.00662, 0.192]</span></span>
+<span><span class="co">#&gt; Std. Err.                0.0470           0.0484           0.0472</span></span>
+<span><span class="co">#&gt; z-value                  2.0810           2.0228           2.0716</span></span>
+<span><span class="co">#&gt; p-value                  0.0374           0.0431           0.0383</span></span>
+<span><span class="co">#&gt; CI              [0.00569, 0.19] [0.00304, 0.193] [0.00662, 0.192]</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Baron and Kenny approach to testing mediation</span></span>
 <span><span class="co">#&gt;    STEP 1 - 'Attractive:Appearance' (X -&gt; M) with B=0.158 and p=0.033</span></span>
@@ -288,7 +272,7 @@
 <span><span class="co">#&gt;          (0.098/0.125) = 0.784</span></span>
 <span><span class="co">#&gt;          That is, the mediated effect is about 0.8 times as</span></span>
 <span><span class="co">#&gt;          large as the direct effect of 'Attractive' on 'Weight'</span></span></code></pre></div>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/rmedsem.html">rmedsem</a></span><span class="op">(</span><span class="va">mod</span>, indep<span class="op">=</span><span class="st">"age"</span>, med<span class="op">=</span><span class="st">"Appearance"</span>, dep<span class="op">=</span><span class="st">"Muscle"</span>,</span>
 <span>        standardized<span class="op">=</span><span class="cn">T</span>, mcreps<span class="op">=</span><span class="fl">5000</span>,</span>
 <span>        approach <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"bk"</span>,<span class="st">"zlc"</span><span class="op">)</span><span class="op">)</span></span>
@@ -297,11 +281,11 @@
 <span><span class="co">#&gt; Mediation effect: 'age' -&gt; 'Appearance' -&gt; 'Muscle'</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;                             Sobel             Delta       Monte-Carlo</span></span>
-<span><span class="co">#&gt; Indirect effect           -0.1602             -0.16           -0.1602</span></span>
-<span><span class="co">#&gt; Std. Err.                  0.0397              0.04            0.0395</span></span>
-<span><span class="co">#&gt; z-value                   -4.0391             -4.01           -4.0487</span></span>
-<span><span class="co">#&gt; p-value                  5.37e-05          6.08e-05          5.15e-05</span></span>
-<span><span class="co">#&gt; CI              [-0.238, -0.0825] [-0.239, -0.0819] [-0.243, -0.0886]</span></span>
+<span><span class="co">#&gt; Indirect effect           -0.1602           -0.1602           -0.1602</span></span>
+<span><span class="co">#&gt; Std. Err.                  0.0397            0.0395            0.0395</span></span>
+<span><span class="co">#&gt; z-value                   -4.0391           -4.0579           -4.0487</span></span>
+<span><span class="co">#&gt; p-value                  5.37e-05          4.95e-05          5.15e-05</span></span>
+<span><span class="co">#&gt; CI              [-0.238, -0.0825] [-0.238, -0.0828] [-0.243, -0.0886]</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Baron and Kenny approach to testing mediation</span></span>
 <span><span class="co">#&gt;    STEP 1 - 'age:Appearance' (X -&gt; M) with B=-0.387 and p=0.000</span></span>
@@ -325,7 +309,7 @@
 <span><span class="co">#&gt;          (0.160/0.147) = 1.089</span></span>
 <span><span class="co">#&gt;          That is, the mediated effect is about 1.1 times as</span></span>
 <span><span class="co">#&gt;          large as the direct effect of 'age' on 'Muscle'</span></span></code></pre></div>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/rmedsem.html">rmedsem</a></span><span class="op">(</span><span class="va">mod</span>, indep<span class="op">=</span><span class="st">"age"</span>, med<span class="op">=</span><span class="st">"Appearance"</span>, dep<span class="op">=</span><span class="st">"Weight"</span>,</span>
 <span>        standardized<span class="op">=</span><span class="cn">T</span>, mcreps<span class="op">=</span><span class="fl">5000</span>,</span>
 <span>        approach <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"bk"</span>,<span class="st">"zlc"</span><span class="op">)</span><span class="op">)</span></span>
@@ -333,12 +317,12 @@
 <span><span class="co">#&gt; Model estimated with package 'lavaan'</span></span>
 <span><span class="co">#&gt; Mediation effect: 'age' -&gt; 'Appearance' -&gt; 'Weight'</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;                            Sobel           Delta      Monte-Carlo</span></span>
-<span><span class="co">#&gt; Indirect effect          -0.2397         -0.2397          -0.2397</span></span>
-<span><span class="co">#&gt; Std. Err.                 0.0453          0.0455           0.0452</span></span>
-<span><span class="co">#&gt; z-value                  -5.2867         -5.2670          -5.3107</span></span>
-<span><span class="co">#&gt; p-value                 1.25e-07        1.39e-07         1.09e-07</span></span>
-<span><span class="co">#&gt; CI              [-0.329, -0.151] [-0.329, -0.15] [-0.334, -0.156]</span></span>
+<span><span class="co">#&gt;                            Sobel            Delta      Monte-Carlo</span></span>
+<span><span class="co">#&gt; Indirect effect          -0.2397          -0.2397          -0.2397</span></span>
+<span><span class="co">#&gt; Std. Err.                 0.0453           0.0449           0.0452</span></span>
+<span><span class="co">#&gt; z-value                  -5.2867          -5.3398          -5.3107</span></span>
+<span><span class="co">#&gt; p-value                 1.25e-07         9.31e-08         1.09e-07</span></span>
+<span><span class="co">#&gt; CI              [-0.329, -0.151] [-0.328, -0.152] [-0.334, -0.156]</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Baron and Kenny approach to testing mediation</span></span>
 <span><span class="co">#&gt;    STEP 1 - 'age:Appearance' (X -&gt; M) with B=-0.387 and p=0.000</span></span>
@@ -369,7 +353,7 @@
 <div class="section level3">
 <h3 id="example-1-csem">Example 1 (cSEM)<a class="anchor" aria-label="anchor" href="#example-1-csem"></a>
 </h3>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/M-E-Rademaker/cSEM/" class="external-link">cSEM</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Attaching package: 'cSEM'</span></span>
@@ -378,9 +362,8 @@
 <span><span class="co">#&gt;     predict</span></span>
 <span><span class="co">#&gt; The following object is masked from 'package:stats':</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     predict</span></span></code></pre></div>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ihrke/rmedsem" class="external-link">rmedsem</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt;     predict</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ihrke/rmedsem" class="external-link">rmedsem</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">mod.txt</span> <span class="op">&lt;-</span> <span class="st">"</span></span>
 <span><span class="st"># need to use single-item measurement models for PLS-SEM</span></span>
@@ -402,10 +385,10 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;                          Sobel          Delta      Bootstrap</span></span>
 <span><span class="co">#&gt; Indirect effect         0.2506         0.2506         0.2506</span></span>
-<span><span class="co">#&gt; Std. Err.               0.0543         0.0544         0.0529</span></span>
-<span><span class="co">#&gt; z-value                 4.6153         4.6071         4.7335</span></span>
-<span><span class="co">#&gt; p-value               3.92e-06       4.08e-06       2.21e-06</span></span>
-<span><span class="co">#&gt; CI              [0.144, 0.357] [0.144, 0.357] [0.139, 0.351]</span></span>
+<span><span class="co">#&gt; Std. Err.               0.0494         0.0503         0.0487</span></span>
+<span><span class="co">#&gt; z-value                 5.0750         4.9829         5.1508</span></span>
+<span><span class="co">#&gt; p-value               3.88e-07       6.26e-07       2.59e-07</span></span>
+<span><span class="co">#&gt; CI              [0.154, 0.347] [0.152, 0.349] [0.157, 0.351]</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Baron and Kenny approach to testing mediation</span></span>
 <span><span class="co">#&gt;    STEP 1 - 'Math:Read' (X -&gt; M) with B=0.662 and p=0.000</span></span>
@@ -434,7 +417,7 @@
 <div class="section level3">
 <h3 id="example-2-csem">Example 2 (cSEM)<a class="anchor" aria-label="anchor" href="#example-2-csem"></a>
 </h3>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model02</span> <span class="op">&lt;-</span> <span class="st">"</span></span>
 <span><span class="st">  # measurement model</span></span>
 <span><span class="st">    ind60 =~ x1 + x2 + x3</span></span>
@@ -453,22 +436,22 @@
 <span><span class="co">#&gt; Mediation effect: 'ind60' -&gt; 'dem60' -&gt; 'dem65'</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;                          Sobel          Delta      Bootstrap</span></span>
-<span><span class="co">#&gt; Indirect effect         0.3988         0.3988         0.3988</span></span>
-<span><span class="co">#&gt; Std. Err.               0.0856         0.0857         0.0756</span></span>
-<span><span class="co">#&gt; z-value                 4.6602         4.6544         5.2744</span></span>
-<span><span class="co">#&gt; p-value               3.16e-06       3.25e-06       1.33e-07</span></span>
-<span><span class="co">#&gt; CI              [0.231, 0.566] [0.231, 0.567] [0.271, 0.571]</span></span>
+<span><span class="co">#&gt; Indirect effect         0.3988          0.399         0.3988</span></span>
+<span><span class="co">#&gt; Std. Err.               0.0997          0.106         0.0917</span></span>
+<span><span class="co">#&gt; z-value                 4.0000          3.758         4.3479</span></span>
+<span><span class="co">#&gt; p-value               6.33e-05       0.000171       1.37e-05</span></span>
+<span><span class="co">#&gt; CI              [0.203, 0.594] [0.191, 0.607] [0.238, 0.587]</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Baron and Kenny approach to testing mediation</span></span>
 <span><span class="co">#&gt;    STEP 1 - 'ind60:dem60' (X -&gt; M) with B=0.439 and p=0.000</span></span>
 <span><span class="co">#&gt;    STEP 2 - 'dem60:dem65' (M -&gt; Y) with B=0.909 and p=0.000</span></span>
-<span><span class="co">#&gt;    STEP 3 - 'ind60:dem65' (X -&gt; Y) with B=0.159 and p=0.010</span></span>
+<span><span class="co">#&gt;    STEP 3 - 'ind60:dem65' (X -&gt; Y) with B=0.159 and p=0.013</span></span>
 <span><span class="co">#&gt;             As STEP 1, STEP 2 and the Sobel's test above are significant</span></span>
 <span><span class="co">#&gt;             and STEP 3 is not significant the mediation is complete.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Zhao, Lynch &amp; Chen's approach to testing mediation</span></span>
 <span><span class="co">#&gt; Based on p-value estimated using Bootstrap</span></span>
-<span><span class="co">#&gt;   STEP 1 - 'ind60:dem65' (X -&gt; Y) with B=0.159 and p=0.010</span></span>
+<span><span class="co">#&gt;   STEP 1 - 'ind60:dem65' (X -&gt; Y) with B=0.159 and p=0.013</span></span>
 <span><span class="co">#&gt;             As the Bootstrap test above is significant, STEP 1 is</span></span>
 <span><span class="co">#&gt;             significant and their coefficients point in same direction,</span></span>
 <span><span class="co">#&gt;             there is complementary mediation (partial mediation).</span></span>
@@ -486,7 +469,7 @@
 <div class="section level3">
 <h3 id="example-3-csem">Example 3 (cSEM)<a class="anchor" aria-label="anchor" href="#example-3-csem"></a>
 </h3>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model03</span> <span class="op">&lt;-</span> <span class="st">"</span></span>
 <span><span class="st">   Attractive =~ face + sexy</span></span>
 <span><span class="st">   Appearance =~ body + appear + attract</span></span>
@@ -505,23 +488,23 @@
 <span><span class="co">#&gt; Model estimated with package 'cSEM'</span></span>
 <span><span class="co">#&gt; Mediation effect: 'Attractive' -&gt; 'Appearance' -&gt; 'Muscle'</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;                           Sobel           Delta        Bootstrap</span></span>
-<span><span class="co">#&gt; Indirect effect          0.1124          0.1124           0.1124</span></span>
-<span><span class="co">#&gt; Std. Err.                0.0408          0.0413           0.0425</span></span>
-<span><span class="co">#&gt; z-value                  2.7520          2.7220           2.6435</span></span>
-<span><span class="co">#&gt; p-value                 0.00592         0.00649          0.00821</span></span>
-<span><span class="co">#&gt; CI              [0.0323, 0.192] [0.0315, 0.193] [0.0481, -0.274]</span></span>
+<span><span class="co">#&gt;                          Sobel           Delta       Bootstrap</span></span>
+<span><span class="co">#&gt; Indirect effect          0.112          0.1124           0.112</span></span>
+<span><span class="co">#&gt; Std. Err.                0.041          0.0432           0.041</span></span>
+<span><span class="co">#&gt; z-value                  2.742          2.5981           2.743</span></span>
+<span><span class="co">#&gt; p-value                0.00611         0.00937         0.00609</span></span>
+<span><span class="co">#&gt; CI              [0.032, 0.193] [0.0276, 0.197] [0.0375, -0.28]</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Baron and Kenny approach to testing mediation</span></span>
 <span><span class="co">#&gt;    STEP 1 - 'Attractive:Appearance' (X -&gt; M) with B=0.236 and p=0.002</span></span>
 <span><span class="co">#&gt;    STEP 2 - 'Appearance:Muscle' (M -&gt; Y) with B=0.475 and p=0.000</span></span>
-<span><span class="co">#&gt;    STEP 3 - 'Attractive:Muscle' (X -&gt; Y) with B=-0.010 and p=0.893</span></span>
+<span><span class="co">#&gt;    STEP 3 - 'Attractive:Muscle' (X -&gt; Y) with B=-0.010 and p=0.898</span></span>
 <span><span class="co">#&gt;             As STEP 1, STEP 2 and the Sobel's test above are significant</span></span>
 <span><span class="co">#&gt;             and STEP 3 is not significant the mediation is complete.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Zhao, Lynch &amp; Chen's approach to testing mediation</span></span>
 <span><span class="co">#&gt; Based on p-value estimated using Bootstrap</span></span>
-<span><span class="co">#&gt;   STEP 1 - 'Attractive:Muscle' (X -&gt; Y) with B=-0.010 and p=0.893</span></span>
+<span><span class="co">#&gt;   STEP 1 - 'Attractive:Muscle' (X -&gt; Y) with B=-0.010 and p=0.898</span></span>
 <span><span class="co">#&gt;             As the Bootstrap test above is significant and STEP 1 is not</span></span>
 <span><span class="co">#&gt;             significant there indirect-only mediation (full mediation).</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -540,7 +523,7 @@
 <div class="section level3">
 <h3 id="example-1-blavaan">Example 1 (blavaan)<a class="anchor" aria-label="anchor" href="#example-1-blavaan"></a>
 </h3>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ecmerkle.github.io/blavaan/" class="external-link">blavaan</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ihrke/rmedsem" class="external-link">rmedsem</a></span><span class="op">)</span></span>
 <span></span>
@@ -551,9 +534,8 @@
 <span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="http://ecmerkle.github.io/blavaan/reference/bsem.html" class="external-link">bsem</a></span><span class="op">(</span><span class="va">mod.txt</span>, data<span class="op">=</span><span class="fu">rmedsem</span><span class="fu">::</span><span class="va"><a href="../reference/hsbdemo.html">hsbdemo</a></span>, </span>
 <span>            n.chains<span class="op">=</span><span class="fl">3</span>, burnin<span class="op">=</span><span class="fl">500</span>, sample<span class="op">=</span><span class="fl">500</span>, </span>
 <span>            bcontrol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>cores <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Computing post-estimation metrics (including lvs if requested)...</span></span></code></pre></div>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/rmedsem.html">rmedsem</a></span><span class="op">(</span><span class="va">mod</span>, indep<span class="op">=</span><span class="st">"math"</span>, med<span class="op">=</span><span class="st">"read"</span>, dep<span class="op">=</span><span class="st">"science"</span>, </span>
+<span><span class="co">#&gt; Computing post-estimation metrics (including lvs if requested)...</span></span>
+<span><span class="fu"><a href="../reference/rmedsem.html">rmedsem</a></span><span class="op">(</span><span class="va">mod</span>, indep<span class="op">=</span><span class="st">"math"</span>, med<span class="op">=</span><span class="st">"read"</span>, dep<span class="op">=</span><span class="st">"science"</span>, </span>
 <span>        approach <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"bk"</span>,<span class="st">"zlc"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Significance testing of indirect effect (standardized)</span></span>
 <span><span class="co">#&gt; Model estimated with package 'blavaan'</span></span>
@@ -568,19 +550,18 @@
 <span><span class="co">#&gt; P(z&lt;0)              1.0000</span></span>
 <span><span class="co">#&gt; ER+                      0</span></span>
 <span><span class="co">#&gt; ER-                      ∞</span></span>
-<span><span class="co">#&gt; HDI             [0, 0.163]</span></span></code></pre></div>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">out</span><span class="op">)</span></span>
+<span><span class="co">#&gt; HDI             [0, 0.163]</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">out</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Significance testing of indirect effect (standardized)</span></span>
 <span><span class="co">#&gt; Model estimated with package 'lavaan'</span></span>
 <span><span class="co">#&gt; Mediation effect: 'ind60' -&gt; 'dem60' -&gt; 'dem65'</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;                          Sobel          Delta  Monte-Carlo</span></span>
-<span><span class="co">#&gt; Indirect effect         0.4091         0.4091       0.4091</span></span>
-<span><span class="co">#&gt; Std. Err.               0.0956         0.0957       0.0959</span></span>
-<span><span class="co">#&gt; z-value                 4.2817         4.2761       4.2465</span></span>
-<span><span class="co">#&gt; p-value               1.85e-05        1.9e-05     2.17e-05</span></span>
-<span><span class="co">#&gt; CI              [0.222, 0.596] [0.222, 0.597] [0.226, 0.6]</span></span>
+<span><span class="co">#&gt; Indirect effect         0.4091          0.409       0.4091</span></span>
+<span><span class="co">#&gt; Std. Err.               0.0956          0.116       0.0959</span></span>
+<span><span class="co">#&gt; z-value                 4.2817          3.524       4.2465</span></span>
+<span><span class="co">#&gt; p-value               1.85e-05       0.000425     2.17e-05</span></span>
+<span><span class="co">#&gt; CI              [0.222, 0.596] [0.182, 0.637] [0.226, 0.6]</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Baron and Kenny approach to testing mediation</span></span>
 <span><span class="co">#&gt;    STEP 1 - 'ind60:dem60' (X -&gt; M) with B=0.448 and p=0.000</span></span>
@@ -609,7 +590,7 @@
 <div class="section level3">
 <h3 id="example-2-blavaan">Example 2 (blavaan)<a class="anchor" aria-label="anchor" href="#example-2-blavaan"></a>
 </h3>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model02</span> <span class="op">&lt;-</span> <span class="st">"</span></span>
 <span><span class="st"> # measurement model</span></span>
 <span><span class="st">   ind60 =~ x1 + x2 + x3</span></span>
@@ -622,9 +603,8 @@
 <span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="http://ecmerkle.github.io/blavaan/reference/bsem.html" class="external-link">bsem</a></span><span class="op">(</span><span class="va">model02</span>, data<span class="op">=</span><span class="fu">lavaan</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/lavaan/man/PoliticalDemocracy.html" class="external-link">PoliticalDemocracy</a></span>, std.lv<span class="op">=</span><span class="cn">T</span>,</span>
 <span>           meanstructure<span class="op">=</span><span class="cn">T</span>, n.chains<span class="op">=</span><span class="fl">3</span>,</span>
 <span>           save.lvs<span class="op">=</span><span class="cn">T</span>, burnin<span class="op">=</span><span class="fl">1000</span>, sample<span class="op">=</span><span class="fl">1000</span>, bcontrol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>cores <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Computing post-estimation metrics (including lvs if requested)...</span></span></code></pre></div>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/rmedsem.html">rmedsem</a></span><span class="op">(</span><span class="va">mod</span>,  indep<span class="op">=</span><span class="st">"ind60"</span>, med<span class="op">=</span><span class="st">"dem60"</span>, dep<span class="op">=</span><span class="st">"dem65"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Computing post-estimation metrics (including lvs if requested)...</span></span>
+<span><span class="fu"><a href="../reference/rmedsem.html">rmedsem</a></span><span class="op">(</span><span class="va">mod</span>,  indep<span class="op">=</span><span class="st">"ind60"</span>, med<span class="op">=</span><span class="st">"dem60"</span>, dep<span class="op">=</span><span class="st">"dem65"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Significance testing of indirect effect (standardized)</span></span>
 <span><span class="co">#&gt; Model estimated with package 'blavaan'</span></span>
 <span><span class="co">#&gt; Mediation effect: 'ind60' -&gt; 'dem60' -&gt; 'dem65'</span></span>
@@ -641,7 +621,7 @@
 <span><span class="co">#&gt; HDI             [0.000333, 0.192]</span></span></code></pre></div>
 </div>
 </div>
-  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
 </div>
 
@@ -652,15 +632,15 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
     </footer>
 </div>
 
-  
 
-  
+
+
 
   </body>
 </html>
