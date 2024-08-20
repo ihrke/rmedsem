@@ -6,6 +6,9 @@
 #'
 plot_effect <- function(res, description=TRUE){
   es <- res$effect.size
+  if(es$RIT$tot_eff<es$RIT$ind_eff){
+    warning("Total effect is smaller than indirect effect!\nEffect sizes should not be interpreted.")
+  }
   effs <- data.frame(
     eff=c("indirect", "direct"), #"total"),
     value=c(es$RIT$ind_eff, es$RID$dir_eff) #, es$RIT$tot_eff)

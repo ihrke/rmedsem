@@ -65,6 +65,11 @@ print_effectsize <- function(res, digits=3, indent=3){
     cat("Effect sizes\n")
   }
   indesstr = strrep(" ", indent+6)
+  if(es$RIT$tot_eff<es$RIT$ind_eff){
+    cat(sprintf("%sWARNING: Total effect is smaller than indirect effect!\n", indstr))
+    cat(sprintf("%s         Effect sizes should not be interpreted.\n", indstr))
+  }
+
   if("RIT" %in% names(es)){
     cat(sprintf("%sRIT = (Indirect effect / Total effect)\n", indstr))
     if(abs(es$RIT$tot_eff)<0.2){
