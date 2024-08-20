@@ -60,7 +60,6 @@ Once specified, we can use `lavaan` to fit the model using CB-SEM:
 
 ``` r
 library(lavaan)
-#> Warning: package 'lavaan' was built under R version 4.3.3
 mod <- lavaan::sem(mod.txt, data=rmedsem::hsbdemo)
 ```
 
@@ -79,12 +78,12 @@ print(out)
 #> Model estimated with package 'lavaan'
 #> Mediation effect: 'math' -> 'read' -> 'science'
 #> 
-#>                         Sobel         Delta    Monte-Carlo
-#> Indirect effect        0.2506        0.2506         0.2506
-#> Std. Err.              0.0456        0.0456         0.0489
-#> z-value                5.5006        5.5006         5.1390
-#> p-value              3.79e-08      3.79e-08       2.76e-07
-#> CI              [0.161, 0.34] [0.161, 0.34] [0.162, 0.346]
+#>                         Sobel         Delta   Monte-Carlo
+#> Indirect effect        0.2506        0.2506        0.2506
+#> Std. Err.              0.0456        0.0456        0.0451
+#> z-value                5.5006        5.5006        5.5009
+#> p-value              3.79e-08      3.79e-08      3.78e-08
+#> CI              [0.161, 0.34] [0.161, 0.34] [0.17, 0.352]
 #> 
 #> Baron and Kenny approach to testing mediation
 #>    STEP 1 - 'math:read' (X -> M) with B=0.662 and p=0.000
@@ -129,10 +128,10 @@ rmedsem(mod, indep="math", med="read", dep="science",
 #> 
 #>                         Sobel         Delta    Monte-Carlo
 #> Indirect effect        0.2506        0.2506         0.2506
-#> Std. Err.              0.0456        0.0456         0.0449
-#> z-value                5.5006        5.5006         5.6198
-#> p-value              3.79e-08      3.79e-08       1.91e-08
-#> CI              [0.161, 0.34] [0.161, 0.34] [0.172, 0.336]
+#> Std. Err.              0.0456        0.0456         0.0418
+#> z-value                5.5006        5.5006         6.0087
+#> p-value              3.79e-08      3.79e-08       1.87e-09
+#> CI              [0.161, 0.34] [0.161, 0.34] [0.163, 0.328]
 #> 
 #> Zhao, Lynch & Chen's approach to testing mediation
 #> Based on p-value estimated using Monte-Carlo
@@ -168,11 +167,6 @@ model03 <- "
 mod <- sem(model03, data=rmedsem::workout)
 ```
 
-    #> Warning in check_dep_version(): ABI version mismatch: 
-    #> lme4 was built with Matrix ABI version 1
-    #> Current Matrix ABI version is 0
-    #> Please re-install lme4 from source or restore original 'Matrix' package
-
 <img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />
 Here, we have latent variables `Appearance`, `Attractiveness`, `Muscle`
 and `Weight` that measure the motivation of people going to a gym to
@@ -191,12 +185,12 @@ rmedsem(mod, indep="Attractive", med="Appearance", dep="Muscle",
 #> Model estimated with package 'lavaan'
 #> Mediation effect: 'Attractive' -> 'Appearance' -> 'Muscle'
 #> 
-#>                            Sobel              Delta      Monte-Carlo
-#> Indirect effect           0.0654             0.0654           0.0654
-#> Std. Err.                 0.0331             0.0338           0.0324
-#> z-value                   1.9748             1.9359           2.1201
-#> p-value                   0.0483             0.0529            0.034
-#> CI              [0.000491, 0.13] [-0.000814, 0.132] [0.00698, 0.132]
+#>                            Sobel              Delta     Monte-Carlo
+#> Indirect effect           0.0654             0.0654          0.0654
+#> Std. Err.                 0.0331             0.0338          0.0353
+#> z-value                   1.9748             1.9359          1.8912
+#> p-value                   0.0483             0.0529          0.0586
+#> CI              [0.000491, 0.13] [-0.000814, 0.132] [0.00578, 0.14]
 #> 
 #> Baron and Kenny approach to testing mediation
 #>    STEP 1 - 'Attractive:Appearance' (X -> M) with B=0.158 and p=0.033
@@ -208,8 +202,8 @@ rmedsem(mod, indep="Attractive", med="Appearance", dep="Muscle",
 #> Zhao, Lynch & Chen's approach to testing mediation
 #> Based on p-value estimated using Monte-Carlo
 #>   STEP 1 - 'Attractive:Muscle' (X -> Y) with B=-0.014 and p=0.850
-#>             As the Monte-Carlo test above is significant and STEP 1 is not
-#>             significant there indirect-only mediation (full mediation).
+#>             As the Monte-Carlo test above is not significant and STEP 1 is
+#>             not significant there is no effect nonmediation (no mediation).
 #> 
 #> Effect sizes
 #>    WARNING: Total effect is smaller than indirect effect!
@@ -234,18 +228,18 @@ rmedsem(mod, indep="Attractive", med="Appearance", dep="Weight",
 #> Model estimated with package 'lavaan'
 #> Mediation effect: 'Attractive' -> 'Appearance' -> 'Weight'
 #> 
-#>                           Sobel            Delta     Monte-Carlo
-#> Indirect effect          0.0979           0.0979          0.0979
-#> Std. Err.                0.0470           0.0484          0.0466
-#> z-value                  2.0810           2.0228          2.2464
-#> p-value                  0.0374           0.0431          0.0247
-#> CI              [0.00569, 0.19] [0.00304, 0.193] [0.0149, 0.189]
+#>                           Sobel            Delta       Monte-Carlo
+#> Indirect effect          0.0979           0.0979            0.0979
+#> Std. Err.                0.0470           0.0484            0.0534
+#> z-value                  2.0810           2.0228            1.8183
+#> p-value                  0.0374           0.0431             0.069
+#> CI              [0.00569, 0.19] [0.00304, 0.193] [-0.00438, 0.199]
 #> 
 #> Zhao, Lynch & Chen's approach to testing mediation
 #> Based on p-value estimated using Monte-Carlo
 #>   STEP 1 - 'Attractive:Weight' (X -> Y) with B=-0.125 and p=0.073
-#>             As the Monte-Carlo test above is significant and STEP 1 is not
-#>             significant there indirect-only mediation (full mediation).
+#>             As the Monte-Carlo test above is not significant and STEP 1 is
+#>             not significant there is no effect nonmediation (no mediation).
 #> 
 #> Effect sizes
 #>    WARNING: Total effect is smaller than indirect effect!
