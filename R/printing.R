@@ -42,7 +42,7 @@ print.rmedsem.blavaan <- function(res, digits=3, indent=3){
   cat("\n")
 
   es=res$effect.size
-  print_effectsize(es, indent, digits)
+  print_effectsize(res, indent, digits)
 
 }
 
