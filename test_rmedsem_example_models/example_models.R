@@ -129,4 +129,21 @@ res <- csem(.data = satisfaction, .model = model,.resample_method = 'bootstrap')
 cov(res$Estimates$Estimates_resample$Estimates1$Path_estimates$Resampled)
 
 
+## new model from Mehmet
+med.model <- "
+   Own_Look =~ smv_attr_face + smv_attr_body + smv_sexy
+   Self_Est =~ ses_satis + ses_qualities + ses_able_todo
+   Ment_Well =~ mwb_optimistic + mwb_useful + mwb_energy
+   Self_Est ~ Own_Look
+   Ment_Well ~ Own_Look + Self_Est
+             "
+
+library(cSEM) # PLS-SEM
+mod.csem <- csem(med.model, .data=mchoice)
+cSEM::summarize(mod.csem)
+library(rmedsem)
+rmedsem(mod.csem, indep="Own_Look", med="Self_Est", dep="Ment_Well")
+
+
+
 

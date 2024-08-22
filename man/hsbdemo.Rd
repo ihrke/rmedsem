@@ -9,7 +9,8 @@
 
 A data frame with 20 rows and 13 columns:
 \describe{
-\item{}
+\item{id}{Student ID}
+\item{female}{}
 }
 }
 }
