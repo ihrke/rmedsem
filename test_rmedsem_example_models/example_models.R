@@ -142,7 +142,7 @@ library(cSEM) # PLS-SEM
 mod.csem <- csem(med.model, .data=mchoice)
 cSEM::summarize(mod.csem)
 library(rmedsem)
-rmedsem(mod.csem, indep="Own_Look", med="Self_Est", dep="Ment_Well")
+rmedsem(mod.csem, indep="Own_Look", med="Self_Est", dep="Ment_Well", nbootstrap=1000)
 
 
 

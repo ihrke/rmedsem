@@ -8,6 +8,7 @@
 #' @param approach either 'bk' or 'zlc' or both c("bk", "zlc") (default)
 #' @param p.threshold A double giving the p-value for determining whether a path
 #'  is significant or not
+#' @param nbootstrap number of bootstrap samples, default=500
 #' @param effect.size calculate different effect-sizes; one or more of "RIT", "RID"
 #'
 #' @return A `rmedsem` structure containing the results from the analysis
@@ -15,7 +16,7 @@
 #'
 #'
 #'
-rmedsem.cSEMResults <- function(mod, indep, med, dep,
+rmedsem.cSEMResults <- function(mod, indep, med, dep, nbootstrap=500,
                                 approach=c("bk", "zlc"), p.threshold=0.05,
                                 effect.size=c("RIT","RID")){
   #indep="Math"; med="Read"; dep="Science";
@@ -25,7 +26,7 @@ rmedsem.cSEMResults <- function(mod, indep, med, dep,
   dom <- sprintf("%s ~ %s", dep, med)
   doi <- sprintf("%s ~ %s", dep, indep)
 
-  mod <- cSEM::resamplecSEMResults(mod, .force = T)
+  mod <- cSEM::resamplecSEMResults(mod, .force = T, .R=nbootstrap, .resample_method="bootstrap")
   #imod <- cSEM::infer(mod)
   smod <- cSEM::summarize(mod)
   coefs <- smod$Estimates$Path_estimates

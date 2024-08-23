@@ -9,3 +9,10 @@
 
 - Bayesian estimation is missing effect-sizes
 - 
+
+
+- should we consider, at some point, to support "manual" SEMs? For example, when we
+  extract coefficients and standard errors from a paper? We could still do the
+  Monte-Carlo.
+  - or we could simulate from the manually specified model and do a fully mediation analysis,
+    see `simsem` https://simsem.org/
