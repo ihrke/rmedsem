@@ -75,7 +75,6 @@ rmedsem.modsem <- function(mod, indep, med, dep, standardized=TRUE, mcreps=NULL,
   dep <- get_correct_intterm(dep, coefs)
 
   V <- modsem::vcov_modsem_da(mod)
-  browser()
   moi <- sprintf("%s~%s", med, indep)
   dom <- sprintf("%s~%s", dep, med)
   doi <- sprintf("%s~%s", dep, indep)
