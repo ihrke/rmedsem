@@ -115,12 +115,13 @@ print.rmedsem.lavaan.csem <- function(res, digits=3, indent=3){
                              format(res$delta[4], digit=digits),
                              sprintf("[%s, %s]", format(res$delta[5],digits=digits),
                                      format(res$delta[6],digits=digits))))
-  if(res$package=="lavaan"){
+  if(res$package=="lavaan" || res$package=="modsem"){
     mat <- cbind(mat, `Monte-Carlo`=c( format(res$montc[1:3], digit=digits),
                                        format(res$montc[4], digit=digits),
                                        sprintf("[%s, %s]", format(res$montc[5],digits=digits),
                                                format(res$montc[6],digits=digits))))
-  } else if(res$package=="cSEM"){
+  } 
+  else if(res$package=="cSEM"){
     mat <- cbind(mat, `Bootstrap`=c( format(res$boot[1:3], digit=digits),
                                      format(res$boot[4], digit=digits),
                                      sprintf("[%s, %s]", format(res$boot[5],digits=digits),
@@ -178,7 +179,7 @@ print.rmedsem.lavaan.csem <- function(res, digits=3, indent=3){
 
   if("zlc" %in% res$med.approach){ # ZLC
     cat("Zhao, Lynch & Chen's approach to testing mediation\n")
-    if(res$package=="lavaan"){
+    if(res$package=="lavaan" || res$package == "modsem"){
       cat("Based on p-value estimated using Monte-Carlo\n")
       zlc.pv <- res$montc[4]
       zlc.met <- "Monte-Carlo"
@@ -224,6 +225,7 @@ print.rmedsem.lavaan.csem <- function(res, digits=3, indent=3){
   }
 
   print_effectsize(res, indent, digits)
+  cat("\n")
 }
 
 
