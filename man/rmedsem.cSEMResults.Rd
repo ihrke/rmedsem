@@ -9,6 +9,7 @@
   indep,
   med,
   dep,
+  nbootstrap = 500,
   approach = c("bk", "zlc"),
   p.threshold = 0.05,
   effect.size = c("RIT", "RID")
@@ -22,6 +23,8 @@
 \item{med}{A string indicating the name of the mediator variable in the model.}
 
 \item{dep}{A string indicating the name of the dependent variable in the model.}
+
+\item{nbootstrap}{number of bootstrap samples, default=500}
 
 \item{approach}{either 'bk' or 'zlc' or both c("bk", "zlc") (default)}
 
