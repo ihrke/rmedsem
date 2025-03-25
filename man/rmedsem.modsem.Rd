@@ -13,7 +13,8 @@
   mcreps = NULL,
   approach = c("bk", "zlc"),
   p.threshold = 0.05,
-  effect.size = c("RIT", "RID")
+  effect.size = c("RIT", "RID"),
+  ci.two.tailed = 0.95
 )
 }
 \arguments{
@@ -45,7 +46,7 @@ Calculate a mediation analysis for an SEM based on a modsem model.
 }
 \examples{
 \dontrun{
-library(modsem)
+
 tpb <- "
 # Outer Model (Based on Hagger et al., 2007)
   ATT =~ att1 + att2 + att3 + att4 + att5
@@ -61,10 +62,12 @@ tpb <- "
   # Causal Relationsships
   INT ~ ATT + SN + PBC
   BEH ~ INT + PBC
-  BEH ~ PBC:INT
+  INT ~ PBC:SN
+  BEH ~ PBC:SN
 "
-est <- modsem(tpb, TPB, method = "lms")
-rmedsem(est, indep = "PBC", med = "PBC:INT", dep = "BEH")
+
+est <- modsem(tpb, TPB, method = "qml")
+rmedsem(est, indep = "PBC:SN", med = "INT", dep = "BEH")
 
 }
 

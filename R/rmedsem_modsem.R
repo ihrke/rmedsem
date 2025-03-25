@@ -45,7 +45,9 @@
 #'
 rmedsem.modsem <- function(mod, indep, med, dep, standardized=TRUE, mcreps=NULL,
                            approach=c("bk", "zlc"), p.threshold=0.05,
-                           effect.size=c("RIT","RID")){
+                           effect.size=c("RIT","RID"), ci.two.tailed=0.95){
+  ci.width <- qnorm(1-(1-ci.two.tailed)/2)
+
   # if estimated lavaan, we just extract the lavaan document
   if (inherits(mod, "modsem_pi")) {
     # if int-term has ":" we should remove them
@@ -53,11 +55,11 @@ rmedsem.modsem <- function(mod, indep, med, dep, standardized=TRUE, mcreps=NULL,
     med <- str_remove(med, ":")
     dep <- str_remove(dep, ":")
     return(rmedsem.lavaan(mod=modsem::extract_lavaan(mod), indep=indep,
-                          med=med, standardized=standardized, mcreps=mcreps,
+                          dep=dep, med=med, standardized=standardized, mcreps=mcreps,
                           approach=approach, p.threshold=p.threshold,
                           effect.size=effect.size))
   } 
-  N <- nrow(mod$data)
+  N <- modsem::modsem_nobs(mod)
 
   if(is.null(mcreps) || mcreps < N){
     mcreps=N
@@ -74,7 +76,7 @@ rmedsem.modsem <- function(mod, indep, med, dep, standardized=TRUE, mcreps=NULL,
   med <- get_correct_intterm(med, coefs)
   dep <- get_correct_intterm(dep, coefs)
 
-  V <- modsem::vcov_modsem_da(mod)
+  V <- modsem::modsem_vcov(mod)
   moi <- sprintf("%s~%s", med, indep)
   dom <- sprintf("%s~%s", dep, med)
   doi <- sprintf("%s~%s", dep, indep)
@@ -100,29 +102,29 @@ rmedsem.modsem <- function(mod, indep, med, dep, standardized=TRUE, mcreps=NULL,
   se_doi   <- with(coefs, std.error[lhs==dep & rhs==indep])
   var_doi  <- se_doi^2
   pval_doi <- with(coefs, p.value[lhs==dep & rhs==indep])
-  lci_doi <- coef_doi - 1.959964*se_doi
-  uci_doi <- coef_doi + 1.959964*se_doi
+  lci_doi <- coef_doi - ci.width*se_doi
+  uci_doi <- coef_doi + ci.width*se_doi
 
   prodterm <- coef_moi * coef_dom
 
   sobel_se  <- sqrt((coef_dom^2)*var_moi + (coef_moi^2)*var_dom)
   sobel_z   <- prodterm/sobel_se
   sobel_pv  <- 2*(1-stats::pnorm(abs(sobel_z)))
-  sobel_lci <- prodterm - 1.959964*sobel_se
-  sobel_uci <- prodterm + 1.959964*sobel_se
+  sobel_lci <- prodterm - ci.width*sobel_se
+  sobel_uci <- prodterm + ci.width*sobel_se
 
   # here I use normal theory confidence limits, however according
   # to MacKinnon on page 97, these may not always be precise, however
   # in the DELTA METHOD below, it seems like normaly theory limits
-  # are used there as well, that is 1.959964 is used
+  # are used there as well, that is ci.width is used
 
   #delta_se <- sqrt( (coef_dom^2)*var_moi + (coef_moi^2)*var_dom + (var_moi*var_dom) )
   delta_se <- sqrt( (coef_dom^2)*var_moi + (coef_moi^2)*var_dom + 2*coef_dom*coef_moi*corrmoidom )
 
   delta_z  <- prodterm/delta_se
   delta_pv  <- 2*(1-stats::pnorm(abs(delta_z)))
-  delta_lci <- prodterm - 1.959964*delta_se
-  delta_uci <- prodterm + 1.959964*delta_se
+  delta_lci <- prodterm - ci.width*delta_se
+  delta_uci <- prodterm + ci.width*delta_se
 
   sigma <- matrix(c(se_moi, corrmoidom, corrmoidom, se_dom), nrow=2, ncol=2, byrow = F)
   coefx <- mvtnorm::rmvnorm(n=mcreps, mean=c(coef_moi, coef_dom), sigma = sigma**2)
@@ -152,7 +154,6 @@ rmedsem.modsem <- function(mod, indep, med, dep, standardized=TRUE, mcreps=NULL,
   names(lci_tot) <- NULL
   names(uci_tot) <- NULL
 
-  #
   es <- list()
   ind_eff <- abs(prodterm)
   tot_eff <- abs(prodterm+coef_doi)
@@ -179,6 +180,7 @@ rmedsem.modsem <- function(mod, indep, med, dep, standardized=TRUE, mcreps=NULL,
                             coefs=list(moi=coef_moi, dom=coef_dom, doi=coef_doi),
                             pvals=list(moi=pval_moi, dom=pval_dom, doi=pval_doi))
   )
+
   class(res) <- "rmedsem"
   return(res)
 }
