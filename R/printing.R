@@ -82,6 +82,7 @@ print_effectsize <- function(res, digits=3, indent=3){
       with(es$RIT, cat(sprintf("%son '%s' is mediated by '%s'\n", indesstr, res$vars$dep, res$vars$med)))
     }
   }
+
   if("RID" %in% names(es)){
     cat(sprintf("%sRID = (Indirect effect / Direct effect)\n", indstr))
     with(es$RID, cat(sprintf("%s(%5.3f/%5.3f) = %5.3f\n", indesstr, ind_eff, dir_eff, es)))
@@ -97,7 +98,7 @@ print_effectsize <- function(res, digits=3, indent=3){
 #' @param res the `rmedsem` object to print
 #' @param digits an integer, number of digits to print in table
 #' @return `rmedsem` obect `res`
-print.rmedsem.lavaan.csem <- function(res, digits=3, indent=3){
+print.rmedsem.lavaan.csem.modsem <- function(res, digits=3, indent=3){
   # indentation
   indstr <- strrep(" ", indent)
   indent.conclusion <- indent + 9
@@ -226,6 +227,35 @@ print.rmedsem.lavaan.csem <- function(res, digits=3, indent=3){
 
   print_effectsize(res, indent, digits)
   cat("\n")
+
+  if (res$package == "modsem" && res$moderation$has.moderator) {
+    cat("\nDirect moderation effects\n")
+    moderation <- res$moderation
+    moderator <- moderation$moderator
+
+    pattern <- "   %s -> %s | %s: B = %5.2f, p = %5.3f, ci = [%5.2f,%5.2f]\n"
+    for (coefs in moderation$coefs) {
+      lhs <- coefs$lhs
+      rhs <- coefs$rhs
+
+      if (coefs$coef == 0 && coefs$se == 0) next
+
+      cat(sprintf(pattern, lhs, rhs, moderator, coefs$coef, coefs$pval, 
+                  coefs$lower, coefs$upper))
+    }
+
+    cat("\nIndirect moderation effect\n")
+    indirect <- moderation$indirect.effect
+    cat(sprintf(pattern, indirect$lhs, indirect$rhs, moderator, 
+                indirect$coef, indirect$pval, indirect$lower, indirect$upper))
+
+    cat("\nTotal moderation effect\n")
+    total <- moderation$total.effect
+    cat(sprintf(pattern, indirect$lhs, indirect$rhs, moderator, 
+                total$coef, total$pval, total$lower, total$upper))
+   
+    cat("\n")
+  }
 }
 
 
@@ -247,7 +277,7 @@ print.rmedsem <- function(res, digits=3, indent=3){
   if(res$package=="blavaan"){
     print.rmedsem.blavaan(res,digits=digits, indent=indent)
   } else {
-    print.rmedsem.lavaan.csem(res, digits=digits, indent=indent)
+    print.rmedsem.lavaan.csem.modsem(res, digits=digits, indent=indent)
   }
 }
 
