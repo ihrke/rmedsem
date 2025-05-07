@@ -19,7 +19,8 @@ Imports:
     mvtnorm,
     HDInterval,
     ggplot2,
-    dplyr
+    dplyr,
+    modsem
 URL: https://github.com/ihrke/rmedsem, https://ihrke.github.io/rmedsem/
 BugReports: https://github.com/ihrke/rmedsem/issues
 Depends: 
