@@ -198,6 +198,8 @@ rmedsem.modsem <- function(mod, indep, med, dep, moderator=NULL,
 
     coef_vars <- c(moi_mod, dom_mod, doi_mod, dom, moi)
     sigma <- get_sub_squaremat(M=V, names=coef_vars)
+
+    # CHECK computation of std.errors!
     coefx <- rmvnorm_df(n=mcreps, sigma = sigma^2, 
                         mean=c(coef_moi_mod, coef_dom_mod, coef_doi_mod, coef_dom, coef_moi),
                         names=c("coef_moi_mod", "coef_dom_mod", "coef_doi_mod", 
@@ -208,8 +210,6 @@ rmedsem.modsem <- function(mod, indep, med, dep, moderator=NULL,
 
     ind_eff_samp_mod <- with(coefx, eval(formula_indir))
     tot_eff_samp_mod <- ind_eff_samp_mod + with(coefx, coef_doi_mod)
-
-    warning("Std.errors for indirect and total effect must be checked for correctness!")
 
     # total
     se_tot_mod    <- stats::sd(tot_eff_samp_mod)
