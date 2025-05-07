@@ -14,25 +14,6 @@
 #'   \item{mwb_optimistic}{I have been feeling optimistic about the future, [1] never - [5] always}
 #'   \item{mwb_useful}{I have been feeling useful, [1] never - [5] always}
 #'   \item{mwb_energy}{I have had energy to spare, [1] never - [5] always}
-#' }
-"mchoice"
-
-#' Data from a survey on mate-choice in Trondheim.
-#'
-#' Data from a survey
-#'
-#' @format ## `mchoice2`
-#' A data frame with 1090 rows and 15 columns:
-#' \describe{
-#'   \item{smv_attr_face}{How well does this describe you as a partner?, [1] very bad - [5] very well}
-#'   \item{smv_attr_body}{How well does this describe you as a partner?, [1] very bad - [5] very well}
-#'   \item{smv_sexy}{How well does this describe you as a partner?, [1] very bad - [5] very well}
-#'   \item{ses_satis}{On the whole, I am satisfied with myself, [1] totally disgree - [5] totally agree}
-#'   \item{ses_qualities}{I feel that I have a number of good qualities, [1] totally disgree - [5] totally agree}
-#'   \item{ses_able_todo}{I am able to do things as well as most other people, [1] totally disgree - [5] totally agree}
-#'   \item{mwb_optimistic}{I have been feeling optimistic about the future, [1] never - [5] always}
-#'   \item{mwb_useful}{I have been feeling useful, [1] never - [5] always}
-#'   \item{mwb_energy}{I have had energy to spare, [1] never - [5] always}
 #'   \item{smv_kind}{?, [1] ? - [5] ?}
 #'   \item{smv_caring}{?, [1] ? - [5] ?}
 #'   \item{smv_understanding}{?, [1] ? - [5] ?}
@@ -40,7 +21,9 @@
 #'   \item{smv_funny}{?, [1] ? - [5] ?}
 #'   \item{smv_sociable}{?, [1] ? - [5] ?}
 #' }
-"mchoice2"
+#' }
+"mchoice"
+
 
 #' Data from a survey in a fitness center in Trondheim.
 #'

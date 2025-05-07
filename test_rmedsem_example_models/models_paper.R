@@ -12,7 +12,7 @@ m1 <-  "
   MentWell ~ OwnLook + SelfEst
 "
 
-est1 <- sem(m1, data = mchoice2)
+est1 <- sem(m1, data = mchoice)
 
 rmedsem(indep="OwnLook", dep="MentWell", med="SelfEst", mod=est1)
 
@@ -28,7 +28,7 @@ m <- "
 "
 
 
-est <- modsem(m, data = mchoice2, method="lms")
+est <- modsem(m, data = mchoice, method="lms")
 rmedsem(indep="smv:OwnLook", dep="MentWell", med="SelfEst", mod=est)
 rmedsem(indep="OwnLook", dep="MentWell", med="SelfEst", mod=est,
         moderator="smv")
