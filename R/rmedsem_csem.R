@@ -8,7 +8,7 @@
 #' @param approach either 'bk' or 'zlc' or both c("bk", "zlc") (default)
 #' @param p.threshold A double giving the p-value for determining whether a path
 #'  is significant or not
-#' @param nbootstrap number of bootstrap samples, default=500
+#' @param nbootstrap number of bootstrap samples, default=1000
 #' @param effect.size calculate different effect-sizes; one or more of "RIT", "RID"
 #'
 #' @return A `rmedsem` structure containing the results from the analysis
@@ -16,7 +16,7 @@
 #'
 #'
 #'
-rmedsem.cSEMResults <- function(mod, indep, med, dep, nbootstrap=500,
+rmedsem.cSEMResults <- function(mod, indep, med, dep, nbootstrap=1000,
                                 approach=c("bk", "zlc"), p.threshold=0.05,
                                 effect.size=c("RIT","RID")){
   #indep="Math"; med="Read"; dep="Science";
