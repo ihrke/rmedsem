@@ -42,7 +42,7 @@
 #' }
 #'
 rmedsem.modsem <- function(mod, indep, med, dep, moderator=NULL, 
-                           standardized=TRUE, mcreps=NULL,
+                           standardized=FALSE, mcreps=NULL,
                            approach=c("bk", "zlc"), p.threshold=0.05,
                            effect.size=c("RIT","RID"), ci.two.tailed=0.95){
   ci.width <- qnorm(1-(1-ci.two.tailed)/2)
@@ -55,9 +55,11 @@ rmedsem.modsem <- function(mod, indep, med, dep, moderator=NULL,
   
   if (standardized)
     coefs <- modsem::standardized_estimates(mod)
-  else
+  else {
     coefs <- modsem::parameter_estimates(mod)
-  
+    coefs[["se"]] <- NULL # bug in modsem
+  }
+ 
   lookup <- c(std.error="se", p.value="pvalue", est="est.std") # in case of lavaan
   coefs <- dplyr::rename(coefs, dplyr::any_of(lookup)) # rename columns
 
@@ -201,11 +203,11 @@ rmedsem.modsem <- function(mod, indep, med, dep, moderator=NULL,
     sigma <- get_sub_squaremat(M=V, names=coef_vars)
 
     # CHECK computation of std.errors!
-    coefx <- rmvnorm_df(n=mcreps, sigma = sigma^2, 
+    coefx <- rmvnorm_df(n=mcreps, sigma = sigma, 
                         mean=c(coef_moi_mod, coef_dom_mod, coef_doi_mod, coef_dom, coef_moi),
                         names=c("coef_moi_mod", "coef_dom_mod", "coef_doi_mod", 
                                 "coef_dom", "coef_moi"))
-    
+
     ind_eff_mod <- eval(formula_indir)
     tot_eff_mod   <- ind_eff_mod + coef_doi_mod
 
@@ -343,8 +345,10 @@ get_sub_squaremat <- function(M, names) {
     KM <- matrix(0, nrow=k, ncol=m, dimnames=list(missing_names, colnames(M)))
     MK <- t(KM)
 
-    cbind(rbind(M, KM),
-          rbind(MK, KK))
+    Z <- cbind(rbind(M, KM),
+               rbind(MK, KK))
+
+    Z[names, names] # sort values by names
 }
 
 

@@ -16,7 +16,8 @@ an independent variable on an outcome via a mediator is moderated by a third var
 These types of effects are often referred to as moderated mediation or mediated
 moderation effects (Preacher et al., 2007). 
 
-Currently, `rmedsem` implements moderated mediation and mediated moderation for cases
+Currently, `rmedsem` implements moderated mediation and mediated moderation.
+Mediated moderation is available for cases
 corresponding to "Model 2" from Preacher et al., 2007 shown in the following graph:
 
 
@@ -62,31 +63,67 @@ model <- "
   OwnLook =~ smv_attr_face + smv_attr_body + smv_sexy
   SelfEst =~ ses_satis + ses_qualities + ses_able_todo
   MentWell =~ mwb_optimistic + mwb_useful + mwb_energy
-  smv =~ smv_kind + smv_caring + smv_understanding +
+  OwnPers =~ smv_kind + smv_caring + smv_understanding +
     smv_make_laughh + smv_funny + smv_sociable
-  SelfEst ~ OwnLook + smv + smv:OwnLook
-  MentWell ~ OwnLook + SelfEst + smv + smv:OwnLook
+
+  MentWell ~ OwnLook + SelfEst + OwnPers + OwnPers:OwnLook
+  SelfEst ~ OwnLook + OwnPers + OwnPers:OwnLook
 "
 
 est <- modsem(model, data = rmedsem::mchoice, method="lms")
+```
+
+## Mediated Moderation
+*Mediated moderation* treats the interaction term `X:W` as the independent variable and asks whether its effect on `Y` is carried through `M`.
+In our example, we can test whether the interaction between `OwnLook` and `OwnPers` on `MentWell` is mediated by `SelfEst`.
+
+```{r}
+library(rmedsem)
+rmedsem(indep="OwnPers:OwnLook", dep="MentWell", med="SelfEst", mod=est)
 ```
 
 
 ## Moderated Mediation
 
 *Moderated mediation* asks whether the indirect effect of an exposure `X` on outcome `Y` via mediator `M` varies across levels of a third variable `W`.  
-In our example, we test how the indirect path from `OwnLook` to `MentWell` through `SelfEst` depends on `smv`.
+Using the model from the previous example, we test how the indirect path from `OwnLook` to `MentWell` through `SelfEst` depends on `OwnPers`.
 
 ```{r}
-library(rmedsem)
 rmedsem(indep="OwnLook", dep="MentWell", med="SelfEst", mod=est,
-        moderator="smv")
+        moderator="OwnPers")$moderation
 ```
 
-## Mediated Moderation
-*Mediated moderation* treats the interaction term `X:W` as the independent variable and asks whether its effect on `Y` is carried through `M`.
-Using the model from the previous example, we can test whether the interaction between `OwnLook` and `smv` on `MentWell` is mediated by `SelfEst`.
+In this case the difference between a *moderated mediation* and *mediated moderation* is
+purely semantic. Indeed, the indirect and total moderation effect when interpreted as 
+a moderated mediation is the exact same as the indirect and total effect 
+in the previous example ($.07$ and $.08$).
+
+That being said, moderated mediations can be more complex in nature than mediated moderations, 
+where the moderating variable `W` can affect the paths of model differently. Here 
+we can for example see a moderated mediation where `OwnPers` not only affects 
+the path from `OwnLook` to `SelfEst` and `OwnLook` to `MentWell`, but also 
+the path from `SelfEst` to `MentWell`.
+
+```{r, warning=FALSE}
+model2 <- "
+  OwnLook =~ smv_attr_face + smv_attr_body + smv_sexy
+  SelfEst =~ ses_satis + ses_qualities + ses_able_todo
+  MentWell =~ mwb_optimistic + mwb_useful + mwb_energy
+  OwnPers =~ smv_kind + smv_caring + smv_understanding +
+    smv_make_laughh + smv_funny + smv_sociable
+
+  SelfEst ~ OwnLook + OwnPers + OwnPers:OwnLook
+  MentWell ~ OwnLook + SelfEst + OwnPers + OwnPers:OwnLook + OwnPers:SelfEst
+"
+
+est2 <- modsem(model2, data = rmedsem::mchoice, method="lms")
+```
+
+`rmedsem()` will automatically detect the paths wich are moderated by the `moderator`
+and tailor the output accordingly.
+
 
 ```{r}
-rmedsem(indep="smv:OwnLook", dep="MentWell", med="SelfEst", mod=est)
+rmedsem(indep="OwnLook", dep="MentWell", med="SelfEst", mod=est2,
+        moderator="OwnPers")
 ```
