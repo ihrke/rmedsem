@@ -191,13 +191,16 @@ rmedsem.modsem <- function(mod, indep, med, dep, moderator=NULL,
     # B = (coef_moi + coef_moi_mod * z) * (coef_dom + coef_dom_mod * z)
     # z = 1 ==> B = B_z1 = coef_moi * coef_dom + coef_moi * coef_dom_mod + coef_moi_mod * coef_dom + coef_moi_mod * coef_dom_mod
     # z = 0 ==> B = B_z0 = coef_moi * coef_dom
-    # B_z1 - Bz0 = coef_moi * coef_dom_mod + coef_moi_mod * coef_dom + coef_moi_mod * coef_dom_mod
+    # (B_z1 - Bz0) / z1-z0 = B_z1 - B_z0 = 
+    # coef_moi * coef_dom_mod + coef_moi_mod * coef_dom + coef_moi_mod * coef_dom_mod
     formula_indir <- substitute(coef_moi * coef_dom_mod + 
                                 coef_dom * coef_moi_mod + 
                                 coef_moi_mod * coef_dom_mod, env=list())
 
     coef_vars <- c(moi_mod, dom_mod, doi_mod, dom, moi)
     sigma <- get_sub_squaremat(M=V, names=coef_vars)
+
+    # CHECK computation of std.errors!
     coefx <- rmvnorm_df(n=mcreps, sigma = sigma^2, 
                         mean=c(coef_moi_mod, coef_dom_mod, coef_doi_mod, coef_dom, coef_moi),
                         names=c("coef_moi_mod", "coef_dom_mod", "coef_doi_mod", 
@@ -208,8 +211,6 @@ rmedsem.modsem <- function(mod, indep, med, dep, moderator=NULL,
 
     ind_eff_samp_mod <- with(coefx, eval(formula_indir))
     tot_eff_samp_mod <- ind_eff_samp_mod + with(coefx, coef_doi_mod)
-
-    warning("Std.errors for indirect and total effect must be checked for correctness!")
 
     # total
     se_tot_mod    <- stats::sd(tot_eff_samp_mod)
