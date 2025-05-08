@@ -42,7 +42,7 @@
 #' }
 #'
 rmedsem.modsem <- function(mod, indep, med, dep, moderator=NULL, 
-                           standardized=FALSE, mcreps=NULL,
+                           standardized=TRUE, mcreps=NULL,
                            approach=c("bk", "zlc"), p.threshold=0.05,
                            effect.size=c("RIT","RID"), ci.two.tailed=0.95){
   ci.width <- qnorm(1-(1-ci.two.tailed)/2)
@@ -202,6 +202,11 @@ rmedsem.modsem <- function(mod, indep, med, dep, moderator=NULL,
     coef_vars <- c(moi_mod, dom_mod, doi_mod, dom, moi)
     sigma <- get_sub_squaremat(M=V, names=coef_vars)
 
+    if (standardized) {
+      new_variances <- c(var_moi_mod, var_dom_mod, var_doi_mod, var_dom, var_moi)
+      sigma <- rescale_vcov(sigma, rescaled_variances=new_variances)
+    }
+
     # CHECK computation of std.errors!
     coefx <- rmvnorm_df(n=mcreps, sigma = sigma, 
                         mean=c(coef_moi_mod, coef_dom_mod, coef_doi_mod, coef_dom, coef_moi),
@@ -359,4 +364,21 @@ rmvnorm_df <- function(n, mean, sigma, names=NULL, ...) {
     colnames(coefx) <- names
 
   coefx
+}
+
+
+rescale_vcov <- function(vcov, rescaled_variances) {
+  is_zero <- rescaled_variances == 0
+  S <- vcov[!is_zero, !is_zero]
+
+  D_old_inv <- diag(1 / sqrt(diag(S)))
+  D_new <- diag(sqrt(rescaled_variances[!is_zero]))
+
+  R <- D_old_inv %*% S %*% D_old_inv
+  Z <- D_new %*% R %*% D_new
+
+  V <- vcov
+  V[!is_zero, !is_zero] <- Z
+
+  V
 }

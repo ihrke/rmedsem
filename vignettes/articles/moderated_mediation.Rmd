@@ -90,7 +90,7 @@ Using the model from the previous example, we test how the indirect path from `O
 
 ```{r}
 rmedsem(indep="OwnLook", dep="MentWell", med="SelfEst", mod=est,
-        moderator="OwnPers")$moderation
+        moderator="OwnPers")
 ```
 
 In this case the difference between a *moderated mediation* and *mediated moderation* is
