@@ -5,7 +5,9 @@ Authors@R: c(
     person("Mehmet", "Mehmetoglu", email="mehmet.mehmetoglu@ntnu.no", role = c("aut"),
            comment = c(ORCID = "0000-0002-6092-8551")),
     person("Matthias", "Mittner", email="matthias.mittner@uit.no", role = c("aut", "cre"),
-           comment = c(ORCID = "0000-0003-0205-7353"))
+           comment = c(ORCID = "0000-0003-0205-7353")),
+    person("Kjell", "Slupphaug", email="slupphaugkjell@gmail.com", role = c("aut"),
+           comment = c(ORCID = "0009-0005-8324-2834"))
            )
 Description: What the package does (one paragraph).
 License: MIT + file LICENSE
