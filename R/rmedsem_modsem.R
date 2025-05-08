@@ -73,10 +73,6 @@ rmedsem.modsem <- function(mod, indep, med, dep, moderator=NULL,
   dom <- sprintf("%s~%s", dep, med)
   doi <- sprintf("%s~%s", dep, indep)
 
-  corrmoidom = abs(V[moi,dom])
-  corrmoidoi = abs(V[moi,doi])
-  corrdomdoi = abs(V[dom,doi])
-
   # IV -> M
   coef_moi <- with(coefs, est[lhs==med & rhs==indep])
   se_moi   <- with(coefs, std.error[lhs==med & rhs==indep])
@@ -105,19 +101,30 @@ rmedsem.modsem <- function(mod, indep, med, dep, moderator=NULL,
   sobel_lci <- prodterm - ci.width*sobel_se
   sobel_uci <- prodterm + ci.width*sobel_se
 
+  S <- V[c(moi, doi, dom), c(moi, doi, dom)]
+
+  if (standardized) 
+    S <- rescale_vcov(S, rescaled_variances=c(var_moi, var_doi, var_dom))
+
+  covmoidom <- S[moi,dom]
+  covmoidoi <- S[moi,doi]
+  covdomdoi <- S[dom,doi]
+
   # here I use normal theory confidence limits, however according
   # to MacKinnon on page 97, these may not always be precise, however
   # in the DELTA METHOD below, it seems like normaly theory limits
   # are used there as well, that is ci.width is used
-  delta_se <- sqrt((coef_dom^2)*var_moi + (coef_moi^2)*var_dom + 2*coef_dom*coef_moi*corrmoidom)
+
+  delta_se <- sqrt((coef_dom^2)*var_moi + (coef_moi^2)*var_dom + 2*coef_dom*coef_moi*covmoidom)
 
   delta_z  <- prodterm/delta_se
   delta_pv  <- 2*(1-stats::pnorm(abs(delta_z)))
   delta_lci <- prodterm - ci.width*delta_se
   delta_uci <- prodterm + ci.width*delta_se
 
-  sigma <- symmetric(se_moi, corrmoidom, corrmoidom, se_dom)
-  coefx <- mvtnorm::rmvnorm(n=mcreps, mean=c(coef_moi, coef_dom), sigma = sigma**2)
+  # sigma <- symmetric(se_moi, covmoidom, covmoidom, se_dom)
+  sigma <- S[c(moi, dom), c(moi, dom)]
+  coefx <- mvtnorm::rmvnorm(n=mcreps, mean=c(coef_moi, coef_dom), sigma=sigma)
 
   prod_coef  <- apply(coefx, 1, prod)
   montc_prod <- mean(prod_coef)
@@ -132,10 +139,11 @@ rmedsem.modsem <- function(mod, indep, med, dep, moderator=NULL,
 
   # TE = IND + DE
   coef_tot <- coef_doi + prodterm
-  sigma <- symmetric(se_moi, corrmoidom, corrmoidoi,
-                     corrmoidom, se_dom, corrdomdoi,
-                     corrmoidoi, corrdomdoi, se_doi)
-  coefx <- mvtnorm::rmvnorm(n=mcreps, mean=c(coef_moi, coef_dom, coef_doi), sigma = sigma**2)
+  # sigma <- symmetric(se_moi, covmoidom, covmoidoi,
+  #                    covmoidom, se_dom, covdomdoi,
+  #                    covmoidoi, covdomdoi, se_doi)
+  sigma <- S[c(moi, dom, doi), c(moi, dom, doi)]
+  coefx <- mvtnorm::rmvnorm(n=mcreps, mean=c(coef_moi, coef_dom, coef_doi), sigma = sigma)
   tot_eff_samp <- (coefx[,1]*coefx[,2])+coefx[,3]
   coef_tot <- mean(tot_eff_samp)
   se_tot   <- stats::sd(tot_eff_samp)
