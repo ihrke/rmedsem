@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Moderated mediation and mediated moderation using `rmedsem` • rmedsem</title>
+<title>Moderated mediation and mediated moderation using rmedsem • rmedsem</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
 <link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
@@ -15,7 +15,7 @@
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Moderated mediation and mediated moderation using `rmedsem`">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Moderated mediation and mediated moderation using rmedsem">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -40,7 +40,7 @@
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/estimation_methods.html">Examples using the supported estimation methods</a></li>
     <li><a class="dropdown-item" href="../articles/mediation_technical.html">Technical details of the estimation</a></li>
-    <li><a class="dropdown-item" href="../articles/moderated_mediation.html">Moderated mediation and mediated moderation using `rmedsem`</a></li>
+    <li><a class="dropdown-item" href="../articles/moderated_mediation.html">Moderated mediation and mediated moderation using rmedsem</a></li>
   </ul>
 </li>
       </ul>
@@ -61,7 +61,7 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../logo.png" class="logo" alt=""><h1>Moderated mediation and mediated moderation using `rmedsem`</h1>
+      <img src="../logo.png" class="logo" alt=""><h1>Moderated mediation and mediated moderation using rmedsem</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/ihrke/rmedsem/blob/master/vignettes/articles/moderated_mediation.Rmd" class="external-link"><code>vignettes/articles/moderated_mediation.Rmd</code></a></small>
@@ -70,19 +70,44 @@
 
     
     
-<div class="section level2">
-<h2 id="moderated-mediation">Moderated Mediation<a class="anchor" aria-label="anchor" href="#moderated-mediation"></a>
-</h2>
-<p><em>Moderated mediation</em> asks whether the indirect effect of an
-exposure <code>X</code> on outcome <code>Y</code> via mediator
-<code>M</code> varies across levels of a third variable
-<code>W</code>.<br>
-In our example, we test how the indirect path from <code>OwnLook</code>
-to <code>MentWell</code> through <code>SelfEst</code> depends on
-<code>smv</code>.</p>
+<p>It is often of interest to assess whether a mediation effect is
+invariant across contexts, or whether its strength depends on the level
+of another variable. In such cases, the indirect effect of an
+independent variable on an outcome via a mediator is moderated by a
+third variable (the moderator). These types of effects are often
+referred to as moderated mediation or mediated moderation effects
+(Preacher et al., 2007).</p>
+<p>Currently, <code>rmedsem</code> implements moderated mediation and
+mediated moderation for cases corresponding to “Model 2” from Preacher
+et al., 2007 shown in the following graph:</p>
+<p><img src="moderated_mediation_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
+<p>Mathematically, this model can be specified as</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right"><mi>M</mi></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><msub><mi>a</mi><mn>0</mn></msub><mo>+</mo><msub><mi>a</mi><mn>1</mn></msub><mi>X</mi><mo>+</mo><msub><mi>a</mi><mn>2</mn></msub><mi>W</mi><mo>+</mo><msub><mi>a</mi><mn>3</mn></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>X</mi><mo>×</mo><mi>W</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><msub><mi>ε</mi><mi>M</mi></msub></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"><mi>Y</mi></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><msub><mi>b</mi><mn>0</mn></msub><mo>+</mo><msub><mi>b</mi><mn>1</mn></msub><mi>M</mi><mo>+</mo><msub><mi>b</mi><mn>2</mn></msub><mi>X</mi><mo>+</mo><msub><mi>b</mi><mn>3</mn></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>X</mi><mo>×</mo><mi>W</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><msub><mi>ε</mi><mi>Y</mi></msub></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{align*}
+M &amp;= a_0 + a_1 X + a_2 W + a_3 (X \times W) + \varepsilon_M\\
+Y &amp;= b_0 + b_1 M + b_2 X + b_3 (X \times W) + \varepsilon_Y
+\end{align*}</annotation></semantics></math></p>
+<p>where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math>
+is the independent variable,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Y</mi><annotation encoding="application/x-tex">Y</annotation></semantics></math>
+is the dependent variable,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>M</mi><annotation encoding="application/x-tex">M</annotation></semantics></math>
+is the mediator, and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>W</mi><annotation encoding="application/x-tex">W</annotation></semantics></math>
+is the moderator. The interaction term
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi><mo>×</mo><mi>W</mi></mrow><annotation encoding="application/x-tex">X \times W</annotation></semantics></math>
+is included in the equations for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>M</mi><annotation encoding="application/x-tex">M</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Y</mi><annotation encoding="application/x-tex">Y</annotation></semantics></math>.</p>
+<p>To estimate moderated mediation and mediated moderation with
+<code>rmedsem</code>, we need to specify the model using the <a href="https://modsem.org" class="external-link"><code>modsem</code></a> package which allows
+to estimate structural equation models with interaction terms using
+<code>lavaan</code>. We specify and estimate the following model
+(corresponding to the conceptual model above) using the dataset
+<code><a href="../reference/mchoice.html">rmedsem::mchoice</a></code>:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ihrke/rmedsem" class="external-link">rmedsem</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://modsem.org" class="external-link">modsem</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://modsem.org" class="external-link">modsem</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">model</span> <span class="op">&lt;-</span> <span class="st">"</span></span>
 <span><span class="st">  OwnLook =~ smv_attr_face + smv_attr_body + smv_sexy</span></span>
@@ -94,7 +119,19 @@ to <code>MentWell</code> through <code>SelfEst</code> depends on
 <span><span class="st">  MentWell ~ OwnLook + SelfEst + smv + smv:OwnLook</span></span>
 <span><span class="st">"</span></span>
 <span></span>
-<span><span class="va">est</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://modsem.org/reference/modsem.html" class="external-link">modsem</a></span><span class="op">(</span><span class="va">model</span>, data <span class="op">=</span> <span class="va">mchoice</span>, method<span class="op">=</span><span class="st">"lms"</span><span class="op">)</span></span>
+<span><span class="va">est</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://modsem.org/reference/modsem.html" class="external-link">modsem</a></span><span class="op">(</span><span class="va">model</span>, data <span class="op">=</span> <span class="fu">rmedsem</span><span class="fu">::</span><span class="va"><a href="../reference/mchoice.html">mchoice</a></span>, method<span class="op">=</span><span class="st">"lms"</span><span class="op">)</span></span></code></pre></div>
+<div class="section level2">
+<h2 id="moderated-mediation">Moderated Mediation<a class="anchor" aria-label="anchor" href="#moderated-mediation"></a>
+</h2>
+<p><em>Moderated mediation</em> asks whether the indirect effect of an
+exposure <code>X</code> on outcome <code>Y</code> via mediator
+<code>M</code> varies across levels of a third variable
+<code>W</code>.<br>
+In our example, we test how the indirect path from <code>OwnLook</code>
+to <code>MentWell</code> through <code>SelfEst</code> depends on
+<code>smv</code>.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ihrke/rmedsem" class="external-link">rmedsem</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/rmedsem.html">rmedsem</a></span><span class="op">(</span>indep<span class="op">=</span><span class="st">"OwnLook"</span>, dep<span class="op">=</span><span class="st">"MentWell"</span>, med<span class="op">=</span><span class="st">"SelfEst"</span>, mod<span class="op">=</span><span class="va">est</span>,</span>
 <span>        moderator<span class="op">=</span><span class="st">"smv"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Significance testing of indirect effect (standardized)</span></span>
@@ -150,7 +187,7 @@ on <code>Y</code> is carried through <code>M</code>. Using the model
 from the previous example, we can test whether the interaction between
 <code>OwnLook</code> and <code>smv</code> on <code>MentWell</code> is
 mediated by <code>SelfEst</code>.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/rmedsem.html">rmedsem</a></span><span class="op">(</span>indep<span class="op">=</span><span class="st">"smv:OwnLook"</span>, dep<span class="op">=</span><span class="st">"MentWell"</span>, med<span class="op">=</span><span class="st">"SelfEst"</span>, mod<span class="op">=</span><span class="va">est</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Significance testing of indirect effect (standardized)</span></span>
 <span><span class="co">#&gt; Model estimated with package 'modsem'</span></span>
