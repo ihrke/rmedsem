@@ -1,5 +1,5 @@
 ---
-title: "Moderated mediation and mediated moderation using `rmedsem`"
+title: "Moderated mediation and mediated moderation using rmedsem"
 ---
 
 ```{r, include = FALSE}
@@ -10,13 +10,52 @@ knitr::opts_chunk$set(
 )
 ```
 
-## Moderated Mediation
+It is often of interest to assess whether a mediation effect is invariant across contexts, or
+whether its strength depends on the level of another variable. In such cases, the indirect effect of
+an independent variable on an outcome via a mediator is moderated by a third variable (the moderator). 
+These types of effects are often referred to as moderated mediation or mediated
+moderation effects (Preacher et al., 2007). 
 
-*Moderated mediation* asks whether the indirect effect of an exposure `X` on outcome `Y` via mediator `M` varies across levels of a third variable `W`.  
-In our example, we test how the indirect path from `OwnLook` to `MentWell` through `SelfEst` depends on `smv`.
+Currently, `rmedsem` implements moderated mediation and mediated moderation for cases
+corresponding to "Model 2" from Preacher et al., 2007 shown in the following graph:
+
+
+```{r, echo=FALSE}
+#| echo: false
+#| warning: false
+#| eval: true
+m <- '
+M ~ X + W + XW
+Y ~ X + M + W + XW
+'
+
+plot_m <- semPlot::semPlotModel_lavaanModel(m)
+
+semPlot::semPaths(plot_m,
+                  rotation=2,
+                  sizeMan = 5,
+                  sizeMan2 = 3,
+                  sizeLat = 12, 
+                  layout = "tree3",
+                  style = "mx",
+                  residuals = FALSE,
+                  edge.label.cex = 0.6,
+                  nCharNodes = 10)
+```
+
+Mathematically, this model can be specified as 
+
+\begin{align*}
+M &= a_0 + a_1 X + a_2 W + a_3 (X \times W) + \varepsilon_M\\
+Y &= b_0 + b_1 M + b_2 X + b_3 (X \times W) + \varepsilon_Y
+\end{align*}
+
+where $X$ is the independent variable, $Y$ is the dependent variable, $M$ is the mediator, and $W$ is the moderator. The interaction term $X \times W$ is included in the equations for $M$ and $Y$.
+
+To estimate moderated mediation and mediated moderation with `rmedsem`, we need to specify the model using the [`modsem`](https://modsem.org) package which allows to estimate structural equation models with interaction terms using `lavaan`. We specify and estimate the following model (corresponding to the conceptual model above) using the dataset `rmedsem::mchoice`:
+
 
 ```{r}
-library(rmedsem)
 library(modsem)
 
 model <- "
@@ -29,7 +68,17 @@ model <- "
   MentWell ~ OwnLook + SelfEst + smv + smv:OwnLook
 "
 
-est <- modsem(model, data = mchoice, method="lms")
+est <- modsem(model, data = rmedsem::mchoice, method="lms")
+```
+
+
+## Moderated Mediation
+
+*Moderated mediation* asks whether the indirect effect of an exposure `X` on outcome `Y` via mediator `M` varies across levels of a third variable `W`.  
+In our example, we test how the indirect path from `OwnLook` to `MentWell` through `SelfEst` depends on `smv`.
+
+```{r}
+library(rmedsem)
 rmedsem(indep="OwnLook", dep="MentWell", med="SelfEst", mod=est,
         moderator="smv")
 ```

@@ -28,6 +28,8 @@ The goal of rmedsem is to conduct a mediation analysis based on a structural equ
 - PLS-SEM estimated using [cSEM](https://m-e-rademaker.github.io/cSEM/)
 - Bayesian SEM estimated using [blavaan](https://ecmerkle.github.io/blavaan/index.html)
 
+The `rmedsem` package also supports estimating [moderated mediation and mediated moderation](articles/moderated_mediation.html) models using the [modsem](https://modsem.org) package.
+
 
 Currently, only continuous independent and mediator variables are
 supported. See [this article](articles/mediation_technical.html) for technical details on

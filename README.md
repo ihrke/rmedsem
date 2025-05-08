@@ -18,6 +18,10 @@ package supports:
 - Bayesian SEM estimated using
   [blavaan](https://ecmerkle.github.io/blavaan/index.html)
 
+The `rmedsem` package also supports estimating [moderated mediation and
+mediated moderation](articles/moderated_mediation.html) models using the
+[modsem](https://modsem.org) package.
+
 Currently, only continuous independent and mediator variables are
 supported. See [this article](articles/mediation_technical.html) for
 technical details on the estimation procedure used.
@@ -45,7 +49,8 @@ simple case in which mathematical skills `math` directly affect
 performance in science-related areas `science` and where part of this
 association is mediated thrugh their abiliy to `read`.
 
-<img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
+<div class="grViz html-widget html-fill-item" id="htmlwidget-f5ce67fdaded799d734a" style="width:100%;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-f5ce67fdaded799d734a">{"x":{"diagram":"\ndigraph {\n  rankdir=LR;\n    math -> read;\n    read -> science;\n    math -> science;\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 
 We can express this model in `lavaan` syntax as follows:
 
@@ -81,16 +86,16 @@ print(out)
 #>                         Sobel         Delta   Monte-Carlo
 #> Indirect effect        0.2506        0.2506        0.2506
 #> Std. Err.              0.0456        0.0456        0.0451
-#> z-value                5.5006        5.5006        5.5009
-#> p-value              3.79e-08      3.79e-08      3.78e-08
-#> CI              [0.161, 0.34] [0.161, 0.34] [0.17, 0.352]
+#> z-value                5.5006        5.5006        5.5264
+#> p-value              3.79e-08      3.79e-08      3.27e-08
+#> CI              [0.161, 0.34] [0.161, 0.34] [0.17, 0.351]
 #> 
 #> Baron and Kenny approach to testing mediation
 #>    STEP 1 - 'math:read' (X -> M) with B=0.662 and p=0.000
 #>    STEP 2 - 'read:science' (M -> Y) with B=0.378 and p=0.000
 #>    STEP 3 - 'math:science' (X -> Y) with B=0.380 and p=0.000
-#>             As STEP 1, STEP 2 and the Sobel's test above are significant
-#>             and STEP 3 is not significant the mediation is complete.
+#>             As STEP 1, STEP 2 and STEP 3 as well as the Sobel's test above
+#>             are significant the mediation is partial.
 #> 
 #> Zhao, Lynch & Chen's approach to testing mediation
 #> Based on p-value estimated using Monte-Carlo
@@ -128,10 +133,10 @@ rmedsem(mod, indep="math", med="read", dep="science",
 #> 
 #>                         Sobel         Delta    Monte-Carlo
 #> Indirect effect        0.2506        0.2506         0.2506
-#> Std. Err.              0.0456        0.0456         0.0418
-#> z-value                5.5006        5.5006         6.0087
-#> p-value              3.79e-08      3.79e-08       1.87e-09
-#> CI              [0.161, 0.34] [0.161, 0.34] [0.163, 0.328]
+#> Std. Err.              0.0456        0.0456         0.0458
+#> z-value                5.5006        5.5006         5.3890
+#> p-value              3.79e-08      3.79e-08       7.09e-08
+#> CI              [0.161, 0.34] [0.161, 0.34] [0.159, 0.334]
 #> 
 #> Zhao, Lynch & Chen's approach to testing mediation
 #> Based on p-value estimated using Monte-Carlo
@@ -187,10 +192,10 @@ rmedsem(mod, indep="Attractive", med="Appearance", dep="Muscle",
 #> 
 #>                            Sobel              Delta     Monte-Carlo
 #> Indirect effect           0.0654             0.0654          0.0654
-#> Std. Err.                 0.0331             0.0338          0.0353
-#> z-value                   1.9748             1.9359          1.8912
-#> p-value                   0.0483             0.0529          0.0586
-#> CI              [0.000491, 0.13] [-0.000814, 0.132] [0.00578, 0.14]
+#> Std. Err.                 0.0331             0.0338          0.0336
+#> z-value                   1.9748             1.9359          2.0549
+#> p-value                   0.0483             0.0529          0.0399
+#> CI              [0.000491, 0.13] [-0.000814, 0.132] [0.0113, 0.136]
 #> 
 #> Baron and Kenny approach to testing mediation
 #>    STEP 1 - 'Attractive:Appearance' (X -> M) with B=0.158 and p=0.033
@@ -202,8 +207,8 @@ rmedsem(mod, indep="Attractive", med="Appearance", dep="Muscle",
 #> Zhao, Lynch & Chen's approach to testing mediation
 #> Based on p-value estimated using Monte-Carlo
 #>   STEP 1 - 'Attractive:Muscle' (X -> Y) with B=-0.014 and p=0.850
-#>             As the Monte-Carlo test above is not significant and STEP 1 is
-#>             not significant there is no effect nonmediation (no mediation).
+#>             As the Monte-Carlo test above is significant and STEP 1 is not
+#>             significant there indirect-only mediation (full mediation).
 #> 
 #> Effect sizes
 #>    WARNING: Total effect is smaller than indirect effect!
@@ -228,18 +233,18 @@ rmedsem(mod, indep="Attractive", med="Appearance", dep="Weight",
 #> Model estimated with package 'lavaan'
 #> Mediation effect: 'Attractive' -> 'Appearance' -> 'Weight'
 #> 
-#>                           Sobel            Delta       Monte-Carlo
-#> Indirect effect          0.0979           0.0979            0.0979
-#> Std. Err.                0.0470           0.0484            0.0534
-#> z-value                  2.0810           2.0228            1.8183
-#> p-value                  0.0374           0.0431             0.069
-#> CI              [0.00569, 0.19] [0.00304, 0.193] [-0.00438, 0.199]
+#>                           Sobel            Delta     Monte-Carlo
+#> Indirect effect          0.0979           0.0979          0.0979
+#> Std. Err.                0.0470           0.0484          0.0485
+#> z-value                  2.0810           2.0228          2.0542
+#> p-value                  0.0374           0.0431            0.04
+#> CI              [0.00569, 0.19] [0.00304, 0.193] [0.0172, 0.202]
 #> 
 #> Zhao, Lynch & Chen's approach to testing mediation
 #> Based on p-value estimated using Monte-Carlo
 #>   STEP 1 - 'Attractive:Weight' (X -> Y) with B=-0.125 and p=0.073
-#>             As the Monte-Carlo test above is not significant and STEP 1 is
-#>             not significant there is no effect nonmediation (no mediation).
+#>             As the Monte-Carlo test above is significant and STEP 1 is not
+#>             significant there indirect-only mediation (full mediation).
 #> 
 #> Effect sizes
 #>    WARNING: Total effect is smaller than indirect effect!
