@@ -191,7 +191,8 @@ rmedsem.modsem <- function(mod, indep, med, dep, moderator=NULL,
     # B = (coef_moi + coef_moi_mod * z) * (coef_dom + coef_dom_mod * z)
     # z = 1 ==> B = B_z1 = coef_moi * coef_dom + coef_moi * coef_dom_mod + coef_moi_mod * coef_dom + coef_moi_mod * coef_dom_mod
     # z = 0 ==> B = B_z0 = coef_moi * coef_dom
-    # B_z1 - Bz0 = coef_moi * coef_dom_mod + coef_moi_mod * coef_dom + coef_moi_mod * coef_dom_mod
+    # (B_z1 - Bz0) / z1-z0 = B_z1 - B_z0 = 
+    # coef_moi * coef_dom_mod + coef_moi_mod * coef_dom + coef_moi_mod * coef_dom_mod
     formula_indir <- substitute(coef_moi * coef_dom_mod + 
                                 coef_dom * coef_moi_mod + 
                                 coef_moi_mod * coef_dom_mod, env=list())

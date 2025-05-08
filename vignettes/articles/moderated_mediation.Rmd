@@ -1,0 +1,43 @@
+---
+title: "Moderated mediation and mediated moderation using `rmedsem`"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  warning = FALSE, message = FALSE,
+  comment = "#>"
+)
+```
+
+## Moderated Mediation
+
+*Moderated mediation* asks whether the indirect effect of an exposure `X` on outcome `Y` via mediator `M` varies across levels of a third variable `W`.  
+In our example, we test how the indirect path from `OwnLook` to `MentWell` through `SelfEst` depends on `smv`.
+
+```{r}
+library(rmedsem)
+library(modsem)
+
+model <- "
+  OwnLook =~ smv_attr_face + smv_attr_body + smv_sexy
+  SelfEst =~ ses_satis + ses_qualities + ses_able_todo
+  MentWell =~ mwb_optimistic + mwb_useful + mwb_energy
+  smv =~ smv_kind + smv_caring + smv_understanding +
+    smv_make_laughh + smv_funny + smv_sociable
+  SelfEst ~ OwnLook + smv + smv:OwnLook
+  MentWell ~ OwnLook + SelfEst + smv + smv:OwnLook
+"
+
+est <- modsem(model, data = mchoice, method="lms")
+rmedsem(indep="OwnLook", dep="MentWell", med="SelfEst", mod=est,
+        moderator="smv")
+```
+
+## Mediated Moderation
+*Mediated moderation* treats the interaction term `X:W` as the independent variable and asks whether its effect on `Y` is carried through `M`.
+Using the model from the previous example, we can test whether the interaction between `OwnLook` and `smv` on `MentWell` is mediated by `SelfEst`.
+
+```{r}
+rmedsem(indep="smv:OwnLook", dep="MentWell", med="SelfEst", mod=est)
+```
