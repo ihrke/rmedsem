@@ -97,8 +97,11 @@ print_effectsize <- function(res, digits=3, indent=3){
 #'
 #' @param res the `rmedsem` object to print
 #' @param digits an integer, number of digits to print in table
+#' @param indent an integer, number of spaces to indent
+#' @param ci_moderation a logical, whether to print confidence intervals for 
+#' direct, indirect and total moderation effects
 #' @return `rmedsem` obect `res`
-print.rmedsem.lavaan.csem.modsem <- function(res, digits=3, indent=3){
+print.rmedsem.lavaan.csem.modsem <- function(res, digits=3, indent=3, ci_moderation=FALSE){
   # indentation
   indstr <- strrep(" ", indent)
   indent.conclusion <- indent + 9
@@ -233,26 +236,33 @@ print.rmedsem.lavaan.csem.modsem <- function(res, digits=3, indent=3){
     moderation <- res$moderation
     moderator <- moderation$moderator
 
-    pattern <- "   %s -> %s | %s: B = %5.2f, p = %5.3f, ci = [%5.2f,%5.2f]\n"
+    pattern <- "   %s -> %s | %s: B = %5.3f, se = %5.3f, p = %5.3f"
+
+    if (ci_moderation) pattern <- paste0(pattern, "ci = [%5.2f,%5.2f]\n")
+    else               pattern <- paste0(pattern, "\n")
+
     for (coefs in moderation$coefs) {
       lhs <- coefs$lhs
       rhs <- coefs$rhs
 
       if (coefs$coef == 0 && coefs$se == 0) next
 
-      cat(sprintf(pattern, lhs, rhs, moderator, coefs$coef, coefs$pval, 
+      cat(sprintf(pattern, lhs, rhs, moderator, 
+                  coefs$coef, coefs$se, coefs$pval, 
                   coefs$lower, coefs$upper))
     }
 
     cat("\nIndirect moderation effect\n")
     indirect <- moderation$indirect.effect
     cat(sprintf(pattern, indirect$lhs, indirect$rhs, moderator, 
-                indirect$coef, indirect$pval, indirect$lower, indirect$upper))
+                indirect$coef, indirect$se, indirect$pval, 
+                indirect$lower, indirect$upper))
 
     cat("\nTotal moderation effect\n")
     total <- moderation$total.effect
     cat(sprintf(pattern, indirect$lhs, indirect$rhs, moderator, 
-                total$coef, total$pval, total$lower, total$upper))
+                total$coef, total$se, total$pval, 
+                total$lower, total$upper))
    
     cat("\n")
   }

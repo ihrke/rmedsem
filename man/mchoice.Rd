@@ -18,6 +18,13 @@ A data frame with 1090 rows and 9 columns:
 \item{mwb_optimistic}{I have been feeling optimistic about the future, \link{1} never - \link{5} always}
 \item{mwb_useful}{I have been feeling useful, \link{1} never - \link{5} always}
 \item{mwb_energy}{I have had energy to spare, \link{1} never - \link{5} always}
+\item{smv_kind}{?, \link{1} ? - \link{5} ?}
+\item{smv_caring}{?, \link{1} ? - \link{5} ?}
+\item{smv_understanding}{?, \link{1} ? - \link{5} ?}
+\item{smv_make_laughh}{?, \link{1} ? - \link{5} ?}
+\item{smv_funny}{?, \link{1} ? - \link{5} ?}
+\item{smv_sociable}{?, \link{1} ? - \link{5} ?}
+}
 }
 }
 }

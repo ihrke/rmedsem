@@ -9,6 +9,7 @@
   indep,
   med,
   dep,
+  moderator = NULL,
   standardized = TRUE,
   mcreps = NULL,
   approach = c("bk", "zlc"),
@@ -25,6 +26,8 @@
 \item{med}{A string indicating the name of the mediator variable in the model.}
 
 \item{dep}{A string indicating the name of the dependent variable in the model.}
+
+\item{moderator}{A string indicating the name of the moderator variable in the model.}
 
 \item{standardized}{A boolean indicating whether the coefficients should be
 standardized. The default value is F.}
@@ -47,27 +50,24 @@ Calculate a mediation analysis for an SEM based on a modsem model.
 \examples{
 \dontrun{
 
-tpb <- "
-# Outer Model (Based on Hagger et al., 2007)
-  ATT =~ att1 + att2 + att3 + att4 + att5
-  SN =~ sn1 + sn2
-  PBC =~ pbc1 + pbc2 + pbc3
-  INT =~ int1 + int2 + int3
-  BEH =~ b1 + b2
-
-# Inner Model (Based on Steinmetz et al., 2011)
-  # Covariances
-  ATT ~~ SN + PBC
-  PBC ~~ SN
-  # Causal Relationsships
-  INT ~ ATT + SN + PBC
-  BEH ~ INT + PBC
-  INT ~ PBC:SN
-  BEH ~ PBC:SN
+m <- "
+  OwnLook =~ smv_attr_face + smv_attr_body + smv_sexy
+  SelfEst =~ ses_satis + ses_qualities + ses_able_todo
+  MentWell =~ mwb_optimistic + mwb_useful + mwb_energy
+  smv =~ smv_kind + smv_caring + smv_understanding +
+    smv_make_laughh + smv_funny + smv_sociable
+  SelfEst ~ OwnLook + smv + smv:OwnLook
+  MentWell ~ OwnLook + SelfEst + smv + smv:OwnLook
 "
 
-est <- modsem(tpb, TPB, method = "qml")
-rmedsem(est, indep = "PBC:SN", med = "INT", dep = "BEH")
+
+est <- modsem(m, data = mchoice2, method="lms")
+
+# mediated moderation
+rmedsem(indep="smv:OwnLook", dep="MentWell", med="SelfEst", mod=est)
+
+# moderated mediation
+rmedsem(indep="OwnLook", dep="MentWell", med="SelfEst", mod=est, moderator="smv")
 
 }
 
