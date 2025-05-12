@@ -55,9 +55,11 @@ rmedsem.modsem <- function(mod, indep, med, dep, moderator=NULL,
   
   if (standardized)
     coefs <- modsem::standardized_estimates(mod)
-  else
+  else {
     coefs <- modsem::parameter_estimates(mod)
-  
+    coefs[["se"]] <- NULL # bug in modsem
+  }
+ 
   lookup <- c(std.error="se", p.value="pvalue", est="est.std") # in case of lavaan
   coefs <- dplyr::rename(coefs, dplyr::any_of(lookup)) # rename columns
 
@@ -70,10 +72,6 @@ rmedsem.modsem <- function(mod, indep, med, dep, moderator=NULL,
   moi <- sprintf("%s~%s", med, indep)
   dom <- sprintf("%s~%s", dep, med)
   doi <- sprintf("%s~%s", dep, indep)
-
-  corrmoidom = abs(V[moi,dom])
-  corrmoidoi = abs(V[moi,doi])
-  corrdomdoi = abs(V[dom,doi])
 
   # IV -> M
   coef_moi <- with(coefs, est[lhs==med & rhs==indep])
@@ -103,19 +101,30 @@ rmedsem.modsem <- function(mod, indep, med, dep, moderator=NULL,
   sobel_lci <- prodterm - ci.width*sobel_se
   sobel_uci <- prodterm + ci.width*sobel_se
 
+  S <- V[c(moi, doi, dom), c(moi, doi, dom)]
+
+  if (standardized) 
+    S <- rescale_vcov(S, rescaled_variances=c(var_moi, var_doi, var_dom))
+
+  covmoidom <- S[moi,dom]
+  covmoidoi <- S[moi,doi]
+  covdomdoi <- S[dom,doi]
+
   # here I use normal theory confidence limits, however according
   # to MacKinnon on page 97, these may not always be precise, however
   # in the DELTA METHOD below, it seems like normaly theory limits
   # are used there as well, that is ci.width is used
-  delta_se <- sqrt((coef_dom^2)*var_moi + (coef_moi^2)*var_dom + 2*coef_dom*coef_moi*corrmoidom)
+
+  delta_se <- sqrt((coef_dom^2)*var_moi + (coef_moi^2)*var_dom + 2*coef_dom*coef_moi*covmoidom)
 
   delta_z  <- prodterm/delta_se
   delta_pv  <- 2*(1-stats::pnorm(abs(delta_z)))
   delta_lci <- prodterm - ci.width*delta_se
   delta_uci <- prodterm + ci.width*delta_se
 
-  sigma <- symmetric(se_moi, corrmoidom, corrmoidom, se_dom)
-  coefx <- mvtnorm::rmvnorm(n=mcreps, mean=c(coef_moi, coef_dom), sigma = sigma**2)
+  # sigma <- symmetric(se_moi, covmoidom, covmoidom, se_dom)
+  sigma <- S[c(moi, dom), c(moi, dom)]
+  coefx <- mvtnorm::rmvnorm(n=mcreps, mean=c(coef_moi, coef_dom), sigma=sigma)
 
   prod_coef  <- apply(coefx, 1, prod)
   montc_prod <- mean(prod_coef)
@@ -130,10 +139,11 @@ rmedsem.modsem <- function(mod, indep, med, dep, moderator=NULL,
 
   # TE = IND + DE
   coef_tot <- coef_doi + prodterm
-  sigma <- symmetric(se_moi, corrmoidom, corrmoidoi,
-                     corrmoidom, se_dom, corrdomdoi,
-                     corrmoidoi, corrdomdoi, se_doi)
-  coefx <- mvtnorm::rmvnorm(n=mcreps, mean=c(coef_moi, coef_dom, coef_doi), sigma = sigma**2)
+  # sigma <- symmetric(se_moi, covmoidom, covmoidoi,
+  #                    covmoidom, se_dom, covdomdoi,
+  #                    covmoidoi, covdomdoi, se_doi)
+  sigma <- S[c(moi, dom, doi), c(moi, dom, doi)]
+  coefx <- mvtnorm::rmvnorm(n=mcreps, mean=c(coef_moi, coef_dom, coef_doi), sigma = sigma)
   tot_eff_samp <- (coefx[,1]*coefx[,2])+coefx[,3]
   coef_tot <- mean(tot_eff_samp)
   se_tot   <- stats::sd(tot_eff_samp)
@@ -200,12 +210,17 @@ rmedsem.modsem <- function(mod, indep, med, dep, moderator=NULL,
     coef_vars <- c(moi_mod, dom_mod, doi_mod, dom, moi)
     sigma <- get_sub_squaremat(M=V, names=coef_vars)
 
+    if (standardized) {
+      new_variances <- c(var_moi_mod, var_dom_mod, var_doi_mod, var_dom, var_moi)
+      sigma <- rescale_vcov(sigma, rescaled_variances=new_variances)
+    }
+
     # CHECK computation of std.errors!
-    coefx <- rmvnorm_df(n=mcreps, sigma = sigma^2, 
+    coefx <- rmvnorm_df(n=mcreps, sigma = sigma, 
                         mean=c(coef_moi_mod, coef_dom_mod, coef_doi_mod, coef_dom, coef_moi),
                         names=c("coef_moi_mod", "coef_dom_mod", "coef_doi_mod", 
                                 "coef_dom", "coef_moi"))
-    
+
     ind_eff_mod <- eval(formula_indir)
     tot_eff_mod   <- ind_eff_mod + coef_doi_mod
 
@@ -343,8 +358,10 @@ get_sub_squaremat <- function(M, names) {
     KM <- matrix(0, nrow=k, ncol=m, dimnames=list(missing_names, colnames(M)))
     MK <- t(KM)
 
-    cbind(rbind(M, KM),
-          rbind(MK, KK))
+    Z <- cbind(rbind(M, KM),
+               rbind(MK, KK))
+
+    Z[names, names] # sort values by names
 }
 
 
@@ -355,4 +372,21 @@ rmvnorm_df <- function(n, mean, sigma, names=NULL, ...) {
     colnames(coefx) <- names
 
   coefx
+}
+
+
+rescale_vcov <- function(vcov, rescaled_variances) {
+  is_zero <- rescaled_variances == 0
+  S <- vcov[!is_zero, !is_zero]
+
+  D_old_inv <- diag(1 / sqrt(diag(S)))
+  D_new <- diag(sqrt(rescaled_variances[!is_zero]))
+
+  R <- D_old_inv %*% S %*% D_old_inv
+  Z <- D_new %*% R %*% D_new
+
+  V <- vcov
+  V[!is_zero, !is_zero] <- Z
+
+  V
 }
