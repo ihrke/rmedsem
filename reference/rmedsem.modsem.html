@@ -49,6 +49,7 @@
 <span>  <span class="va">indep</span>,</span>
 <span>  <span class="va">med</span>,</span>
 <span>  <span class="va">dep</span>,</span>
+<span>  moderator <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  standardized <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  mcreps <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  approach <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"bk"</span>, <span class="st">"zlc"</span><span class="op">)</span>,</span>
@@ -76,6 +77,10 @@
 
 <dt id="arg-dep">dep<a class="anchor" aria-label="anchor" href="#arg-dep"></a></dt>
 <dd><p>A string indicating the name of the dependent variable in the model.</p></dd>
+
+
+<dt id="arg-moderator">moderator<a class="anchor" aria-label="anchor" href="#arg-moderator"></a></dt>
+<dd><p>A string indicating the name of the moderator variable in the model.</p></dd>
 
 
 <dt id="arg-standardized">standardized<a class="anchor" aria-label="anchor" href="#arg-standardized"></a></dt>
@@ -109,27 +114,24 @@ is significant or not</p></dd>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">tpb</span> <span class="op">&lt;-</span> <span class="st">"</span></span></span>
-<span class="r-in"><span><span class="st"># Outer Model (Based on Hagger et al., 2007)</span></span></span>
-<span class="r-in"><span><span class="st">  ATT =~ att1 + att2 + att3 + att4 + att5</span></span></span>
-<span class="r-in"><span><span class="st">  SN =~ sn1 + sn2</span></span></span>
-<span class="r-in"><span><span class="st">  PBC =~ pbc1 + pbc2 + pbc3</span></span></span>
-<span class="r-in"><span><span class="st">  INT =~ int1 + int2 + int3</span></span></span>
-<span class="r-in"><span><span class="st">  BEH =~ b1 + b2</span></span></span>
-<span class="r-in"><span><span class="st"></span></span></span>
-<span class="r-in"><span><span class="st"># Inner Model (Based on Steinmetz et al., 2011)</span></span></span>
-<span class="r-in"><span><span class="st">  # Covariances</span></span></span>
-<span class="r-in"><span><span class="st">  ATT ~~ SN + PBC</span></span></span>
-<span class="r-in"><span><span class="st">  PBC ~~ SN</span></span></span>
-<span class="r-in"><span><span class="st">  # Causal Relationsships</span></span></span>
-<span class="r-in"><span><span class="st">  INT ~ ATT + SN + PBC</span></span></span>
-<span class="r-in"><span><span class="st">  BEH ~ INT + PBC</span></span></span>
-<span class="r-in"><span><span class="st">  INT ~ PBC:SN</span></span></span>
-<span class="r-in"><span><span class="st">  BEH ~ PBC:SN</span></span></span>
+<span class="r-in"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="st">"</span></span></span>
+<span class="r-in"><span><span class="st">  OwnLook =~ smv_attr_face + smv_attr_body + smv_sexy</span></span></span>
+<span class="r-in"><span><span class="st">  SelfEst =~ ses_satis + ses_qualities + ses_able_todo</span></span></span>
+<span class="r-in"><span><span class="st">  MentWell =~ mwb_optimistic + mwb_useful + mwb_energy</span></span></span>
+<span class="r-in"><span><span class="st">  smv =~ smv_kind + smv_caring + smv_understanding +</span></span></span>
+<span class="r-in"><span><span class="st">    smv_make_laughh + smv_funny + smv_sociable</span></span></span>
+<span class="r-in"><span><span class="st">  SelfEst ~ OwnLook + smv + smv:OwnLook</span></span></span>
+<span class="r-in"><span><span class="st">  MentWell ~ OwnLook + SelfEst + smv + smv:OwnLook</span></span></span>
 <span class="r-in"><span><span class="st">"</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">est</span> <span class="op">&lt;-</span> <span class="fu">modsem</span><span class="op">(</span><span class="va">tpb</span>, <span class="va">TPB</span>, method <span class="op">=</span> <span class="st">"qml"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="rmedsem.html">rmedsem</a></span><span class="op">(</span><span class="va">est</span>, indep <span class="op">=</span> <span class="st">"PBC:SN"</span>, med <span class="op">=</span> <span class="st">"INT"</span>, dep <span class="op">=</span> <span class="st">"BEH"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">est</span> <span class="op">&lt;-</span> <span class="fu">modsem</span><span class="op">(</span><span class="va">m</span>, data <span class="op">=</span> <span class="va">mchoice2</span>, method<span class="op">=</span><span class="st">"lms"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># mediated moderation</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="rmedsem.html">rmedsem</a></span><span class="op">(</span>indep<span class="op">=</span><span class="st">"smv:OwnLook"</span>, dep<span class="op">=</span><span class="st">"MentWell"</span>, med<span class="op">=</span><span class="st">"SelfEst"</span>, mod<span class="op">=</span><span class="va">est</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># moderated mediation</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="rmedsem.html">rmedsem</a></span><span class="op">(</span>indep<span class="op">=</span><span class="st">"OwnLook"</span>, dep<span class="op">=</span><span class="st">"MentWell"</span>, med<span class="op">=</span><span class="st">"SelfEst"</span>, mod<span class="op">=</span><span class="va">est</span>, moderator<span class="op">=</span><span class="st">"smv"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
