@@ -100,7 +100,7 @@ rmedsem.lavaan <- function(mod, indep, med, dep, standardized=TRUE, mcreps=NULL,
   delta_lci <- prodterm - ci.width*delta_se
   delta_uci <- prodterm + ci.width*delta_se
 
-  sigma <- matrix(c(var_moi, covmoidom, covmoidom, var_dom), nrow=2, ncol=2, byrow = F)
+  sigma <- matrix(c(var_moi, covmoidom, covmoidom, var_dom), nrow=2, ncol=2)
   coefx <- mvtnorm::rmvnorm(n=mcreps, mean=c(coef_moi, coef_dom), sigma = sigma)
   prod_coef <- apply(coefx, 1, prod)
   montc_prod <- mean(prod_coef)
@@ -117,7 +117,7 @@ rmedsem.lavaan <- function(mod, indep, med, dep, standardized=TRUE, mcreps=NULL,
   coef_tot <- coef_doi + prodterm
   sigma <- matrix(c(var_moi, covmoidom, covmoidoi,
                     covmoidom, var_dom, covdomdoi,
-                    covmoidoi, covdomdoi, var_doi), nrow=3, ncol=3, byrow = F)
+                    covmoidoi, covdomdoi, var_doi), nrow=3, ncol=3)
   coefx <- mvtnorm::rmvnorm(n=mcreps, mean=c(coef_moi, coef_dom, coef_doi), sigma = sigma)
   tot_eff_samp <- (coefx[,1]*coefx[,2])+coefx[,3]
   coef_tot <- mean(tot_eff_samp)
