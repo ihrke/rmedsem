@@ -138,21 +138,13 @@ if (requireNamespace("modsem", quietly = TRUE)) {
 #> 
 #> 
 #> Direct moderation effects
-#> Warning: 2 arguments not used by format '   %s -> %s | %s: B = %5.3f, se = %5.3f, p = %5.3f
-#> '
 #>    SelfEst  -> OwnLook  | smv: B = -0.136, se = 0.029, p = 0.000
-#> Warning: 2 arguments not used by format '   %s -> %s | %s: B = %5.3f, se = %5.3f, p = %5.3f
-#> '
 #>    MentWell -> OwnLook  | smv: B = -0.008, se = 0.034, p = 0.821
 #> 
 #> Indirect moderation effect
-#> Warning: 2 arguments not used by format '   %s -> %s | %s: B = %5.3f, se = %5.3f, p = %5.3f
-#> '
 #>    SelfEst  -> OwnLook  | smv: B = -0.071, se = 0.016, p = 0.000
 #> 
 #> Total moderation effect
-#> Warning: 2 arguments not used by format '   %s -> %s | %s: B = %5.3f, se = %5.3f, p = %5.3f
-#> '
 #>    SelfEst  -> OwnLook  | smv: B = -0.079, se = 0.036, p = 0.029
 #> 
 # }
