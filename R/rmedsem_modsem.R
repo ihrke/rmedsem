@@ -46,6 +46,7 @@ rmedsem.modsem <- function(mod, indep, med, dep, moderator=NULL,
                            effect.size=c("RIT","RID"), ci.two.tailed=0.95){
   if (!requireNamespace("modsem", quietly = TRUE))
     stop("Package 'modsem' is required for this method. Please install it.")
+  validate_rmedsem_args(indep, med, dep, approach, p.threshold, effect.size)
   ci.width <- stats::qnorm(1-(1-ci.two.tailed)/2)
 
   # if estimated lavaan, we just extract the lavaan document
@@ -290,7 +291,7 @@ rmedsem.modsem <- function(mod, indep, med, dep, moderator=NULL,
                             pvals=list(moi=pval_moi, dom=pval_dom, doi=pval_doi))
   )
 
-  class(res) <- "rmedsem"
+  class(res) <- c("rmedsem_modsem", "rmedsem")
   return(res)
 }
 

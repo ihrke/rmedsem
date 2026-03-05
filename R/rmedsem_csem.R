@@ -21,7 +21,7 @@ rmedsem.cSEMResults <- function(mod, indep, med, dep, nbootstrap=1000,
                                 effect.size=c("RIT","RID")){
   if (!requireNamespace("cSEM", quietly = TRUE))
     stop("Package 'cSEM' is required for this method. Please install it.")
-  #indep="Math"; med="Read"; dep="Science";
+  validate_rmedsem_args(indep, med, dep, approach, p.threshold, effect.size)
 
   N <- nrow(mod$Information$Data)
   moi <- sprintf("%s ~ %s", med, indep)
@@ -114,7 +114,7 @@ rmedsem.cSEMResults <- function(mod, indep, med, dep, nbootstrap=1000,
                             coefs=list(moi=coef_moi, dom=coef_dom, doi=coef_doi),
                             pvals=list(moi=pval_moi, dom=pval_dom, doi=pval_doi))
   )
-  class(res) <- "rmedsem"
+  class(res) <- c("rmedsem_cSEM", "rmedsem")
   return(res)
 }
 

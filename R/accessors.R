@@ -41,6 +41,40 @@ RID.rmedsem <- function(res, ...) {
   return(res$effect.size$RID$es)
 }
 
+#' Summarize an rmedsem Object
+#'
+#' Returns the printed representation as a character string (invisibly)
+#' and prints the results to the console.
+#'
+#' @param object the `rmedsem` object
+#' @param ... additional arguments passed to [print.rmedsem()]
+#' @return the `rmedsem` object (invisibly)
+#' @export
+summary.rmedsem <- function(object, ...) {
+  print(object, ...)
+}
+
+#' Plot an rmedsem Object
+#'
+#' Creates a visualization of the mediation analysis results. By default,
+#' produces a coefficient plot. Use `type = "effect"` for an effect size
+#' pie chart.
+#'
+#' @param x the `rmedsem` object
+#' @param type character; either `"coef"` (default) for a coefficient plot or
+#'   `"effect"` for an effect size plot
+#' @param ... additional arguments passed to [plot_coef()] or [plot_effect()]
+#' @return a `ggplot` object
+#' @export
+plot.rmedsem <- function(x, type = c("coef", "effect"), ...) {
+  type <- match.arg(type)
+  if (type == "coef") {
+    plot_coef(x, ...)
+  } else {
+    plot_effect(x, ...)
+  }
+}
+
 #' Convert an rmedsem Object to a Data Frame
 #'
 #' @param x the `rmedsem` object
@@ -52,8 +86,5 @@ as.data.frame.rmedsem <- function(x, ...){
   df <- purrr::map_dfr(res$est.methods, ~ res[[.x]]) |>
     dplyr::bind_cols(method=res$est.methods, package=res$package) |>
     dplyr::relocate(package,method)
-  #if(format=="long"){
-  #  df <- df |> tidyr::gather(variable, value, -package, -method)
-  #}
   return(df)
 }

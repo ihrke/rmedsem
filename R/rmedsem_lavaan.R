@@ -31,10 +31,7 @@
 rmedsem.lavaan <- function(mod, indep, med, dep, standardized=TRUE, mcreps=NULL,
                            approach=c("bk", "zlc"), p.threshold=0.05,
                            effect.size=c("RIT","RID")){
-  # for testing
-  #indep="math"; med="read"; dep="science";
-  #indep="SES"; med="Alien67"; dep="Alien71";
-  #indep="ind60"; med="dem60"; dep="dem65"
+  validate_rmedsem_args(indep, med, dep, approach, p.threshold, effect.size)
   N <- lavaan::nobs(mod)
   if(is.null(mcreps) || mcreps < N){
     mcreps=N
@@ -151,6 +148,6 @@ rmedsem.lavaan <- function(mod, indep, med, dep, standardized=TRUE, mcreps=NULL,
                             coefs=list(moi=coef_moi, dom=coef_dom, doi=coef_doi),
                             pvals=list(moi=pval_moi, dom=pval_dom, doi=pval_doi))
   )
-  class(res) <- "rmedsem"
+  class(res) <- c("rmedsem_lavaan", "rmedsem")
   return(res)
 }

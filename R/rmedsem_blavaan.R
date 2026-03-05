@@ -35,6 +35,7 @@ rmedsem.blavaan <- function(mod, indep, med, dep,
                             effect.size=c("RIT","RID")){
   if (!requireNamespace("blavaan", quietly = TRUE))
     stop("Package 'blavaan' is required for this method. Please install it.")
+  validate_rmedsem_args(indep, med, dep, approach, p.threshold, effect.size)
   ## convergence check
   if(max(blavaan::blavInspect(mod, "rhat"))>1.05)
     warning("Some Rhat>1.05, check convergence!")
@@ -119,6 +120,6 @@ rmedsem.blavaan <- function(mod, indep, med, dep,
               #              coefs=list(moi=coef_moi, dom=coef_dom, doi=coef_doi),
               #              pvals=list(moi=pval_moi, dom=pval_dom, doi=pval_doi))
   )
-  class(res) <- "rmedsem"
+  class(res) <- c("rmedsem_blavaan", "rmedsem")
   res
 }

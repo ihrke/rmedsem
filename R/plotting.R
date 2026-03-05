@@ -5,6 +5,10 @@
 #' @return a `ggplot` object
 #' @export
 plot_effect <- function(res, description=TRUE){
+  if (!inherits(res, "rmedsem"))
+    stop("'res' must be an 'rmedsem' object.")
+  if (is.null(res$effect.size$RIT) || is.null(res$effect.size$RID))
+    stop("Both RIT and RID effect sizes are required. Re-run rmedsem() with effect.size = c('RIT', 'RID').")
   es <- res$effect.size
   if(es$RIT$tot_eff<es$RIT$ind_eff){
     warning("Total effect is smaller than indirect effect!\nEffect sizes should not be interpreted.")
@@ -46,6 +50,8 @@ plot_effect <- function(res, description=TRUE){
 #' @return a `ggplot` object
 #' @export
 plot_coef <- function(res){
+  if (!inherits(res, "rmedsem"))
+    stop("'res' must be an 'rmedsem' object.")
   purrr::map_dfr(res$est.methods, \(method){
     data.frame(method=method, effect="indirect", res[[method]][c("coef","lower","upper")] |> t())
   }) -> d

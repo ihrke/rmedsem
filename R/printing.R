@@ -290,8 +290,8 @@ print.rmedsem <- function(x, digits=3, indent=3, ...){
   cat(with(res$vars, sprintf("Mediation effect: '%s' -> '%s' -> '%s'\n\n",
                              indep,med,dep)))
 
-  if(res$package=="blavaan"){
-    print.rmedsem.blavaan(res,digits=digits, indent=indent)
+  if(inherits(res, "rmedsem_blavaan")){
+    print.rmedsem.blavaan(res, digits=digits, indent=indent)
   } else {
     print.rmedsem.lavaan.csem.modsem(res, digits=digits, indent=indent)
   }
