@@ -16,6 +16,7 @@ rmedsem(
   effect.size = c("RIT", "RID"),
   standardized = TRUE,
   mcreps = NULL,
+  ci.two.tailed = 0.95,
   ...
 )
 ```
@@ -60,6 +61,11 @@ rmedsem(
 
   An integer determining the number of monte-carlo samples.
 
+- ci.two.tailed:
+
+  A double giving the confidence level for two-tailed confidence
+  intervals (default 0.95)
+
 - ...:
 
   additional arguments (currently unused)
@@ -85,11 +91,11 @@ print(out)
 #> Mediation effect: 'math' -> 'read' -> 'science'
 #> 
 #>                         Sobel         Delta    Monte-Carlo
-#> Indirect effect        0.2506        0.2506         0.2506
-#> Std. Err.              0.0456        0.0456         0.0452
-#> z-value                5.5006        5.5006         5.5202
-#> p-value              3.79e-08      3.79e-08       3.39e-08
-#> CI              [0.161, 0.34] [0.161, 0.34] [0.164, 0.341]
+#> Indirect effect        0.2506         0.251         0.2506
+#> Std. Err.              0.0456         0.046         0.0456
+#> z-value                5.5006         5.446         5.4679
+#> p-value              3.79e-08      5.15e-08       4.55e-08
+#> CI              [0.161, 0.34] [0.16, 0.341] [0.164, 0.342]
 #> 
 #> Baron and Kenny approach to testing mediation
 #>    STEP 1 - 'math:read' (X -> M) with B=0.662 and p=0.000

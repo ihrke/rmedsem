@@ -46,11 +46,11 @@ print(out)
 #> Mediation effect: 'math' -> 'read' -> 'science'
 #> 
 #>                         Sobel         Delta    Monte-Carlo
-#> Indirect effect        0.2506        0.2506          0.251
-#> Std. Err.              0.0456        0.0456          0.048
-#> z-value                5.5006        5.5006          5.365
-#> p-value              3.79e-08      3.79e-08       8.08e-08
-#> CI              [0.161, 0.34] [0.161, 0.34] [0.168, 0.355]
+#> Indirect effect        0.2506         0.251         0.2506
+#> Std. Err.              0.0456         0.046         0.0485
+#> z-value                5.5006         5.446         5.3155
+#> p-value              3.79e-08      5.15e-08       1.06e-07
+#> CI              [0.161, 0.34] [0.16, 0.341] [0.167, 0.356]
 #> 
 #> Baron and Kenny approach to testing mediation
 #>    STEP 1 - 'math:read' (X -> M) with B=0.662 and p=0.000
