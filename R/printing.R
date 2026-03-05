@@ -244,28 +244,28 @@ print.rmedsem.lavaan.csem.modsem <- function(res, digits=3, indent=3, ci_moderat
     if (ci_moderation) pattern <- paste0(pattern, "ci = [%5.2f,%5.2f]\n")
     else               pattern <- paste0(pattern, "\n")
 
+    fmt_mod <- function(lhs, rhs, coefs) {
+      if (ci_moderation)
+        sprintf(pattern, lhs, rhs, moderator,
+                coefs$coef, coefs$se, coefs$pval,
+                coefs$lower, coefs$upper)
+      else
+        sprintf(pattern, lhs, rhs, moderator,
+                coefs$coef, coefs$se, coefs$pval)
+    }
+
     for (coefs in moderation$coefs) {
-      lhs <- coefs$lhs
-      rhs <- coefs$rhs
-
       if (coefs$coef == 0 && coefs$se == 0) next
-
-      cat(sprintf(pattern, lhs, rhs, moderator, 
-                  coefs$coef, coefs$se, coefs$pval, 
-                  coefs$lower, coefs$upper))
+      cat(fmt_mod(coefs$lhs, coefs$rhs, coefs))
     }
 
     cat("\nIndirect moderation effect\n")
     indirect <- moderation$indirect.effect
-    cat(sprintf(pattern, indirect$lhs, indirect$rhs, moderator, 
-                indirect$coef, indirect$se, indirect$pval, 
-                indirect$lower, indirect$upper))
+    cat(fmt_mod(indirect$lhs, indirect$rhs, indirect))
 
     cat("\nTotal moderation effect\n")
     total <- moderation$total.effect
-    cat(sprintf(pattern, indirect$lhs, indirect$rhs, moderator, 
-                total$coef, total$se, total$pval, 
-                total$lower, total$upper))
+    cat(fmt_mod(indirect$lhs, indirect$rhs, total))
    
     cat("\n")
   }
