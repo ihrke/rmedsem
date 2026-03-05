@@ -1,4 +1,4 @@
-#' Calculate a mediation analysis for an SEM based on a blavaan model.
+#' Mediation Analysis for Blavaan Models
 #'
 #' @param mod A fitted SEM model (blavaan). Note that the model has to be fit using
 #'            `save.lvs=T` if the mediation model contains latent variables.
@@ -12,7 +12,7 @@
 #' @export
 #'
 #' @examples
-#'
+#' \donttest{
 #' model02 <- "
 #'   # measurement model
 #'     ind60 =~ x1 + x2 + x3
@@ -22,16 +22,19 @@
 #'     dem60 ~ ind60
 #'     dem65 ~ ind60 + dem60
 #' "
-#' library(blavaan)
-#' mod <- bsem(model02, data=lavaan::PoliticalDemocracy, std.lv=TRUE,
-#'             meanstructure=TRUE, n.chains=1,
-#'             save.lvs=TRUE, burnin=500, sample=500)
-#' out <- rmedsem(mod,  indep="ind60", med="dem60", dep="dem65")
-#' print(out)
-#'
+#' if (requireNamespace("blavaan", quietly = TRUE)) {
+#'   mod <- blavaan::bsem(model02, data=lavaan::PoliticalDemocracy, std.lv=TRUE,
+#'               meanstructure=TRUE, n.chains=1,
+#'               save.lvs=TRUE, burnin=500, sample=500)
+#'   out <- rmedsem(mod,  indep="ind60", med="dem60", dep="dem65")
+#'   print(out)
+#' }
+#' }
 rmedsem.blavaan <- function(mod, indep, med, dep,
                             approach=c("bk", "zlc"), p.threshold=0.05,
                             effect.size=c("RIT","RID")){
+  if (!requireNamespace("blavaan", quietly = TRUE))
+    stop("Package 'blavaan' is required for this method. Please install it.")
   ## convergence check
   if(max(blavaan::blavInspect(mod, "rhat"))>1.05)
     warning("Some Rhat>1.05, check convergence!")

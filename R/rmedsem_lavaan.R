@@ -1,4 +1,4 @@
-#' Calculate a mediation analysis for an SEM based on a lavaan model.
+#' Mediation Analysis for Lavaan Models
 #'
 #' @param mod A fitted SEM model (lavaan).
 #' @param indep A string indicating the name of the independent variable in the model.

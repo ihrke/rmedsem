@@ -1,4 +1,4 @@
-#' Calculate a mediation analysis for an SEM based on a modsem model.
+#' Mediation Analysis for Modsem Models
 #'
 #' @param mod A fitted SEM model (modsem).
 #' @param indep A string indicating the name of the independent variable in the model.
@@ -18,34 +18,35 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{
-#' 
-#' m <- "
-#'   OwnLook =~ smv_attr_face + smv_attr_body + smv_sexy
-#'   SelfEst =~ ses_satis + ses_qualities + ses_able_todo
-#'   MentWell =~ mwb_optimistic + mwb_useful + mwb_energy
-#'   smv =~ smv_kind + smv_caring + smv_understanding +
-#'     smv_make_laughh + smv_funny + smv_sociable
-#'   SelfEst ~ OwnLook + smv + smv:OwnLook
-#'   MentWell ~ OwnLook + SelfEst + smv + smv:OwnLook
-#' "
-#' 
-#' 
-#' est <- modsem(m, data = mchoice2, method="lms")
+#' \donttest{
+#' if (requireNamespace("modsem", quietly = TRUE)) {
+#'   m <- "
+#'     OwnLook =~ smv_attr_face + smv_attr_body + smv_sexy
+#'     SelfEst =~ ses_satis + ses_qualities + ses_able_todo
+#'     MentWell =~ mwb_optimistic + mwb_useful + mwb_energy
+#'     smv =~ smv_kind + smv_caring + smv_understanding +
+#'       smv_make_laughh + smv_funny + smv_sociable
+#'     SelfEst ~ OwnLook + smv + smv:OwnLook
+#'     MentWell ~ OwnLook + SelfEst + smv + smv:OwnLook
+#'   "
 #'
-#' # mediated moderation
-#' rmedsem(indep="smv:OwnLook", dep="MentWell", med="SelfEst", mod=est)
+#'   est <- modsem::modsem(m, data = mchoice, method="lms")
 #'
-#' # moderated mediation
-#' rmedsem(indep="OwnLook", dep="MentWell", med="SelfEst", mod=est, moderator="smv")
-#' 
+#'   # mediated moderation
+#'   rmedsem(indep="smv:OwnLook", dep="MentWell", med="SelfEst", mod=est)
+#'
+#'   # moderated mediation
+#'   rmedsem(indep="OwnLook", dep="MentWell", med="SelfEst", mod=est, moderator="smv")
+#' }
 #' }
 #'
-rmedsem.modsem <- function(mod, indep, med, dep, moderator=NULL, 
+rmedsem.modsem <- function(mod, indep, med, dep, moderator=NULL,
                            standardized=TRUE, mcreps=NULL,
                            approach=c("bk", "zlc"), p.threshold=0.05,
                            effect.size=c("RIT","RID"), ci.two.tailed=0.95){
-  ci.width <- qnorm(1-(1-ci.two.tailed)/2)
+  if (!requireNamespace("modsem", quietly = TRUE))
+    stop("Package 'modsem' is required for this method. Please install it.")
+  ci.width <- stats::qnorm(1-(1-ci.two.tailed)/2)
 
   # if estimated lavaan, we just extract the lavaan document
   N <- modsem::modsem_nobs(mod)

@@ -1,6 +1,6 @@
-#' Data from a survey on mate-choice in Trondheim.
+#' Mate-Choice Survey Data from Trondheim
 #'
-#' Data from a survey
+#' Data from a survey on mate-choice in Trondheim.
 #'
 #' @format ## `mchoice`
 #' A data frame with 1090 rows and 9 columns:
@@ -25,7 +25,7 @@
 "mchoice"
 
 
-#' Data from a survey in a fitness center in Trondheim.
+#' Fitness Center Survey Data from Trondheim
 #'
 #' Data from a survey in a fitness center in Trondheim.
 #'
@@ -48,7 +48,7 @@
 "workout"
 
 
-#' The HSBdemo dataset is a dataset based off 200 entering high school students.
+#' High School and Beyond Demo Dataset
 #'
 #' @format ## `hsbdemo`
 #' A data frame with 20 rows and 13 columns:

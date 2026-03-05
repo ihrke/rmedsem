@@ -1,20 +1,21 @@
-#' indent s by indent many spaces; merge into a single string
+#' Indent and merge strings
 #' @param s a string
 #' @param indent an integer how much to indent s
 #' @return indented string
-#'
+#' @keywords internal
 pre_indent_merge <- function(s, indent){
   indstr <- strrep(" ", indent)
   sapply(s, \(.x) paste0(indstr,.x,collapse="")) |> paste0(collapse="")
 }
 
 
-#' Function for printing `rmedsem` objects based on `blavaan` models.
+#' Print rmedsem Results for Blavaan Models
 #'
 #' @param res the `rmedsem` object to print
 #' @param digits an integer, number of digits to print in table
-#' @return `rmedsem` obect `res`
-#'
+#' @param indent an integer, number of spaces to indent
+#' @return `rmedsem` object `res` (invisibly)
+#' @keywords internal
 print.rmedsem.blavaan <- function(res, digits=3, indent=3){
   # indentation
   indstr <- strrep(" ", indent)
@@ -47,12 +48,13 @@ print.rmedsem.blavaan <- function(res, digits=3, indent=3){
 }
 
 
-#' Function for printing the effect size from the estimation methods
+#' Print Effect Sizes from Mediation Analysis
 #'
 #' @param res the `rmedsem` object to print
 #' @param digits an integer, number of digits to print in table
-#' @return `rmedsem` obect `res`
-#'
+#' @param indent an integer, number of spaces to indent
+#' @return `rmedsem` object `res` (invisibly)
+#' @keywords internal
 print_effectsize <- function(res, digits=3, indent=3){
   es=res$effect.size
   # indentation
@@ -93,14 +95,15 @@ print_effectsize <- function(res, digits=3, indent=3){
 }
 
 
-#' Function for printing `rmedsem` objects
+#' Print rmedsem Results for Lavaan, cSEM, and Modsem Models
 #'
 #' @param res the `rmedsem` object to print
 #' @param digits an integer, number of digits to print in table
 #' @param indent an integer, number of spaces to indent
-#' @param ci_moderation a logical, whether to print confidence intervals for 
+#' @param ci_moderation a logical, whether to print confidence intervals for
 #' direct, indirect and total moderation effects
-#' @return `rmedsem` obect `res`
+#' @return `rmedsem` object `res` (invisibly)
+#' @keywords internal
 print.rmedsem.lavaan.csem.modsem <- function(res, digits=3, indent=3, ci_moderation=FALSE){
   # indentation
   indstr <- strrep(" ", indent)
@@ -269,14 +272,17 @@ print.rmedsem.lavaan.csem.modsem <- function(res, digits=3, indent=3, ci_moderat
 }
 
 
-#' Function for printing `rmedsem` objects
+#' Print an rmedsem Object
 #'
-#' @param res the `rmedsem` object to print
+#' @param x the `rmedsem` object to print
 #' @param digits an integer, number of digits to print in table
-#' @return `rmedsem` obect `res`
+#' @param indent an integer, number of spaces to indent
+#' @param ... additional arguments (currently unused)
+#' @return the `rmedsem` object `x` (invisibly)
 #'
 #' @export
-print.rmedsem <- function(res, digits=3, indent=3){
+print.rmedsem <- function(x, digits=3, indent=3, ...){
+  res <- x
 
   cat(sprintf("Significance testing of indirect effect (%s)\n",
               ifelse(res$standardized, "standardized", "unstandardized")))
@@ -289,6 +295,7 @@ print.rmedsem <- function(res, digits=3, indent=3){
   } else {
     print.rmedsem.lavaan.csem.modsem(res, digits=digits, indent=indent)
   }
+  invisible(x)
 }
 
 

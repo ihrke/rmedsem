@@ -1,4 +1,4 @@
-#' Calculate a mediation analysis for an SEM based on a cSEM model.
+#' Mediation Analysis for cSEM Models
 #'
 #' @param mod A fitted SEM model (cSEM).
 #' @param indep A string indicating the name of the independent variable in the model.
@@ -19,6 +19,8 @@
 rmedsem.cSEMResults <- function(mod, indep, med, dep, nbootstrap=1000,
                                 approach=c("bk", "zlc"), p.threshold=0.05,
                                 effect.size=c("RIT","RID")){
+  if (!requireNamespace("cSEM", quietly = TRUE))
+    stop("Package 'cSEM' is required for this method. Please install it.")
   #indep="Math"; med="Read"; dep="Science";
 
   N <- nrow(mod$Information$Data)
