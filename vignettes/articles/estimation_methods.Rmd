@@ -182,8 +182,8 @@ science ~ read + math
 mod <- bsem(mod.txt, data=rmedsem::hsbdemo, 
             n.chains=3, burnin=500, sample=500, 
             bcontrol = list(cores = 3))
-rmedsem(mod, indep="math", med="read", dep="science", 
-        approach = c("bk","zlc"))
+out <- rmedsem(mod, indep="math", med="read", dep="science",
+               approach = c("bk","zlc"))
 print(out)
 ```
 

@@ -34,7 +34,7 @@ In case the model has been estimated using `blavaan`, posterior estimates are us
 
 Note: Zhao et al. suggest bootstrap test of the indirect effect, medsem uses the Monte Carlo test instead as it is less time-consuming and still acceptable (see Jose(2013), page 122).
 
-Note: For models estimated with `cSEM`, the package uses boostrapping instead of Monte Carlo.
+Note: For models estimated with `cSEM`, the package uses bootstrapping instead of Monte Carlo.
 
 Note: For models estimated with `blavaan`, the package uses posterior estimates.
 

@@ -47,7 +47,7 @@ We start with a simple example using the `hsbdemo` dataset included in
 `rmedsem`. In this model, we include only observed variables and have a
 simple case in which mathematical skills `math` directly affect
 performance in science-related areas `science` and where part of this
-association is mediated thrugh their abiliy to `read`.
+association is mediated through their ability to `read`.
 
 <div class="grViz html-widget html-fill-item" id="htmlwidget-f5ce67fdaded799d734a" style="width:100%;height:480px;"></div>
 <script type="application/json" data-for="htmlwidget-f5ce67fdaded799d734a">{"x":{"diagram":"\ndigraph {\n  rankdir=LR;\n    math -> read;\n    read -> science;\n    math -> science;\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
@@ -71,7 +71,7 @@ mod <- lavaan::sem(mod.txt, data=rmedsem::hsbdemo)
 We can inspect the estimated coefficients using `lavaan`s methods
 (`summary()` etc). To run the mediation analysis, we use `rmedsem()` and
 specify the independent variable (`indep="math"`), the mediator
-(`med="red"`) and the dependent variable (`dep="science"`). The output
+(`med="read"`) and the dependent variable (`dep="science"`). The output
 is captured in an output object `out` which implements a printing
 function (`print.rmedsem()`) to show a summary of the results:
 
