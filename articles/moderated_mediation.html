@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">rmedsem</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -81,7 +81,7 @@ referred to as moderated mediation or mediated moderation effects
 mediated moderation. Mediated moderation is available for cases
 corresponding to “Model 2” from Preacher et al., 2007 shown in the
 following graph:</p>
-<p><img src="moderated_mediation_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
+<p><img src="moderated_mediation_files/figure-html/unnamed-chunk-2-1.png" class="r-plt" alt="" width="700"></p>
 <p>Mathematically, this model can be specified as</p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right"><mi>M</mi></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><msub><mi>a</mi><mn>0</mn></msub><mo>+</mo><msub><mi>a</mi><mn>1</mn></msub><mi>X</mi><mo>+</mo><msub><mi>a</mi><mn>2</mn></msub><mi>W</mi><mo>+</mo><msub><mi>a</mi><mn>3</mn></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>X</mi><mo>×</mo><mi>W</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><msub><mi>ε</mi><mi>M</mi></msub></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"><mi>Y</mi></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><msub><mi>b</mi><mn>0</mn></msub><mo>+</mo><msub><mi>b</mi><mn>1</mn></msub><mi>M</mi><mo>+</mo><msub><mi>b</mi><mn>2</mn></msub><mi>X</mi><mo>+</mo><msub><mi>b</mi><mn>3</mn></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>X</mi><mo>×</mo><mi>W</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><msub><mi>ε</mi><mi>Y</mi></msub></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{align*}
 M &amp;= a_0 + a_1 X + a_2 W + a_3 (X \times W) + \varepsilon_M\\
@@ -138,32 +138,32 @@ can test whether the interaction between <code>OwnLook</code> and
 <span><span class="co">#&gt; Model estimated with package 'modsem'</span></span>
 <span><span class="co">#&gt; Mediation effect: 'OwnPers:OwnLook' -&gt; 'SelfEst' -&gt; 'MentWell'</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;                             Sobel             Delta      Monte-Carlo</span></span>
-<span><span class="co">#&gt; Indirect effect           -0.0704           -0.0704          -0.0704</span></span>
-<span><span class="co">#&gt; Std. Err.                  0.0188            0.0187           0.0183</span></span>
-<span><span class="co">#&gt; z-value                   -3.7444           -3.7551          -3.8661</span></span>
-<span><span class="co">#&gt; p-value                  0.000181          0.000173         0.000111</span></span>
-<span><span class="co">#&gt; CI              [-0.107, -0.0335] [-0.107, -0.0336] [-0.108, -0.036]</span></span>
+<span><span class="co">#&gt;                             Sobel             Delta       Monte-Carlo</span></span>
+<span><span class="co">#&gt; Indirect effect           -0.0809           -0.0809           -0.0809</span></span>
+<span><span class="co">#&gt; Std. Err.                  0.0203            0.0203            0.0200</span></span>
+<span><span class="co">#&gt; z-value                   -3.9791           -3.9802           -4.0453</span></span>
+<span><span class="co">#&gt; p-value                  6.92e-05          6.89e-05          5.22e-05</span></span>
+<span><span class="co">#&gt; CI              [-0.121, -0.0411] [-0.121, -0.0411] [-0.121, -0.0431]</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Baron and Kenny approach to testing mediation</span></span>
-<span><span class="co">#&gt;    STEP 1 - 'OwnPers:OwnLook:SelfEst' (X -&gt; M) with B=-0.135 and p=0.000</span></span>
+<span><span class="co">#&gt;    STEP 1 - 'OwnPers:OwnLook:SelfEst' (X -&gt; M) with B=-0.155 and p=0.000</span></span>
 <span><span class="co">#&gt;    STEP 2 - 'SelfEst:MentWell' (M -&gt; Y) with B=0.521 and p=0.000</span></span>
-<span><span class="co">#&gt;    STEP 3 - 'OwnPers:OwnLook:MentWell' (X -&gt; Y) with B=-0.007 and p=0.852</span></span>
+<span><span class="co">#&gt;    STEP 3 - 'OwnPers:OwnLook:MentWell' (X -&gt; Y) with B=-0.007 and p=0.822</span></span>
 <span><span class="co">#&gt;             As STEP 1, STEP 2 and the Sobel's test above are significant</span></span>
 <span><span class="co">#&gt;             and STEP 3 is not significant the mediation is complete.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Zhao, Lynch &amp; Chen's approach to testing mediation</span></span>
 <span><span class="co">#&gt; Based on p-value estimated using Monte-Carlo</span></span>
-<span><span class="co">#&gt;   STEP 1 - 'OwnPers:OwnLook:MentWell' (X -&gt; Y) with B=-0.007 and p=0.852</span></span>
+<span><span class="co">#&gt;   STEP 1 - 'OwnPers:OwnLook:MentWell' (X -&gt; Y) with B=-0.007 and p=0.822</span></span>
 <span><span class="co">#&gt;             As the Monte-Carlo test above is significant and STEP 1 is not</span></span>
 <span><span class="co">#&gt;             significant there indirect-only mediation (full mediation).</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Effect sizes</span></span>
 <span><span class="co">#&gt;    RIT = (Indirect effect / Total effect)</span></span>
-<span><span class="co">#&gt;          Total effect 0.078 is too small to calculate RIT</span></span>
+<span><span class="co">#&gt;          Total effect 0.088 is too small to calculate RIT</span></span>
 <span><span class="co">#&gt;    RID = (Indirect effect / Direct effect)</span></span>
-<span><span class="co">#&gt;          (0.070/0.007) = 9.561</span></span>
-<span><span class="co">#&gt;          That is, the mediated effect is about 9.6 times as</span></span>
+<span><span class="co">#&gt;          (0.081/0.007) = 11.849</span></span>
+<span><span class="co">#&gt;          That is, the mediated effect is about 11.8 times as</span></span>
 <span><span class="co">#&gt;          large as the direct effect of 'OwnPers:OwnLook' on 'MentWell'</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -183,45 +183,46 @@ from <code>OwnLook</code> to <code>MentWell</code> through
 <span><span class="co">#&gt; Model estimated with package 'modsem'</span></span>
 <span><span class="co">#&gt; Mediation effect: 'OwnLook' -&gt; 'SelfEst' -&gt; 'MentWell'</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;                          Sobel          Delta   Monte-Carlo</span></span>
-<span><span class="co">#&gt; Indirect effect         0.2539         0.2539         0.254</span></span>
-<span><span class="co">#&gt; Std. Err.               0.0358         0.0365         0.036</span></span>
-<span><span class="co">#&gt; z-value                 7.1025         6.9626         7.111</span></span>
-<span><span class="co">#&gt; p-value               1.23e-12       3.34e-12      1.15e-12</span></span>
-<span><span class="co">#&gt; CI              [0.184, 0.324] [0.182, 0.325] [0.191, 0.33]</span></span>
+<span><span class="co">#&gt;                          Sobel          Delta    Monte-Carlo</span></span>
+<span><span class="co">#&gt; Indirect effect         0.2532         0.2532         0.2532</span></span>
+<span><span class="co">#&gt; Std. Err.               0.0287         0.0287         0.0274</span></span>
+<span><span class="co">#&gt; z-value                 8.8203         8.8085         9.2436</span></span>
+<span><span class="co">#&gt; p-value                      0              0              0</span></span>
+<span><span class="co">#&gt; CI              [0.197, 0.309] [0.197, 0.309] [0.201, 0.307]</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Baron and Kenny approach to testing mediation</span></span>
-<span><span class="co">#&gt;    STEP 1 - 'OwnLook:SelfEst' (X -&gt; M) with B=0.487 and p=0.000</span></span>
+<span><span class="co">#&gt;    STEP 1 - 'OwnLook:SelfEst' (X -&gt; M) with B=0.486 and p=0.000</span></span>
 <span><span class="co">#&gt;    STEP 2 - 'SelfEst:MentWell' (M -&gt; Y) with B=0.521 and p=0.000</span></span>
-<span><span class="co">#&gt;    STEP 3 - 'OwnLook:MentWell' (X -&gt; Y) with B=0.011 and p=0.835</span></span>
+<span><span class="co">#&gt;    STEP 3 - 'OwnLook:MentWell' (X -&gt; Y) with B=0.011 and p=0.810</span></span>
 <span><span class="co">#&gt;             As STEP 1, STEP 2 and the Sobel's test above are significant</span></span>
 <span><span class="co">#&gt;             and STEP 3 is not significant the mediation is complete.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Zhao, Lynch &amp; Chen's approach to testing mediation</span></span>
 <span><span class="co">#&gt; Based on p-value estimated using Monte-Carlo</span></span>
-<span><span class="co">#&gt;   STEP 1 - 'OwnLook:MentWell' (X -&gt; Y) with B=0.011 and p=0.835</span></span>
+<span><span class="co">#&gt;   STEP 1 - 'OwnLook:MentWell' (X -&gt; Y) with B=0.011 and p=0.810</span></span>
 <span><span class="co">#&gt;             As the Monte-Carlo test above is significant and STEP 1 is not</span></span>
 <span><span class="co">#&gt;             significant there indirect-only mediation (full mediation).</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Effect sizes</span></span>
 <span><span class="co">#&gt;    RIT = (Indirect effect / Total effect)</span></span>
-<span><span class="co">#&gt;          (0.254/0.265) = 0.958</span></span>
+<span><span class="co">#&gt;          (0.253/0.265) = 0.957</span></span>
 <span><span class="co">#&gt;          Meaning that about  96% of the effect of 'OwnLook'</span></span>
 <span><span class="co">#&gt;          on 'MentWell' is mediated by 'SelfEst'</span></span>
 <span><span class="co">#&gt;    RID = (Indirect effect / Direct effect)</span></span>
-<span><span class="co">#&gt;          (0.254/0.011) = 22.585</span></span>
-<span><span class="co">#&gt;          That is, the mediated effect is about 22.6 times as</span></span>
+<span><span class="co">#&gt;          (0.253/0.011) = 22.233</span></span>
+<span><span class="co">#&gt;          That is, the mediated effect is about 22.2 times as</span></span>
 <span><span class="co">#&gt;          large as the direct effect of 'OwnLook' on 'MentWell'</span></span>
 <span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Direct moderation effects</span></span>
-<span><span class="co">#&gt;    SelfEst  -&gt; OwnLook  | OwnPers: B = -0.135, se = 0.034, p = 0.000</span></span>
-<span><span class="co">#&gt;    MentWell -&gt; OwnLook  | OwnPers: B = -0.007, se = 0.040, p = 0.852</span></span>
+<span><span class="co">#&gt;    SelfEst  -&gt; OwnLook  | OwnPers: B = -0.155, se = 0.037, p = 0.000</span></span>
+<span><span class="co">#&gt;    MentWell -&gt; OwnLook  | OwnPers: B = -0.007, se = 0.030, p = 0.822</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Indirect moderation effect</span></span>
-<span><span class="co">#&gt;    SelfEst  -&gt; OwnLook  | OwnPers: B = -0.070, se = 0.019, p = 0.000</span></span>
+<span><span class="co">#&gt;    SelfEst  -&gt; OwnLook  | OwnPers: B = -0.081, se = 0.020, p = 0.000</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Total moderation effect</span></span>
-<span><span class="co">#&gt;    SelfEst  -&gt; OwnLook  | OwnPers: B = -0.078, se = 0.038, p = 0.041</span></span></code></pre></div>
+<span><span class="co">#&gt;    SelfEst  -&gt; OwnLook  | OwnPers: B = -0.088, se = 0.034, p = 0.010</span></span></code></pre></div>
 <p>In this case the difference between a <em>moderated mediation</em>
 and <em>mediated moderation</em> is purely semantic. Indeed, the
 indirect and total moderation effect when interpreted as a moderated
@@ -260,46 +261,47 @@ accordingly.</p>
 <span><span class="co">#&gt; Model estimated with package 'modsem'</span></span>
 <span><span class="co">#&gt; Mediation effect: 'OwnLook' -&gt; 'SelfEst' -&gt; 'MentWell'</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;                          Sobel          Delta   Monte-Carlo</span></span>
-<span><span class="co">#&gt; Indirect effect         0.2472         0.2472         0.247</span></span>
-<span><span class="co">#&gt; Std. Err.               0.0401         0.0362         0.037</span></span>
-<span><span class="co">#&gt; z-value                 6.1646         6.8350         6.603</span></span>
-<span><span class="co">#&gt; p-value               7.07e-10        8.2e-12      4.03e-11</span></span>
-<span><span class="co">#&gt; CI              [0.169, 0.326] [0.176, 0.318] [0.177, 0.32]</span></span>
+<span><span class="co">#&gt;                          Sobel          Delta    Monte-Carlo</span></span>
+<span><span class="co">#&gt; Indirect effect         0.2501         0.2501         0.2501</span></span>
+<span><span class="co">#&gt; Std. Err.               0.0284         0.0282         0.0282</span></span>
+<span><span class="co">#&gt; z-value                 8.8053         8.8564         8.9127</span></span>
+<span><span class="co">#&gt; p-value                      0              0              0</span></span>
+<span><span class="co">#&gt; CI              [0.194, 0.306] [0.195, 0.305] [0.197, 0.307]</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Baron and Kenny approach to testing mediation</span></span>
-<span><span class="co">#&gt;    STEP 1 - 'OwnLook:SelfEst' (X -&gt; M) with B=0.488 and p=0.000</span></span>
-<span><span class="co">#&gt;    STEP 2 - 'SelfEst:MentWell' (M -&gt; Y) with B=0.507 and p=0.000</span></span>
-<span><span class="co">#&gt;    STEP 3 - 'OwnLook:MentWell' (X -&gt; Y) with B=0.031 and p=0.622</span></span>
+<span><span class="co">#&gt;    STEP 1 - 'OwnLook:SelfEst' (X -&gt; M) with B=0.487 and p=0.000</span></span>
+<span><span class="co">#&gt;    STEP 2 - 'SelfEst:MentWell' (M -&gt; Y) with B=0.513 and p=0.000</span></span>
+<span><span class="co">#&gt;    STEP 3 - 'OwnLook:MentWell' (X -&gt; Y) with B=0.031 and p=0.519</span></span>
 <span><span class="co">#&gt;             As STEP 1, STEP 2 and the Sobel's test above are significant</span></span>
 <span><span class="co">#&gt;             and STEP 3 is not significant the mediation is complete.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Zhao, Lynch &amp; Chen's approach to testing mediation</span></span>
 <span><span class="co">#&gt; Based on p-value estimated using Monte-Carlo</span></span>
-<span><span class="co">#&gt;   STEP 1 - 'OwnLook:MentWell' (X -&gt; Y) with B=0.031 and p=0.622</span></span>
+<span><span class="co">#&gt;   STEP 1 - 'OwnLook:MentWell' (X -&gt; Y) with B=0.031 and p=0.519</span></span>
 <span><span class="co">#&gt;             As the Monte-Carlo test above is significant and STEP 1 is not</span></span>
 <span><span class="co">#&gt;             significant there indirect-only mediation (full mediation).</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Effect sizes</span></span>
 <span><span class="co">#&gt;    RIT = (Indirect effect / Total effect)</span></span>
-<span><span class="co">#&gt;          (0.247/0.278) = 0.889</span></span>
+<span><span class="co">#&gt;          (0.250/0.281) = 0.890</span></span>
 <span><span class="co">#&gt;          Meaning that about  89% of the effect of 'OwnLook'</span></span>
 <span><span class="co">#&gt;          on 'MentWell' is mediated by 'SelfEst'</span></span>
 <span><span class="co">#&gt;    RID = (Indirect effect / Direct effect)</span></span>
-<span><span class="co">#&gt;          (0.247/0.031) = 8.023</span></span>
-<span><span class="co">#&gt;          That is, the mediated effect is about 8.0 times as</span></span>
+<span><span class="co">#&gt;          (0.250/0.031) = 8.110</span></span>
+<span><span class="co">#&gt;          That is, the mediated effect is about 8.1 times as</span></span>
 <span><span class="co">#&gt;          large as the direct effect of 'OwnLook' on 'MentWell'</span></span>
 <span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Direct moderation effects</span></span>
-<span><span class="co">#&gt;    SelfEst  -&gt; OwnLook  | OwnPers: B = -0.137, se = 0.045, p = 0.002</span></span>
-<span><span class="co">#&gt;    MentWell -&gt; SelfEst  | OwnPers: B = 0.084, se = 0.055, p = 0.128</span></span>
-<span><span class="co">#&gt;    MentWell -&gt; OwnLook  | OwnPers: B = -0.077, se = 0.056, p = 0.171</span></span>
+<span><span class="co">#&gt;    SelfEst  -&gt; OwnLook  | OwnPers: B = -0.137, se = 0.029, p = 0.000</span></span>
+<span><span class="co">#&gt;    MentWell -&gt; SelfEst  | OwnPers: B = 0.082, se = 0.045, p = 0.068</span></span>
+<span><span class="co">#&gt;    MentWell -&gt; OwnLook  | OwnPers: B = -0.085, se = 0.054, p = 0.116</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Indirect moderation effect</span></span>
-<span><span class="co">#&gt;    SelfEst  -&gt; OwnLook  | OwnPers: B = -0.040, se = 0.035, p = 0.252</span></span>
+<span><span class="co">#&gt;    SelfEst  -&gt; OwnLook  | OwnPers: B = -0.041, se = 0.024, p = 0.082</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Total moderation effect</span></span>
-<span><span class="co">#&gt;    SelfEst  -&gt; OwnLook  | OwnPers: B = -0.117, se = 0.053, p = 0.027</span></span></code></pre></div>
+<span><span class="co">#&gt;    SelfEst  -&gt; OwnLook  | OwnPers: B = -0.126, se = 0.046, p = 0.006</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
@@ -312,7 +314,7 @@ accordingly.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>
