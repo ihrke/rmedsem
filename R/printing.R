@@ -43,7 +43,7 @@ print.rmedsem.blavaan <- function(res, digits=3, indent=3){
 
   es=res$effect.size
   print_effectsize(res, indent, digits)
-
+  cat("\n")
 }
 
 
@@ -65,7 +65,7 @@ print_effectsize <- function(res, digits=3, indent=3){
     cat("Effect sizes\n")
   }
   indesstr = strrep(" ", indent+6)
-  if(es$RIT$tot_eff<es$RIT$ind_eff){
+  if("RIT" %in% names(es) && es$RIT$tot_eff < es$RIT$ind_eff){
     cat(sprintf("%sWARNING: Total effect is smaller than indirect effect!\n", indstr))
     cat(sprintf("%s         Effect sizes should not be interpreted.\n", indstr))
   }
@@ -87,7 +87,7 @@ print_effectsize <- function(res, digits=3, indent=3){
     cat(sprintf("%sRID = (Indirect effect / Direct effect)\n", indstr))
     with(es$RID, cat(sprintf("%s(%5.3f/%5.3f) = %5.3f\n", indesstr, ind_eff, dir_eff, es)))
     with(es$RID, cat(sprintf("%sThat is, the mediated effect is about %3.1f times as\n", indesstr, es)))
-    with(es$RID, cat(sprintf("%slarge as the direct effect of '%s' on '%s'", indesstr, res$vars$indep, res$vars$dep)))
+    with(es$RID, cat(sprintf("%slarge as the direct effect of '%s' on '%s'\n", indesstr, res$vars$indep, res$vars$dep)))
   }
 
 }

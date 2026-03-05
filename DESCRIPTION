@@ -1,6 +1,6 @@
 Package: rmedsem
 Title: Statistical Mediation Analysis for SEMs
-Version: 0.1
+Version: 0.1.0
 Authors@R: c(
     person("Mehmet", "Mehmetoglu", email="mehmet.mehmetoglu@ntnu.no", role = c("aut"),
            comment = c(ORCID = "0000-0002-6092-8551")),
@@ -9,7 +9,15 @@ Authors@R: c(
     person("Kjell", "Slupphaug", email="slupphaugkjell@gmail.com", role = c("aut"),
            comment = c(ORCID = "0009-0005-8324-2834"))
            )
-Description: What the package does (one paragraph).
+Description: Conducts mediation analysis for structural equation models (SEM)
+    estimated with 'lavaan', 'blavaan', 'cSEM', or 'modsem'. Implements
+    the Baron and Kenny (1986) <doi:10.1037/0022-3514.51.6.1173> and
+    Zhao, Lynch & Chen (2010) <doi:10.1086/651257>
+    approaches to determine the presence and type of mediation. Supports
+    covariance-based SEM, partial least squares SEM, Bayesian SEM, and
+    moderated mediation models. Reports indirect effects with standard
+    errors from Sobel, Delta, Monte-Carlo, and bootstrap methods, along
+    with effect size measures (RIT, RID).
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
