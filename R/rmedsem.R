@@ -13,6 +13,16 @@
 #' @param ... additional arguments passed to methods
 #'
 #' @return an object of class `rmedsem`
+#'
+#' @examples
+#' mod.txt <- "
+#' read ~ math
+#' science ~ read + math
+#' "
+#' mod <- lavaan::sem(mod.txt, data=rmedsem::hsbdemo)
+#' out <- rmedsem(mod, indep="math", med="read", dep="science")
+#' out
+#'
 #' @export
 rmedsem <- function (mod, indep, med, dep,
                      approach = c("bk", "zlc"),

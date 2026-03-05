@@ -3,6 +3,15 @@
 #' @param res fitted `rmedsem` object
 #' @param ... additional arguments (currently unused)
 #'
+#' @examples
+#' mod.txt <- "
+#' read ~ math
+#' science ~ read + math
+#' "
+#' mod <- lavaan::sem(mod.txt, data=rmedsem::hsbdemo)
+#' out <- rmedsem(mod, indep="math", med="read", dep="science")
+#' RIT(out)
+#'
 #' @export
 RIT <- function (res, ...)
   UseMethod("RIT")
@@ -11,6 +20,15 @@ RIT <- function (res, ...)
 #'
 #' @param res fitted `rmedsem` object
 #' @param ... additional arguments (currently unused)
+#'
+#' @examples
+#' mod.txt <- "
+#' read ~ math
+#' science ~ read + math
+#' "
+#' mod <- lavaan::sem(mod.txt, data=rmedsem::hsbdemo)
+#' out <- rmedsem(mod, indep="math", med="read", dep="science")
+#' RID(out)
 #'
 #' @export
 RID <- function (res, ...)
@@ -43,12 +61,21 @@ RID.rmedsem <- function(res, ...) {
 
 #' Summarize an rmedsem Object
 #'
-#' Returns the printed representation as a character string (invisibly)
-#' and prints the results to the console.
+#' Prints the mediation analysis results to the console.
 #'
 #' @param object the `rmedsem` object
 #' @param ... additional arguments passed to [print.rmedsem()]
 #' @return the `rmedsem` object (invisibly)
+#'
+#' @examples
+#' mod.txt <- "
+#' read ~ math
+#' science ~ read + math
+#' "
+#' mod <- lavaan::sem(mod.txt, data=rmedsem::hsbdemo)
+#' out <- rmedsem(mod, indep="math", med="read", dep="science")
+#' summary(out)
+#'
 #' @export
 summary.rmedsem <- function(object, ...) {
   print(object, ...)
@@ -65,6 +92,17 @@ summary.rmedsem <- function(object, ...) {
 #'   `"effect"` for an effect size plot
 #' @param ... additional arguments passed to [plot_coef()] or [plot_effect()]
 #' @return a `ggplot` object
+#'
+#' @examples
+#' mod.txt <- "
+#' read ~ math
+#' science ~ read + math
+#' "
+#' mod <- lavaan::sem(mod.txt, data=rmedsem::hsbdemo)
+#' out <- rmedsem(mod, indep="math", med="read", dep="science")
+#' plot(out)
+#' plot(out, type="effect")
+#'
 #' @export
 plot.rmedsem <- function(x, type = c("coef", "effect"), ...) {
   type <- match.arg(type)
@@ -80,6 +118,16 @@ plot.rmedsem <- function(x, type = c("coef", "effect"), ...) {
 #' @param x the `rmedsem` object
 #' @param ... additional arguments (currently unused)
 #' @return a data.frame
+#'
+#' @examples
+#' mod.txt <- "
+#' read ~ math
+#' science ~ read + math
+#' "
+#' mod <- lavaan::sem(mod.txt, data=rmedsem::hsbdemo)
+#' out <- rmedsem(mod, indep="math", med="read", dep="science")
+#' as.data.frame(out)
+#'
 #' @export
 as.data.frame.rmedsem <- function(x, ...){
   res <- x

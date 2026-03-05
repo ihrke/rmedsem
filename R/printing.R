@@ -280,6 +280,15 @@ print.rmedsem.lavaan.csem.modsem <- function(res, digits=3, indent=3, ci_moderat
 #' @param ... additional arguments (currently unused)
 #' @return the `rmedsem` object `x` (invisibly)
 #'
+#' @examples
+#' mod.txt <- "
+#' read ~ math
+#' science ~ read + math
+#' "
+#' mod <- lavaan::sem(mod.txt, data=rmedsem::hsbdemo)
+#' out <- rmedsem(mod, indep="math", med="read", dep="science")
+#' print(out)
+#'
 #' @export
 print.rmedsem <- function(x, digits=3, indent=3, ...){
   res <- x

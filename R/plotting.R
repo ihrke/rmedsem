@@ -3,6 +3,16 @@
 #' @param res the `rmedsem` object
 #' @param description logical, whether to add a description subtitle
 #' @return a `ggplot` object
+#'
+#' @examples
+#' mod.txt <- "
+#' read ~ math
+#' science ~ read + math
+#' "
+#' mod <- lavaan::sem(mod.txt, data=rmedsem::hsbdemo)
+#' out <- rmedsem(mod, indep="math", med="read", dep="science")
+#' plot_effect(out)
+#'
 #' @export
 plot_effect <- function(res, description=TRUE){
   if (!inherits(res, "rmedsem"))
@@ -48,6 +58,16 @@ plot_effect <- function(res, description=TRUE){
 #'
 #' @param res the `rmedsem` object
 #' @return a `ggplot` object
+#'
+#' @examples
+#' mod.txt <- "
+#' read ~ math
+#' science ~ read + math
+#' "
+#' mod <- lavaan::sem(mod.txt, data=rmedsem::hsbdemo)
+#' out <- rmedsem(mod, indep="math", med="read", dep="science")
+#' plot_coef(out)
+#'
 #' @export
 plot_coef <- function(res){
   if (!inherits(res, "rmedsem"))
