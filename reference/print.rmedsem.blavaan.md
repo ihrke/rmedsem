@@ -6,12 +6,12 @@ Print rmedsem Results for Blavaan Models
 
 ``` r
 # S3 method for class 'rmedsem.blavaan'
-print(res, digits = 3, indent = 3)
+print(x, digits = 3, indent = 3, ...)
 ```
 
 ## Arguments
 
-- res:
+- x:
 
   the `rmedsem` object to print
 
@@ -23,6 +23,10 @@ print(res, digits = 3, indent = 3)
 
   an integer, number of spaces to indent
 
+- ...:
+
+  additional arguments (currently unused)
+
 ## Value
 
-`rmedsem` object `res` (invisibly)
+`rmedsem` object `x` (invisibly)

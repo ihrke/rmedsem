@@ -6,12 +6,12 @@ Print rmedsem Results for Lavaan, cSEM, and Modsem Models
 
 ``` r
 # S3 method for class 'rmedsem.lavaan.csem.modsem'
-print(res, digits = 3, indent = 3, ci_moderation = FALSE)
+print(x, digits = 3, indent = 3, ci_moderation = FALSE, ...)
 ```
 
 ## Arguments
 
-- res:
+- x:
 
   the `rmedsem` object to print
 
@@ -28,6 +28,10 @@ print(res, digits = 3, indent = 3, ci_moderation = FALSE)
   a logical, whether to print confidence intervals for direct, indirect
   and total moderation effects
 
+- ...:
+
+  additional arguments (currently unused)
+
 ## Value
 
-`rmedsem` object `res` (invisibly)
+`rmedsem` object `x` (invisibly)
