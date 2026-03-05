@@ -2,7 +2,7 @@
 % Please edit documentation in R/printing.R
 \name{print.rmedsem.lavaan.csem.modsem}
 \alias{print.rmedsem.lavaan.csem.modsem}
-\title{Function for printing \code{rmedsem} objects}
+\title{Print rmedsem Results for Lavaan, cSEM, and Modsem Models}
 \usage{
 \method{print}{rmedsem.lavaan.csem.modsem}(res, digits = 3, indent = 3, ci_moderation = FALSE)
 }
@@ -17,8 +17,9 @@
 direct, indirect and total moderation effects}
 }
 \value{
-\code{rmedsem} obect \code{res}
+\code{rmedsem} object \code{res} (invisibly)
 }
 \description{
-Function for printing \code{rmedsem} objects
+Print rmedsem Results for Lavaan, cSEM, and Modsem Models
 }
+\keyword{internal}

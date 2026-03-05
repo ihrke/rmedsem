@@ -1,3 +1,10 @@
+# Suppress R CMD check NOTEs for NSE variables used in dplyr/ggplot2/with()
+utils::globalVariables(c(
+  "package", "method", "effect", "ypos", "coef", "lower", "upper",
+  "eff", "value", "est", "lhs", "rhs", "std.error", "p.value",
+  "est.std", "se", "pvalue"
+))
+
 #' Mediation Analysis for Structural Equation Models
 #'
 #' Conducts mediation analysis on a fitted SEM model using the Baron and Kenny

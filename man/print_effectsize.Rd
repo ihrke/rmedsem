@@ -2,7 +2,7 @@
 % Please edit documentation in R/printing.R
 \name{print_effectsize}
 \alias{print_effectsize}
-\title{Function for printing the effect size from the estimation methods}
+\title{Print Effect Sizes from Mediation Analysis}
 \usage{
 print_effectsize(res, digits = 3, indent = 3)
 }
@@ -10,10 +10,13 @@ print_effectsize(res, digits = 3, indent = 3)
 \item{res}{the \code{rmedsem} object to print}
 
 \item{digits}{an integer, number of digits to print in table}
+
+\item{indent}{an integer, number of spaces to indent}
 }
 \value{
-\code{rmedsem} obect \code{res}
+\code{rmedsem} object \code{res} (invisibly)
 }
 \description{
-Function for printing the effect size from the estimation methods
+Print Effect Sizes from Mediation Analysis
 }
+\keyword{internal}

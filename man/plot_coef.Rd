@@ -2,16 +2,26 @@
 % Please edit documentation in R/plotting.R
 \name{plot_coef}
 \alias{plot_coef}
-\title{Function for plotting the coefficients for fitted \code{rmedsem} objects.}
+\title{Plot Coefficients for an rmedsem Object}
 \usage{
 plot_coef(res)
 }
 \arguments{
-\item{res}{the \code{rmedsem} object to print}
+\item{res}{the \code{rmedsem} object}
 }
 \value{
-\code{ggplot} object of the plot
+a \code{ggplot} object
 }
 \description{
-Function for plotting the coefficients for fitted \code{rmedsem} objects.
+Plot Coefficients for an rmedsem Object
+}
+\examples{
+mod.txt <- "
+read ~ math
+science ~ read + math
+"
+mod <- lavaan::sem(mod.txt, data=rmedsem::hsbdemo)
+out <- rmedsem(mod, indep="math", med="read", dep="science")
+plot_coef(out)
+
 }

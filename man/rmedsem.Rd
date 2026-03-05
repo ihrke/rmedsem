@@ -2,13 +2,50 @@
 % Please edit documentation in R/rmedsem.R
 \name{rmedsem}
 \alias{rmedsem}
-\title{Mediation modeling function}
+\title{Mediation Analysis for Structural Equation Models}
 \usage{
-rmedsem(mod, ...)
+rmedsem(
+  mod,
+  indep,
+  med,
+  dep,
+  approach = c("bk", "zlc"),
+  p.threshold = 0.05,
+  effect.size = c("RIT", "RID"),
+  ...
+)
 }
 \arguments{
-\item{mod}{model object}
+\item{mod}{a fitted SEM model object (from lavaan, blavaan, cSEM, or modsem)}
+
+\item{indep}{a string indicating the name of the independent variable}
+
+\item{med}{a string indicating the name of the mediator variable}
+
+\item{dep}{a string indicating the name of the dependent variable}
+
+\item{approach}{either \code{"bk"} or \code{"zlc"} or both \code{c("bk", "zlc")} (default)}
+
+\item{p.threshold}{a numeric giving the p-value threshold for significance}
+
+\item{effect.size}{character vector; one or more of \code{"RIT"}, \code{"RID"}}
+
+\item{...}{additional arguments passed to methods}
+}
+\value{
+an object of class \code{rmedsem}
 }
 \description{
-Mediation modeling function
+Conducts mediation analysis on a fitted SEM model using the Baron and Kenny
+(1986) and/or Zhao, Lynch & Chen (2010) approaches.
+}
+\examples{
+mod.txt <- "
+read ~ math
+science ~ read + math
+"
+mod <- lavaan::sem(mod.txt, data=rmedsem::hsbdemo)
+out <- rmedsem(mod, indep="math", med="read", dep="science")
+out
+
 }

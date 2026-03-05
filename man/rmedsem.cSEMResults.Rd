@@ -2,17 +2,18 @@
 % Please edit documentation in R/rmedsem_csem.R
 \name{rmedsem.cSEMResults}
 \alias{rmedsem.cSEMResults}
-\title{Calculate a mediation analysis for an SEM based on a cSEM model.}
+\title{Mediation Analysis for cSEM Models}
 \usage{
 \method{rmedsem}{cSEMResults}(
   mod,
   indep,
   med,
   dep,
-  nbootstrap = 1000,
   approach = c("bk", "zlc"),
   p.threshold = 0.05,
-  effect.size = c("RIT", "RID")
+  effect.size = c("RIT", "RID"),
+  nbootstrap = 1000,
+  ...
 )
 }
 \arguments{
@@ -24,18 +25,20 @@
 
 \item{dep}{A string indicating the name of the dependent variable in the model.}
 
-\item{nbootstrap}{number of bootstrap samples, default=1000}
-
 \item{approach}{either 'bk' or 'zlc' or both c("bk", "zlc") (default)}
 
 \item{p.threshold}{A double giving the p-value for determining whether a path
 is significant or not}
 
 \item{effect.size}{calculate different effect-sizes; one or more of "RIT", "RID"}
+
+\item{nbootstrap}{number of bootstrap samples, default=1000}
+
+\item{...}{additional arguments (currently unused)}
 }
 \value{
 A \code{rmedsem} structure containing the results from the analysis
 }
 \description{
-Calculate a mediation analysis for an SEM based on a cSEM model.
+Mediation Analysis for cSEM Models
 }

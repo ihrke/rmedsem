@@ -2,20 +2,21 @@
 % Please edit documentation in R/rmedsem_modsem.R
 \name{rmedsem.modsem}
 \alias{rmedsem.modsem}
-\title{Calculate a mediation analysis for an SEM based on a modsem model.}
+\title{Mediation Analysis for Modsem Models}
 \usage{
 \method{rmedsem}{modsem}(
   mod,
   indep,
   med,
   dep,
-  moderator = NULL,
-  standardized = TRUE,
-  mcreps = NULL,
   approach = c("bk", "zlc"),
   p.threshold = 0.05,
   effect.size = c("RIT", "RID"),
-  ci.two.tailed = 0.95
+  moderator = NULL,
+  standardized = TRUE,
+  mcreps = NULL,
+  ci.two.tailed = 0.95,
+  ...
 )
 }
 \arguments{
@@ -27,6 +28,13 @@
 
 \item{dep}{A string indicating the name of the dependent variable in the model.}
 
+\item{approach}{either 'bk' or 'zlc' or both c("bk", "zlc") (default)}
+
+\item{p.threshold}{A double giving the p-value for determining whether a path
+is significant or not}
+
+\item{effect.size}{calculate different effect-sizes; one or more of "RIT", "RID"}
+
 \item{moderator}{A string indicating the name of the moderator variable in the model.}
 
 \item{standardized}{A boolean indicating whether the coefficients should be
@@ -34,41 +42,37 @@ standardized. The default value is F.}
 
 \item{mcreps}{An integer determining the number of monte-carlo samples.}
 
-\item{approach}{either 'bk' or 'zlc' or both c("bk", "zlc") (default)}
+\item{ci.two.tailed}{A double giving the confidence level for two-tailed confidence intervals (default 0.95)}
 
-\item{p.threshold}{A double giving the p-value for determining whether a path
-is significant or not}
-
-\item{effect.size}{calculate different effect-sizes; one or more of "RIT", "RID"}
+\item{...}{additional arguments (currently unused)}
 }
 \value{
 A \code{rmedsem} structure containing the results from the analysis
 }
 \description{
-Calculate a mediation analysis for an SEM based on a modsem model.
+Mediation Analysis for Modsem Models
 }
 \examples{
-\dontrun{
+\donttest{
+if (requireNamespace("modsem", quietly = TRUE)) {
+  m <- "
+    OwnLook =~ smv_attr_face + smv_attr_body + smv_sexy
+    SelfEst =~ ses_satis + ses_qualities + ses_able_todo
+    MentWell =~ mwb_optimistic + mwb_useful + mwb_energy
+    smv =~ smv_kind + smv_caring + smv_understanding +
+      smv_make_laughh + smv_funny + smv_sociable
+    SelfEst ~ OwnLook + smv + smv:OwnLook
+    MentWell ~ OwnLook + SelfEst + smv + smv:OwnLook
+  "
 
-m <- "
-  OwnLook =~ smv_attr_face + smv_attr_body + smv_sexy
-  SelfEst =~ ses_satis + ses_qualities + ses_able_todo
-  MentWell =~ mwb_optimistic + mwb_useful + mwb_energy
-  smv =~ smv_kind + smv_caring + smv_understanding +
-    smv_make_laughh + smv_funny + smv_sociable
-  SelfEst ~ OwnLook + smv + smv:OwnLook
-  MentWell ~ OwnLook + SelfEst + smv + smv:OwnLook
-"
+  est <- modsem::modsem(m, data = mchoice, method="lms")
 
+  # mediated moderation
+  rmedsem(indep="smv:OwnLook", dep="MentWell", med="SelfEst", mod=est)
 
-est <- modsem(m, data = mchoice2, method="lms")
-
-# mediated moderation
-rmedsem(indep="smv:OwnLook", dep="MentWell", med="SelfEst", mod=est)
-
-# moderated mediation
-rmedsem(indep="OwnLook", dep="MentWell", med="SelfEst", mod=est, moderator="smv")
-
+  # moderated mediation
+  rmedsem(indep="OwnLook", dep="MentWell", med="SelfEst", mod=est, moderator="smv")
+}
 }
 
 }

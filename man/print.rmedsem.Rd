@@ -2,18 +2,32 @@
 % Please edit documentation in R/printing.R
 \name{print.rmedsem}
 \alias{print.rmedsem}
-\title{Function for printing \code{rmedsem} objects}
+\title{Print an rmedsem Object}
 \usage{
-\method{print}{rmedsem}(res, digits = 3, indent = 3)
+\method{print}{rmedsem}(x, digits = 3, indent = 3, ...)
 }
 \arguments{
-\item{res}{the \code{rmedsem} object to print}
+\item{x}{the \code{rmedsem} object to print}
 
 \item{digits}{an integer, number of digits to print in table}
+
+\item{indent}{an integer, number of spaces to indent}
+
+\item{...}{additional arguments (currently unused)}
 }
 \value{
-\code{rmedsem} obect \code{res}
+the \code{rmedsem} object \code{x} (invisibly)
 }
 \description{
-Function for printing \code{rmedsem} objects
+Print an rmedsem Object
+}
+\examples{
+mod.txt <- "
+read ~ math
+science ~ read + math
+"
+mod <- lavaan::sem(mod.txt, data=rmedsem::hsbdemo)
+out <- rmedsem(mod, indep="math", med="read", dep="science")
+print(out)
+
 }

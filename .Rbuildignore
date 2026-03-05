@@ -8,3 +8,6 @@
 ^\.github$
 ^data-raw$
 ^vignettes/articles$
+^NOTES\.md$
+^TODO\.md$
+^test_rmedsem_example_models$

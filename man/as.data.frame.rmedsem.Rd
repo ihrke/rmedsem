@@ -2,16 +2,28 @@
 % Please edit documentation in R/accessors.R
 \name{as.data.frame.rmedsem}
 \alias{as.data.frame.rmedsem}
-\title{Convert \code{rmedsem} object to data-frame.}
+\title{Convert an rmedsem Object to a Data Frame}
 \usage{
-\method{as.data.frame}{rmedsem}(res, ...)
+\method{as.data.frame}{rmedsem}(x, ...)
 }
 \arguments{
-\item{res}{the \code{rmedsem} object}
+\item{x}{the \code{rmedsem} object}
+
+\item{...}{additional arguments (currently unused)}
 }
 \value{
 a data.frame
 }
 \description{
-Convert \code{rmedsem} object to data-frame.
+Convert an rmedsem Object to a Data Frame
+}
+\examples{
+mod.txt <- "
+read ~ math
+science ~ read + math
+"
+mod <- lavaan::sem(mod.txt, data=rmedsem::hsbdemo)
+out <- rmedsem(mod, indep="math", med="read", dep="science")
+as.data.frame(out)
+
 }

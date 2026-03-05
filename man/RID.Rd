@@ -2,13 +2,28 @@
 % Please edit documentation in R/accessors.R
 \name{RID}
 \alias{RID}
-\title{Return ratio of indirect to direct effect (RID).}
+\alias{RID.rmedsem}
+\title{Ratio of Indirect to Direct Effect (RID)}
 \usage{
 RID(res, ...)
+
+\method{RID}{rmedsem}(res, ...)
 }
 \arguments{
 \item{res}{fitted \code{rmedsem} object}
+
+\item{...}{additional arguments (currently unused)}
 }
 \description{
-Return ratio of indirect to direct effect (RID).
+Ratio of Indirect to Direct Effect (RID)
+}
+\examples{
+mod.txt <- "
+read ~ math
+science ~ read + math
+"
+mod <- lavaan::sem(mod.txt, data=rmedsem::hsbdemo)
+out <- rmedsem(mod, indep="math", med="read", dep="science")
+RID(out)
+
 }

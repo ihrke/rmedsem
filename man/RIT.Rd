@@ -2,13 +2,28 @@
 % Please edit documentation in R/accessors.R
 \name{RIT}
 \alias{RIT}
-\title{Return ratio of indirect to total effect (RIT).}
+\alias{RIT.rmedsem}
+\title{Ratio of Indirect to Total Effect (RIT)}
 \usage{
 RIT(res, ...)
+
+\method{RIT}{rmedsem}(res, ...)
 }
 \arguments{
 \item{res}{fitted \code{rmedsem} object}
+
+\item{...}{additional arguments (currently unused)}
 }
 \description{
-Return ratio of indirect to total effect (RIT).
+Ratio of Indirect to Total Effect (RIT)
+}
+\examples{
+mod.txt <- "
+read ~ math
+science ~ read + math
+"
+mod <- lavaan::sem(mod.txt, data=rmedsem::hsbdemo)
+out <- rmedsem(mod, indep="math", med="read", dep="science")
+RIT(out)
+
 }

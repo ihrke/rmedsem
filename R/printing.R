@@ -35,7 +35,7 @@ print.rmedsem.blavaan <- function(res, digits=3, indent=3){
   rowlab <- c("Indirect effect", "Std. Err.", "z-value", "P(z>0)", "P(z<0)", "ER+", "ER-", "HDI")
 
   mat <- data.frame(Bayes=c( format(res$bayes[1:5], digit=digits),
-                             ifelse(is.infinite(res$bayes[6:7]), "∞", format(res$bayes[6:7], digits=digits)),
+                             ifelse(is.infinite(res$bayes[6:7]), "\u221E", format(res$bayes[6:7], digits=digits)),
                              sprintf("[%s, %s]", format(res$bayes[8],digits=digits),
                                      format(res$bayes[9],digits=digits))))
   rownames(mat) <- rowlab

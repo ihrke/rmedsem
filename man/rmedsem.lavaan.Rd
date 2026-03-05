@@ -2,18 +2,19 @@
 % Please edit documentation in R/rmedsem_lavaan.R
 \name{rmedsem.lavaan}
 \alias{rmedsem.lavaan}
-\title{Calculate a mediation analysis for an SEM based on a lavaan model.}
+\title{Mediation Analysis for Lavaan Models}
 \usage{
 \method{rmedsem}{lavaan}(
   mod,
   indep,
   med,
   dep,
-  standardized = TRUE,
-  mcreps = NULL,
   approach = c("bk", "zlc"),
   p.threshold = 0.05,
-  effect.size = c("RIT", "RID")
+  effect.size = c("RIT", "RID"),
+  standardized = TRUE,
+  mcreps = NULL,
+  ...
 )
 }
 \arguments{
@@ -25,23 +26,25 @@
 
 \item{dep}{A string indicating the name of the dependent variable in the model.}
 
-\item{standardized}{A boolean indicating whether the coefficients should be
-standardized. The default value is F.}
-
-\item{mcreps}{An integer determining the number of monte-carlo samples.}
-
 \item{approach}{either 'bk' or 'zlc' or both c("bk", "zlc") (default)}
 
 \item{p.threshold}{A double giving the p-value for determining whether a path
 is significant or not}
 
 \item{effect.size}{calculate different effect-sizes; one or more of "RIT", "RID"}
+
+\item{standardized}{A boolean indicating whether the coefficients should be
+standardized. The default value is F.}
+
+\item{mcreps}{An integer determining the number of monte-carlo samples.}
+
+\item{...}{additional arguments (currently unused)}
 }
 \value{
 A \code{rmedsem} structure containing the results from the analysis
 }
 \description{
-Calculate a mediation analysis for an SEM based on a lavaan model.
+Mediation Analysis for Lavaan Models
 }
 \examples{
 

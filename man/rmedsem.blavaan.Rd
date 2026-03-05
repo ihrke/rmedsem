@@ -2,7 +2,7 @@
 % Please edit documentation in R/rmedsem_blavaan.R
 \name{rmedsem.blavaan}
 \alias{rmedsem.blavaan}
-\title{Calculate a mediation analysis for an SEM based on a blavaan model.}
+\title{Mediation Analysis for Blavaan Models}
 \usage{
 \method{rmedsem}{blavaan}(
   mod,
@@ -11,7 +11,8 @@
   dep,
   approach = c("bk", "zlc"),
   p.threshold = 0.05,
-  effect.size = c("RIT", "RID")
+  effect.size = c("RIT", "RID"),
+  ...
 )
 }
 \arguments{
@@ -24,16 +25,23 @@
 
 \item{dep}{A string indicating the name of the dependent variable in the model.}
 
+\item{approach}{either 'bk' or 'zlc' or both c("bk", "zlc") (default)}
+
+\item{p.threshold}{A double giving the p-value for determining whether a path
+is significant or not}
+
 \item{effect.size}{calculate different effect-sizes; one or more of "RIT", "RID"}
+
+\item{...}{additional arguments (currently unused)}
 }
 \value{
 A \code{rmedsem} structure containing the results from the analysis
 }
 \description{
-Calculate a mediation analysis for an SEM based on a blavaan model.
+Mediation Analysis for Blavaan Models
 }
 \examples{
-
+\dontrun{
 model02 <- "
   # measurement model
     ind60 =~ x1 + x2 + x3
@@ -43,11 +51,12 @@ model02 <- "
     dem60 ~ ind60
     dem65 ~ ind60 + dem60
 "
-library(blavaan)
-mod <- bsem(model02, data=lavaan::PoliticalDemocracy, std.lv=TRUE,
-            meanstructure=TRUE, n.chains=1,
-            save.lvs=TRUE, burnin=500, sample=500)
-out <- rmedsem(mod,  indep="ind60", med="dem60", dep="dem65")
-print(out)
-
+if (requireNamespace("blavaan", quietly = TRUE)) {
+  mod <- blavaan::bsem(model02, data=lavaan::PoliticalDemocracy, std.lv=TRUE,
+              meanstructure=TRUE, n.chains=1,
+              save.lvs=TRUE, burnin=500, sample=500)
+  out <- rmedsem(mod,  indep="ind60", med="dem60", dep="dem65")
+  print(out)
+}
+}
 }

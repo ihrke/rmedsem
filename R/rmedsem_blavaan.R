@@ -6,13 +6,17 @@
 #' @param med A string indicating the name of the mediator variable in the model.
 #' @param dep A string indicating the name of the dependent variable in the model.
 #'
+#' @param approach either 'bk' or 'zlc' or both c("bk", "zlc") (default)
+#' @param p.threshold A double giving the p-value for determining whether a path
+#'  is significant or not
 #' @param effect.size calculate different effect-sizes; one or more of "RIT", "RID"
+#' @param ... additional arguments (currently unused)
 #'
 #' @return A `rmedsem` structure containing the results from the analysis
 #' @export
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' model02 <- "
 #'   # measurement model
 #'     ind60 =~ x1 + x2 + x3
@@ -32,7 +36,7 @@
 #' }
 rmedsem.blavaan <- function(mod, indep, med, dep,
                             approach=c("bk", "zlc"), p.threshold=0.05,
-                            effect.size=c("RIT","RID")){
+                            effect.size=c("RIT","RID"), ...){
   if (!requireNamespace("blavaan", quietly = TRUE))
     stop("Package 'blavaan' is required for this method. Please install it.")
   validate_rmedsem_args(indep, med, dep, approach, p.threshold, effect.size)

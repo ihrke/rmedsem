@@ -2,16 +2,28 @@
 % Please edit documentation in R/plotting.R
 \name{plot_effect}
 \alias{plot_effect}
-\title{Function for plotting the effect size for fitted \code{rmedsem} objects.}
+\title{Plot Effect Sizes for an rmedsem Object}
 \usage{
 plot_effect(res, description = TRUE)
 }
 \arguments{
-\item{res}{the \code{rmedsem} object to print}
+\item{res}{the \code{rmedsem} object}
+
+\item{description}{logical, whether to add a description subtitle}
 }
 \value{
-\code{ggplot} object of the plot
+a \code{ggplot} object
 }
 \description{
-Function for plotting the effect size for fitted \code{rmedsem} objects.
+Plot Effect Sizes for an rmedsem Object
+}
+\examples{
+mod.txt <- "
+read ~ math
+science ~ read + math
+"
+mod <- lavaan::sem(mod.txt, data=rmedsem::hsbdemo)
+out <- rmedsem(mod, indep="math", med="read", dep="science")
+plot_effect(out)
+
 }

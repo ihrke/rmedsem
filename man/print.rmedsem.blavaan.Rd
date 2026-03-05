@@ -2,7 +2,7 @@
 % Please edit documentation in R/printing.R
 \name{print.rmedsem.blavaan}
 \alias{print.rmedsem.blavaan}
-\title{Function for printing \code{rmedsem} objects based on \code{blavaan} models.}
+\title{Print rmedsem Results for Blavaan Models}
 \usage{
 \method{print}{rmedsem.blavaan}(res, digits = 3, indent = 3)
 }
@@ -10,10 +10,13 @@
 \item{res}{the \code{rmedsem} object to print}
 
 \item{digits}{an integer, number of digits to print in table}
+
+\item{indent}{an integer, number of spaces to indent}
 }
 \value{
-\code{rmedsem} obect \code{res}
+\code{rmedsem} object \code{res} (invisibly)
 }
 \description{
-Function for printing \code{rmedsem} objects based on \code{blavaan} models.
+Print rmedsem Results for Blavaan Models
 }
+\keyword{internal}

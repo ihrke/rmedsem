@@ -12,6 +12,7 @@
 #' @param p.threshold A double giving the p-value for determining whether a path
 #'  is significant or not
 #' @param effect.size calculate different effect-sizes; one or more of "RIT", "RID"
+#' @param ... additional arguments (currently unused)
 #'
 #' @return A `rmedsem` structure containing the results from the analysis
 #' @export
@@ -28,9 +29,10 @@
 #'                approach = c("bk","zlc"))
 #' print(out)
 #'
-rmedsem.lavaan <- function(mod, indep, med, dep, standardized=TRUE, mcreps=NULL,
+rmedsem.lavaan <- function(mod, indep, med, dep,
                            approach=c("bk", "zlc"), p.threshold=0.05,
-                           effect.size=c("RIT","RID")){
+                           effect.size=c("RIT","RID"),
+                           standardized=TRUE, mcreps=NULL, ...){
   validate_rmedsem_args(indep, med, dep, approach, p.threshold, effect.size)
   N <- lavaan::nobs(mod)
   if(is.null(mcreps) || mcreps < N){

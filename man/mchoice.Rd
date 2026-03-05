@@ -3,28 +3,27 @@
 \docType{data}
 \name{mchoice}
 \alias{mchoice}
-\title{Data from a survey on mate-choice in Trondheim.}
+\title{Mate-Choice Survey Data from Trondheim}
 \format{
 \subsection{\code{mchoice}}{
 
 A data frame with 1090 rows and 9 columns:
 \describe{
-\item{smv_attr_face}{How well does this describe you as a partner?, \link{1} very bad - \link{5} very well}
-\item{smv_attr_body}{How well does this describe you as a partner?, \link{1} very bad - \link{5} very well}
-\item{smv_sexy}{How well does this describe you as a partner?, \link{1} very bad - \link{5} very well}
-\item{ses_satis}{On the whole, I am satisfied with myself, \link{1} totally disgree - \link{5} totally agree}
-\item{ses_qualities}{I feel that I have a number of good qualities, \link{1} totally disgree - \link{5} totally agree}
-\item{ses_able_todo}{I am able to do things as well as most other people, \link{1} totally disgree - \link{5} totally agree}
-\item{mwb_optimistic}{I have been feeling optimistic about the future, \link{1} never - \link{5} always}
-\item{mwb_useful}{I have been feeling useful, \link{1} never - \link{5} always}
-\item{mwb_energy}{I have had energy to spare, \link{1} never - \link{5} always}
-\item{smv_kind}{?, \link{1} ? - \link{5} ?}
-\item{smv_caring}{?, \link{1} ? - \link{5} ?}
-\item{smv_understanding}{?, \link{1} ? - \link{5} ?}
-\item{smv_make_laughh}{?, \link{1} ? - \link{5} ?}
-\item{smv_funny}{?, \link{1} ? - \link{5} ?}
-\item{smv_sociable}{?, \link{1} ? - \link{5} ?}
-}
+\item{smv_attr_face}{How well does this describe you as a partner?, [1] very bad - [5] very well}
+\item{smv_attr_body}{How well does this describe you as a partner?, [1] very bad - [5] very well}
+\item{smv_sexy}{How well does this describe you as a partner?, [1] very bad - [5] very well}
+\item{ses_satis}{On the whole, I am satisfied with myself, [1] totally disgree - [5] totally agree}
+\item{ses_qualities}{I feel that I have a number of good qualities, [1] totally disgree - [5] totally agree}
+\item{ses_able_todo}{I am able to do things as well as most other people, [1] totally disgree - [5] totally agree}
+\item{mwb_optimistic}{I have been feeling optimistic about the future, [1] never - [5] always}
+\item{mwb_useful}{I have been feeling useful, [1] never - [5] always}
+\item{mwb_energy}{I have had energy to spare, [1] never - [5] always}
+\item{smv_kind}{?, [1] ? - [5] ?}
+\item{smv_caring}{?, [1] ? - [5] ?}
+\item{smv_understanding}{?, [1] ? - [5] ?}
+\item{smv_make_laughh}{?, [1] ? - [5] ?}
+\item{smv_funny}{?, [1] ? - [5] ?}
+\item{smv_sociable}{?, [1] ? - [5] ?}
 }
 }
 }
@@ -32,6 +31,6 @@ A data frame with 1090 rows and 9 columns:
 mchoice
 }
 \description{
-Data from a survey
+Data from a survey on mate-choice in Trondheim.
 }
 \keyword{datasets}

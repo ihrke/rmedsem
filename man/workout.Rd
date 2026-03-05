@@ -3,7 +3,7 @@
 \docType{data}
 \name{workout}
 \alias{workout}
-\title{Data from a survey in a fitness center in Trondheim.}
+\title{Fitness Center Survey Data from Trondheim}
 \format{
 \subsection{\code{workout}}{
 

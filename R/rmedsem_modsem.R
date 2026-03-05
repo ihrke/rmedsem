@@ -13,6 +13,8 @@
 #' @param p.threshold A double giving the p-value for determining whether a path
 #'  is significant or not
 #' @param effect.size calculate different effect-sizes; one or more of "RIT", "RID"
+#' @param ci.two.tailed A double giving the confidence level for two-tailed confidence intervals (default 0.95)
+#' @param ... additional arguments (currently unused)
 #'
 #' @return A `rmedsem` structure containing the results from the analysis
 #' @export
@@ -40,10 +42,11 @@
 #' }
 #' }
 #'
-rmedsem.modsem <- function(mod, indep, med, dep, moderator=NULL,
-                           standardized=TRUE, mcreps=NULL,
+rmedsem.modsem <- function(mod, indep, med, dep,
                            approach=c("bk", "zlc"), p.threshold=0.05,
-                           effect.size=c("RIT","RID"), ci.two.tailed=0.95){
+                           effect.size=c("RIT","RID"),
+                           moderator=NULL, standardized=TRUE, mcreps=NULL,
+                           ci.two.tailed=0.95, ...){
   if (!requireNamespace("modsem", quietly = TRUE))
     stop("Package 'modsem' is required for this method. Please install it.")
   validate_rmedsem_args(indep, med, dep, approach, p.threshold, effect.size)

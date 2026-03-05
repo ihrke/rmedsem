@@ -2,7 +2,7 @@
 % Please edit documentation in R/printing.R
 \name{pre_indent_merge}
 \alias{pre_indent_merge}
-\title{indent s by indent many spaces; merge into a single string}
+\title{Indent and merge strings}
 \usage{
 pre_indent_merge(s, indent)
 }
@@ -15,5 +15,6 @@ pre_indent_merge(s, indent)
 indented string
 }
 \description{
-indent s by indent many spaces; merge into a single string
+Indent and merge strings
 }
+\keyword{internal}

@@ -10,15 +10,14 @@
 #'  is significant or not
 #' @param nbootstrap number of bootstrap samples, default=1000
 #' @param effect.size calculate different effect-sizes; one or more of "RIT", "RID"
+#' @param ... additional arguments (currently unused)
 #'
 #' @return A `rmedsem` structure containing the results from the analysis
 #' @export
-#'
-#'
-#'
-rmedsem.cSEMResults <- function(mod, indep, med, dep, nbootstrap=1000,
+rmedsem.cSEMResults <- function(mod, indep, med, dep,
                                 approach=c("bk", "zlc"), p.threshold=0.05,
-                                effect.size=c("RIT","RID")){
+                                effect.size=c("RIT","RID"),
+                                nbootstrap=1000, ...){
   if (!requireNamespace("cSEM", quietly = TRUE))
     stop("Package 'cSEM' is required for this method. Please install it.")
   validate_rmedsem_args(indep, med, dep, approach, p.threshold, effect.size)

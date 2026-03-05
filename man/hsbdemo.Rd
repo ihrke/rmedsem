@@ -3,7 +3,7 @@
 \docType{data}
 \name{hsbdemo}
 \alias{hsbdemo}
-\title{The HSBdemo dataset is a dataset based off 200 entering high school students.}
+\title{High School and Beyond Demo Dataset}
 \format{
 \subsection{\code{hsbdemo}}{
 
@@ -18,6 +18,6 @@ A data frame with 20 rows and 13 columns:
 hsbdemo
 }
 \description{
-The HSBdemo dataset is a dataset based off 200 entering high school students.
+High School and Beyond Demo Dataset
 }
 \keyword{datasets}
