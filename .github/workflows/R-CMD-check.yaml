@@ -41,9 +41,17 @@ jobs:
           use-public-rspm: true
 
       - uses: r-lib/actions/setup-r-dependencies@v2
+        if: matrix.config.r != 'oldrel-1'
         with:
           extra-packages: any::rcmdcheck
           needs: check
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        if: matrix.config.r == 'oldrel-1'
+        with:
+          extra-packages: any::rcmdcheck
+          needs: check
+          dependencies: '"hard"'
 
       - uses: r-lib/actions/check-r-package@v2
         with:
