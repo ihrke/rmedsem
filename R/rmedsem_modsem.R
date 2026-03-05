@@ -68,6 +68,11 @@ rmedsem.modsem <- function(mod, indep, med, dep,
   lookup <- c(std.error="se", p.value="pvalue", est="est.std") # in case of lavaan
   coefs <- dplyr::rename(coefs, dplyr::any_of(lookup)) # rename columns
 
+  # filter to regression paths only (modsem >= 1.0.17 includes ~~ rows that
+
+  # would cause duplicate matches in the with() lookups below)
+  coefs <- coefs[coefs$op == "~", , drop = FALSE]
+
   # check if int-term is ordered correctly
   indep <- get_correct_intterm(indep, coefs) 
   med <- get_correct_intterm(med, coefs)
