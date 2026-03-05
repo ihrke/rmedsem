@@ -17,22 +17,25 @@ package supports:
 
 - covariance-based SEM estimated with the
   [lavaan](https://lavaan.ugent.be/) package
-- PLS-SEM estimated using [cSEM](https://m-e-rademaker.github.io/cSEM/)
+- PLS-SEM estimated using
+  [cSEM](https://cran.r-project.org/package=cSEM)
 - Bayesian SEM estimated using
-  [blavaan](https://ecmerkle.github.io/blavaan/index.html)
+  [blavaan](https://cran.r-project.org/package=blavaan)
 
 The `rmedsem` package also supports estimating [moderated mediation and
-mediated moderation](articles/moderated_mediation.html) models using the
-[modsem](https://modsem.org) package.
+mediated
+moderation](https://ihrke.github.io/rmedsem/articles/moderated_mediation.html)
+models using the [modsem](https://modsem.org) package.
 
 Currently, only continuous independent and mediator variables are
-supported. See [this article](articles/mediation_technical.html) for
-technical details on the estimation procedure used.
+supported. See [this
+article](https://ihrke.github.io/rmedsem/articles/mediation_technical.html)
+for technical details on the estimation procedure used.
 
 See the examples in the section below and refer to the `rmedsem()`
 documentation. Examples covering the different estimation methods
 (CB-SEM, PLS-SEM, Bayesian SEM) are detailed in [this
-article](articles/estimation_methods.html).
+article](https://ihrke.github.io/rmedsem/articles/estimation_methods.html).
 
 ## Installation
 
@@ -91,11 +94,11 @@ print(out)
 #> Mediation effect: 'math' -> 'read' -> 'science'
 #> 
 #>                         Sobel         Delta    Monte-Carlo
-#> Indirect effect        0.2506        0.2506         0.2506
-#> Std. Err.              0.0456        0.0456         0.0434
-#> z-value                5.5006        5.5006         5.7417
-#> p-value              3.79e-08      3.79e-08       9.37e-09
-#> CI              [0.161, 0.34] [0.161, 0.34] [0.166, 0.324]
+#> Indirect effect        0.2506         0.251         0.2506
+#> Std. Err.              0.0456         0.046         0.0475
+#> z-value                5.5006         5.446         5.2889
+#> p-value              3.79e-08      5.15e-08       1.23e-07
+#> CI              [0.161, 0.34] [0.16, 0.341] [0.163, 0.338]
 #> 
 #> Baron and Kenny approach to testing mediation
 #>    STEP 1 - 'math:read' (X -> M) with B=0.662 and p=0.000
@@ -124,8 +127,8 @@ print(out)
 
 The result reports the estimated indirect effect using the Sobel, Delta
 and Monte-Carlo methods (see [technical
-details](articles/mediation_technical.html)) and also explains the
-Baron-Kenny procedure in detail.
+details](https://ihrke.github.io/rmedsem/articles/mediation_technical.html))
+and also explains the Baron-Kenny procedure in detail.
 
 We can switch to an alternative method by Zhao, Lynch & Chen (2010)
 using the `approach="zlc"` option (here we also switched to standardized
@@ -139,11 +142,11 @@ rmedsem(mod, indep="math", med="read", dep="science",
 #> Mediation effect: 'math' -> 'read' -> 'science'
 #> 
 #>                         Sobel         Delta    Monte-Carlo
-#> Indirect effect        0.2506        0.2506          0.251
-#> Std. Err.              0.0456        0.0456          0.047
-#> z-value                5.5006        5.5006          5.366
-#> p-value              3.79e-08      3.79e-08       8.03e-08
-#> CI              [0.161, 0.34] [0.161, 0.34] [0.158, 0.342]
+#> Indirect effect        0.2506         0.251         0.2506
+#> Std. Err.              0.0456         0.046         0.0454
+#> z-value                5.5006         5.446         5.5683
+#> p-value              3.79e-08      5.15e-08       2.57e-08
+#> CI              [0.161, 0.34] [0.16, 0.341] [0.163, 0.339]
 #> 
 #> Zhao, Lynch & Chen's approach to testing mediation
 #> Based on p-value estimated using Monte-Carlo
@@ -197,12 +200,12 @@ rmedsem(mod, indep="Attractive", med="Appearance", dep="Muscle",
 #> Model estimated with package 'lavaan'
 #> Mediation effect: 'Attractive' -> 'Appearance' -> 'Muscle'
 #> 
-#>                            Sobel              Delta     Monte-Carlo
-#> Indirect effect           0.0654             0.0654          0.0654
-#> Std. Err.                 0.0331             0.0338          0.0339
-#> z-value                   1.9748             1.9359          1.9388
-#> p-value                   0.0483             0.0529          0.0525
-#> CI              [0.000491, 0.13] [-0.000814, 0.132] [0.0055, 0.136]
+#>                            Sobel              Delta      Monte-Carlo
+#> Indirect effect           0.0654             0.0654           0.0654
+#> Std. Err.                 0.0331             0.0335           0.0320
+#> z-value                   1.9748             1.9544           2.0246
+#> p-value                   0.0483             0.0507           0.0429
+#> CI              [0.000491, 0.13] [-0.000187, 0.131] [0.00984, 0.134]
 #> 
 #> Baron and Kenny approach to testing mediation
 #>    STEP 1 - 'Attractive:Appearance' (X -> M) with B=0.158 and p=0.033
@@ -214,8 +217,8 @@ rmedsem(mod, indep="Attractive", med="Appearance", dep="Muscle",
 #> Zhao, Lynch & Chen's approach to testing mediation
 #> Based on p-value estimated using Monte-Carlo
 #>   STEP 1 - 'Attractive:Muscle' (X -> Y) with B=-0.014 and p=0.850
-#>             As the Monte-Carlo test above is not significant and STEP 1 is
-#>             not significant there is no effect nonmediation (no mediation).
+#>             As the Monte-Carlo test above is significant and STEP 1 is not
+#>             significant there indirect-only mediation (full mediation).
 #> 
 #> Effect sizes
 #>    WARNING: Total effect is smaller than indirect effect!
@@ -242,10 +245,10 @@ rmedsem(mod, indep="Attractive", med="Appearance", dep="Weight",
 #> 
 #>                           Sobel            Delta     Monte-Carlo
 #> Indirect effect          0.0979           0.0979          0.0979
-#> Std. Err.                0.0470           0.0484          0.0456
-#> z-value                  2.0810           2.0228          2.1764
-#> p-value                  0.0374           0.0431          0.0295
-#> CI              [0.00569, 0.19] [0.00304, 0.193] [0.0128, 0.188]
+#> Std. Err.                0.0470           0.0483          0.0450
+#> z-value                  2.0810           2.0267          2.3132
+#> p-value                  0.0374           0.0427          0.0207
+#> CI              [0.00569, 0.19] [0.00322, 0.193] [0.0274, 0.192]
 #> 
 #> Zhao, Lynch & Chen's approach to testing mediation
 #> Based on p-value estimated using Monte-Carlo
@@ -266,5 +269,6 @@ rmedsem(mod, indep="Attractive", med="Appearance", dep="Weight",
 
 Note that these models involve latent variables. It is also possible to
 use a combination of latent and observed variables and to use [different
-packages/estimation techniques](articles/estimation_methods.html) to fit
-the models.
+packages/estimation
+techniques](https://ihrke.github.io/rmedsem/articles/estimation_methods.html)
+to fit the models.

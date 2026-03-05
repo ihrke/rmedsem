@@ -27,19 +27,19 @@ knitr::opts_chunk$set(
 The goal of rmedsem is to conduct a mediation analysis based on a structural equation model (SEM), including observed and/or latent variables as well as combination of observed and latent variables. The package supports: 
 
 - covariance-based SEM estimated with the [lavaan](https://lavaan.ugent.be/) package
-- PLS-SEM estimated using [cSEM](https://m-e-rademaker.github.io/cSEM/)
-- Bayesian SEM estimated using [blavaan](https://ecmerkle.github.io/blavaan/index.html)
+- PLS-SEM estimated using [cSEM](https://cran.r-project.org/package=cSEM)
+- Bayesian SEM estimated using [blavaan](https://cran.r-project.org/package=blavaan)
 
-The `rmedsem` package also supports estimating [moderated mediation and mediated moderation](articles/moderated_mediation.html) models using the [modsem](https://modsem.org) package.
+The `rmedsem` package also supports estimating [moderated mediation and mediated moderation](https://ihrke.github.io/rmedsem/articles/moderated_mediation.html) models using the [modsem](https://modsem.org) package.
 
 
 Currently, only continuous independent and mediator variables are
-supported. See [this article](articles/mediation_technical.html) for technical details on
+supported. See [this article](https://ihrke.github.io/rmedsem/articles/mediation_technical.html) for technical details on
 the estimation procedure used.
 
 See the examples in the section below and refer to the `rmedsem()` documentation.
 Examples covering the different estimation methods (CB-SEM, PLS-SEM, Bayesian SEM) are
-detailed in [this article](articles/estimation_methods.html).
+detailed in [this article](https://ihrke.github.io/rmedsem/articles/estimation_methods.html).
 
 
 ## Installation
@@ -104,7 +104,7 @@ out <- rmedsem(mod, indep="math", med="read", dep="science")
 print(out)
 ```
 
-The result reports the estimated indirect effect using the Sobel, Delta and Monte-Carlo methods (see [technical details](articles/mediation_technical.html)) and also explains the Baron-Kenny procedure in detail.
+The result reports the estimated indirect effect using the Sobel, Delta and Monte-Carlo methods (see [technical details](https://ihrke.github.io/rmedsem/articles/mediation_technical.html)) and also explains the Baron-Kenny procedure in detail.
 
 We can switch to an alternative method by Zhao, Lynch & Chen (2010) using the `approach="zlc"` option (here we also switched to standardized coefficients using `standardized=T`): 
 ```{r}
@@ -148,5 +148,5 @@ rmedsem(mod, indep="Attractive", med="Appearance", dep="Weight",
         approach = "zlc")
 ```
 
-Note that these models involve latent variables. It is also possible to use a combination of latent and observed variables and to use [different packages/estimation techniques](articles/estimation_methods.html) to fit the models.
+Note that these models involve latent variables. It is also possible to use a combination of latent and observed variables and to use [different packages/estimation techniques](https://ihrke.github.io/rmedsem/articles/estimation_methods.html) to fit the models.
 

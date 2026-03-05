@@ -4,10 +4,10 @@
 \alias{print.rmedsem.lavaan.csem.modsem}
 \title{Print rmedsem Results for Lavaan, cSEM, and Modsem Models}
 \usage{
-\method{print}{rmedsem.lavaan.csem.modsem}(res, digits = 3, indent = 3, ci_moderation = FALSE)
+\method{print}{rmedsem.lavaan.csem.modsem}(x, digits = 3, indent = 3, ci_moderation = FALSE, ...)
 }
 \arguments{
-\item{res}{the \code{rmedsem} object to print}
+\item{x}{the \code{rmedsem} object to print}
 
 \item{digits}{an integer, number of digits to print in table}
 
@@ -15,9 +15,11 @@
 
 \item{ci_moderation}{a logical, whether to print confidence intervals for
 direct, indirect and total moderation effects}
+
+\item{...}{additional arguments (currently unused)}
 }
 \value{
-\code{rmedsem} object \code{res} (invisibly)
+\code{rmedsem} object \code{x} (invisibly)
 }
 \description{
 Print rmedsem Results for Lavaan, cSEM, and Modsem Models

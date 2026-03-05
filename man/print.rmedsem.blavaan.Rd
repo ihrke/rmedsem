@@ -4,17 +4,19 @@
 \alias{print.rmedsem.blavaan}
 \title{Print rmedsem Results for Blavaan Models}
 \usage{
-\method{print}{rmedsem.blavaan}(res, digits = 3, indent = 3)
+\method{print}{rmedsem.blavaan}(x, digits = 3, indent = 3, ...)
 }
 \arguments{
-\item{res}{the \code{rmedsem} object to print}
+\item{x}{the \code{rmedsem} object to print}
 
 \item{digits}{an integer, number of digits to print in table}
 
 \item{indent}{an integer, number of spaces to indent}
+
+\item{...}{additional arguments (currently unused)}
 }
 \value{
-\code{rmedsem} object \code{res} (invisibly)
+\code{rmedsem} object \code{x} (invisibly)
 }
 \description{
 Print rmedsem Results for Blavaan Models

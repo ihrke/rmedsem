@@ -11,12 +11,14 @@ pre_indent_merge <- function(s, indent){
 
 #' Print rmedsem Results for Blavaan Models
 #'
-#' @param res the `rmedsem` object to print
+#' @param x the `rmedsem` object to print
 #' @param digits an integer, number of digits to print in table
 #' @param indent an integer, number of spaces to indent
-#' @return `rmedsem` object `res` (invisibly)
+#' @param ... additional arguments (currently unused)
+#' @return `rmedsem` object `x` (invisibly)
 #' @keywords internal
-print.rmedsem.blavaan <- function(res, digits=3, indent=3){
+print.rmedsem.blavaan <- function(x, digits=3, indent=3, ...){
+  res <- x
   # indentation
   indstr <- strrep(" ", indent)
   indent.conclusion <- indent + 9
@@ -97,14 +99,16 @@ print_effectsize <- function(res, digits=3, indent=3){
 
 #' Print rmedsem Results for Lavaan, cSEM, and Modsem Models
 #'
-#' @param res the `rmedsem` object to print
+#' @param x the `rmedsem` object to print
 #' @param digits an integer, number of digits to print in table
 #' @param indent an integer, number of spaces to indent
 #' @param ci_moderation a logical, whether to print confidence intervals for
 #' direct, indirect and total moderation effects
-#' @return `rmedsem` object `res` (invisibly)
+#' @param ... additional arguments (currently unused)
+#' @return `rmedsem` object `x` (invisibly)
 #' @keywords internal
-print.rmedsem.lavaan.csem.modsem <- function(res, digits=3, indent=3, ci_moderation=FALSE){
+print.rmedsem.lavaan.csem.modsem <- function(x, digits=3, indent=3, ci_moderation=FALSE, ...){
+  res <- x
   # indentation
   indstr <- strrep(" ", indent)
   indent.conclusion <- indent + 9
