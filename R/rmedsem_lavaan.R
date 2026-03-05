@@ -12,6 +12,7 @@
 #' @param p.threshold A double giving the p-value for determining whether a path
 #'  is significant or not
 #' @param effect.size calculate different effect-sizes; one or more of "RIT", "RID"
+#' @param ci.two.tailed A double giving the confidence level for two-tailed confidence intervals (default 0.95)
 #' @param ... additional arguments (currently unused)
 #'
 #' @return A `rmedsem` structure containing the results from the analysis
@@ -35,7 +36,7 @@ rmedsem.lavaan <- function(mod, indep, med, dep,
                            standardized=TRUE, mcreps=NULL,
                            ci.two.tailed=0.95, ...){
   validate_rmedsem_args(indep, med, dep, approach, p.threshold, effect.size)
-  ci.width <- qnorm(1-(1-ci.two.tailed)/2)
+  ci.width <- stats::qnorm(1-(1-ci.two.tailed)/2)
   N <- lavaan::nobs(mod)
   if (is.null(mcreps) || mcreps < N){
     mcreps=N

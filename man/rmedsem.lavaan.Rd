@@ -14,6 +14,7 @@
   effect.size = c("RIT", "RID"),
   standardized = TRUE,
   mcreps = NULL,
+  ci.two.tailed = 0.95,
   ...
 )
 }
@@ -37,6 +38,8 @@ is significant or not}
 standardized. The default value is F.}
 
 \item{mcreps}{An integer determining the number of monte-carlo samples.}
+
+\item{ci.two.tailed}{A double giving the confidence level for two-tailed confidence intervals (default 0.95)}
 
 \item{...}{additional arguments (currently unused)}
 }
