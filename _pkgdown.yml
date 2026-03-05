@@ -1,4 +1,16 @@
 url: https://ihrke.github.io/rmedsem/
 template:
   bootstrap: 5
+  includes:
+    in_header: |
+      <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+      <script>
+        document.addEventListener("DOMContentLoaded", function() {
+          document.querySelectorAll("pre.mermaid").forEach(function(pre) {
+            var code = pre.querySelector("code");
+            if (code) pre.textContent = code.textContent;
+          });
+          mermaid.initialize({startOnLoad: true});
+        });
+      </script>
 
