@@ -5,6 +5,9 @@ use devtools::build_readme() to update README.md-->
 # rmedsem <a href="https://ihrke.github.io/rmedsem/"><img src="man/figures/logo.png" align="right" height="139" /></a>
 
 <!-- badges: start -->
+
+[![R-CMD-check](https://github.com/ihrke/rmedsem/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ihrke/rmedsem/actions/workflows/R-CMD-check.yaml)
+[![pkgdown](https://github.com/ihrke/rmedsem/actions/workflows/pkgdown.yaml/badge.svg)](https://ihrke.github.io/rmedsem/)
 <!-- badges: end   -->
 
 The goal of rmedsem is to conduct a mediation analysis based on a
@@ -49,8 +52,12 @@ simple case in which mathematical skills `math` directly affect
 performance in science-related areas `science` and where part of this
 association is mediated through their ability to `read`.
 
-<div class="grViz html-widget html-fill-item" id="htmlwidget-f5ce67fdaded799d734a" style="width:100%;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-f5ce67fdaded799d734a">{"x":{"diagram":"\ndigraph {\n  rankdir=LR;\n    math -> read;\n    read -> science;\n    math -> science;\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+``` mermaid
+graph LR
+    math --> read
+    read --> science
+    math --> science
+```
 
 We can express this model in `lavaan` syntax as follows:
 
@@ -83,12 +90,12 @@ print(out)
 #> Model estimated with package 'lavaan'
 #> Mediation effect: 'math' -> 'read' -> 'science'
 #> 
-#>                         Sobel         Delta   Monte-Carlo
-#> Indirect effect        0.2506        0.2506        0.2506
-#> Std. Err.              0.0456        0.0456        0.0451
-#> z-value                5.5006        5.5006        5.5264
-#> p-value              3.79e-08      3.79e-08      3.27e-08
-#> CI              [0.161, 0.34] [0.161, 0.34] [0.17, 0.351]
+#>                         Sobel         Delta    Monte-Carlo
+#> Indirect effect        0.2506        0.2506         0.2506
+#> Std. Err.              0.0456        0.0456         0.0434
+#> z-value                5.5006        5.5006         5.7417
+#> p-value              3.79e-08      3.79e-08       9.37e-09
+#> CI              [0.161, 0.34] [0.161, 0.34] [0.166, 0.324]
 #> 
 #> Baron and Kenny approach to testing mediation
 #>    STEP 1 - 'math:read' (X -> M) with B=0.662 and p=0.000
@@ -132,11 +139,11 @@ rmedsem(mod, indep="math", med="read", dep="science",
 #> Mediation effect: 'math' -> 'read' -> 'science'
 #> 
 #>                         Sobel         Delta    Monte-Carlo
-#> Indirect effect        0.2506        0.2506         0.2506
-#> Std. Err.              0.0456        0.0456         0.0458
-#> z-value                5.5006        5.5006         5.3890
-#> p-value              3.79e-08      3.79e-08       7.09e-08
-#> CI              [0.161, 0.34] [0.161, 0.34] [0.159, 0.334]
+#> Indirect effect        0.2506        0.2506          0.251
+#> Std. Err.              0.0456        0.0456          0.047
+#> z-value                5.5006        5.5006          5.366
+#> p-value              3.79e-08      3.79e-08       8.03e-08
+#> CI              [0.161, 0.34] [0.161, 0.34] [0.158, 0.342]
 #> 
 #> Zhao, Lynch & Chen's approach to testing mediation
 #> Based on p-value estimated using Monte-Carlo
@@ -192,10 +199,10 @@ rmedsem(mod, indep="Attractive", med="Appearance", dep="Muscle",
 #> 
 #>                            Sobel              Delta     Monte-Carlo
 #> Indirect effect           0.0654             0.0654          0.0654
-#> Std. Err.                 0.0331             0.0338          0.0336
-#> z-value                   1.9748             1.9359          2.0549
-#> p-value                   0.0483             0.0529          0.0399
-#> CI              [0.000491, 0.13] [-0.000814, 0.132] [0.0113, 0.136]
+#> Std. Err.                 0.0331             0.0338          0.0339
+#> z-value                   1.9748             1.9359          1.9388
+#> p-value                   0.0483             0.0529          0.0525
+#> CI              [0.000491, 0.13] [-0.000814, 0.132] [0.0055, 0.136]
 #> 
 #> Baron and Kenny approach to testing mediation
 #>    STEP 1 - 'Attractive:Appearance' (X -> M) with B=0.158 and p=0.033
@@ -207,8 +214,8 @@ rmedsem(mod, indep="Attractive", med="Appearance", dep="Muscle",
 #> Zhao, Lynch & Chen's approach to testing mediation
 #> Based on p-value estimated using Monte-Carlo
 #>   STEP 1 - 'Attractive:Muscle' (X -> Y) with B=-0.014 and p=0.850
-#>             As the Monte-Carlo test above is significant and STEP 1 is not
-#>             significant there indirect-only mediation (full mediation).
+#>             As the Monte-Carlo test above is not significant and STEP 1 is
+#>             not significant there is no effect nonmediation (no mediation).
 #> 
 #> Effect sizes
 #>    WARNING: Total effect is smaller than indirect effect!
@@ -235,10 +242,10 @@ rmedsem(mod, indep="Attractive", med="Appearance", dep="Weight",
 #> 
 #>                           Sobel            Delta     Monte-Carlo
 #> Indirect effect          0.0979           0.0979          0.0979
-#> Std. Err.                0.0470           0.0484          0.0485
-#> z-value                  2.0810           2.0228          2.0542
-#> p-value                  0.0374           0.0431            0.04
-#> CI              [0.00569, 0.19] [0.00304, 0.193] [0.0172, 0.202]
+#> Std. Err.                0.0470           0.0484          0.0456
+#> z-value                  2.0810           2.0228          2.1764
+#> p-value                  0.0374           0.0431          0.0295
+#> CI              [0.00569, 0.19] [0.00304, 0.193] [0.0128, 0.188]
 #> 
 #> Zhao, Lynch & Chen's approach to testing mediation
 #> Based on p-value estimated using Monte-Carlo

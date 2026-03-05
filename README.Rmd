@@ -19,6 +19,8 @@ knitr::opts_chunk$set(
 # rmedsem <a href="https://ihrke.github.io/rmedsem/"><img src="man/figures/logo.png" align="right" height="139" /></a>
 
 <!-- badges: start -->
+[![R-CMD-check](https://github.com/ihrke/rmedsem/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ihrke/rmedsem/actions/workflows/R-CMD-check.yaml)
+[![pkgdown](https://github.com/ihrke/rmedsem/actions/workflows/pkgdown.yaml/badge.svg)](https://ihrke.github.io/rmedsem/)
 <!-- badges: end   -->
 
 
@@ -57,15 +59,13 @@ In this model, we include only observed variables and have a simple case in whic
 mathematical skills `math` directly affect performance in science-related areas `science`
 and where part of this association is mediated through their ability to `read`.
 
-```{r, echo=F, warning=F, message=FALSE}
-library(DiagrammeR)
-grViz("
-digraph {
-  rankdir=LR;
-    math -> read;
-    read -> science;
-    math -> science;
-}")
+```{asis, echo=TRUE}
+```mermaid
+graph LR
+    math --> read
+    read --> science
+    math --> science
+```
 ```
 
 ```{r, eval=F,echo=F, warning=F, message=FALSE}
