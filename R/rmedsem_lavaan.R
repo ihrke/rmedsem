@@ -32,27 +32,31 @@
 rmedsem.lavaan <- function(mod, indep, med, dep,
                            approach=c("bk", "zlc"), p.threshold=0.05,
                            effect.size=c("RIT","RID"),
-                           standardized=TRUE, mcreps=NULL, ...){
+                           standardized=TRUE, mcreps=NULL,
+                           ci.two.tailed=0.95, ...){
   validate_rmedsem_args(indep, med, dep, approach, p.threshold, effect.size)
+  ci.width <- qnorm(1-(1-ci.two.tailed)/2)
   N <- lavaan::nobs(mod)
-  if(is.null(mcreps) || mcreps < N){
+  if (is.null(mcreps) || mcreps < N){
     mcreps=N
   }
 
-  V <- lavaan::vcov(mod)
   moi <- sprintf("%s~%s", med, indep)
   dom <- sprintf("%s~%s", dep, med)
   doi <- sprintf("%s~%s", dep, indep)
-  corrmoidom = abs(V[moi,dom])
-  corrmoidoi = abs(V[moi,doi])
-  corrdomdoi = abs(V[dom,doi])
 
   if(standardized){
+    V <- lavaan::lavInspect(mod, what="vcov.std.all")
     coefs <- lavaan::standardizedsolution(mod)
     coefs$est <- coefs$est.std
   } else {
+    V <- lavaan::vcov(mod)
     coefs <- lavaan::parameterEstimates(mod)
   }
+  
+  covmoidom = V[moi,dom]
+  covmoidoi = V[moi,doi]
+  covdomdoi = V[dom,doi]
 
   # IV -> M
   coef_moi <- with(coefs, est[lhs==med & rhs==indep])
@@ -71,32 +75,32 @@ rmedsem.lavaan <- function(mod, indep, med, dep,
   se_doi   <- with(coefs, se[lhs==dep & rhs==indep])
   var_doi  <- se_doi^2
   pval_doi <- with(coefs, pvalue[lhs==dep & rhs==indep])
-  lci_doi <- coef_doi - 1.959964*se_doi
-  uci_doi <- coef_doi + 1.959964*se_doi
+  lci_doi <- coef_doi - ci.width*se_doi
+  uci_doi <- coef_doi + ci.width*se_doi
 
   prodterm <- coef_moi * coef_dom
 
   sobel_se  <- sqrt((coef_dom^2)*var_moi + (coef_moi^2)*var_dom)
   sobel_z   <- prodterm/sobel_se
   sobel_pv  <- 2*(1-stats::pnorm(abs(sobel_z)))
-  sobel_lci <- prodterm - 1.959964*sobel_se
-  sobel_uci <- prodterm + 1.959964*sobel_se
+  sobel_lci <- prodterm - ci.width*sobel_se
+  sobel_uci <- prodterm + ci.width*sobel_se
 
   # here I use normal theory confidence limits, however according
   # to MacKinnon on page 97, these may not always be precise, however
   # in the DELTA METHOD below, it seems like normaly theory limits
-  # are used there as well, that is 1.959964 is used
+  # are used there as well, that is ci.width is used
 
   #delta_se <- sqrt( (coef_dom^2)*var_moi + (coef_moi^2)*var_dom + (var_moi*var_dom) )
-  delta_se <- sqrt( (coef_dom^2)*var_moi + (coef_moi^2)*var_dom + 2*coef_dom*coef_moi*corrmoidom )
+  delta_se <- sqrt( (coef_dom^2)*var_moi + (coef_moi^2)*var_dom + 2*coef_dom*coef_moi*covmoidom )
 
   delta_z  <- prodterm/delta_se
   delta_pv  <- 2*(1-stats::pnorm(abs(delta_z)))
-  delta_lci <- prodterm - 1.959964*delta_se
-  delta_uci <- prodterm + 1.959964*delta_se
+  delta_lci <- prodterm - ci.width*delta_se
+  delta_uci <- prodterm + ci.width*delta_se
 
-  sigma <- matrix(c(se_moi, corrmoidom, corrmoidom, se_dom), nrow=2, ncol=2, byrow = F)
-  coefx <- mvtnorm::rmvnorm(n=mcreps, mean=c(coef_moi, coef_dom), sigma = sigma**2)
+  sigma <- matrix(c(var_moi, covmoidom, covmoidom, var_dom), nrow=2, ncol=2)
+  coefx <- mvtnorm::rmvnorm(n=mcreps, mean=c(coef_moi, coef_dom), sigma = sigma)
   prod_coef <- apply(coefx, 1, prod)
   montc_prod <- mean(prod_coef)
   montc_se   <- stats::sd(prod_coef)
@@ -110,10 +114,10 @@ rmedsem.lavaan <- function(mod, indep, med, dep,
 
   # TE = IND + DE
   coef_tot <- coef_doi + prodterm
-  sigma <- matrix(c(se_moi, corrmoidom, corrmoidoi,
-                    corrmoidom, se_dom, corrdomdoi,
-                    corrmoidoi, corrdomdoi, se_doi), nrow=3, ncol=3, byrow = F)
-  coefx <- mvtnorm::rmvnorm(n=mcreps, mean=c(coef_moi, coef_dom, coef_doi), sigma = sigma**2)
+  sigma <- matrix(c(var_moi, covmoidom, covmoidoi,
+                    covmoidom, var_dom, covdomdoi,
+                    covmoidoi, covdomdoi, var_doi), nrow=3, ncol=3)
+  coefx <- mvtnorm::rmvnorm(n=mcreps, mean=c(coef_moi, coef_dom, coef_doi), sigma = sigma)
   tot_eff_samp <- (coefx[,1]*coefx[,2])+coefx[,3]
   coef_tot <- mean(tot_eff_samp)
   se_tot <- stats::sd(tot_eff_samp)
