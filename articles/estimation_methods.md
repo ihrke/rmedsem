@@ -313,12 +313,12 @@ rmedsem(mod, indep="Math", med="Read", dep="Science",
 #> Model estimated with package 'cSEM'
 #> Mediation effect: 'Math' -> 'Read' -> 'Science'
 #> 
-#>                          Sobel          Delta     Bootstrap
-#> Indirect effect         0.2506         0.2506        0.2506
-#> Std. Err.               0.0527         0.0551        0.0504
-#> z-value                 4.7524         4.5509        4.9741
-#> p-value               2.01e-06       5.34e-06      6.55e-07
-#> CI              [0.147, 0.354] [0.143, 0.359] [0.15, 0.348]
+#>                          Sobel          Delta      Bootstrap
+#> Indirect effect          0.251         0.2506         0.2506
+#> Std. Err.                0.054         0.0524         0.0526
+#> z-value                  4.638         4.7836         4.7656
+#> p-value               3.52e-06       1.72e-06       1.88e-06
+#> CI              [0.145, 0.357] [0.148, 0.353] [0.147, 0.359]
 #> 
 #> Baron and Kenny approach to testing mediation
 #>    STEP 1 - 'Math:Read' (X -> M) with B=0.662 and p=0.000
@@ -366,11 +366,11 @@ rmedsem(mod, indep="ind60", med="dem60", dep="dem65",
 #> Mediation effect: 'ind60' -> 'dem60' -> 'dem65'
 #> 
 #>                          Sobel          Delta     Bootstrap
-#> Indirect effect         0.3988          0.399        0.3988
-#> Std. Err.               0.0937          0.100        0.0844
-#> z-value                 4.2558          3.977        4.7252
-#> p-value               2.08e-05       6.98e-05       2.3e-06
-#> CI              [0.215, 0.582] [0.202, 0.595] [0.26, 0.581]
+#> Indirect effect         0.3988         0.3988        0.3988
+#> Std. Err.               0.0958         0.0896        0.0888
+#> z-value                 4.1634         4.4504        4.4920
+#> p-value               3.14e-05       8.57e-06      7.06e-06
+#> CI              [0.211, 0.586] [0.223, 0.574] [0.25, 0.564]
 #> 
 #> Baron and Kenny approach to testing mediation
 #>    STEP 1 - 'ind60:dem60' (X -> M) with B=0.439 and p=0.000
@@ -418,23 +418,23 @@ rmedsem(mod, indep="Attractive", med="Appearance", dep="Muscle",
 #> Model estimated with package 'cSEM'
 #> Mediation effect: 'Attractive' -> 'Appearance' -> 'Muscle'
 #> 
-#>                           Sobel           Delta        Bootstrap
-#> Indirect effect          0.1124          0.1124            0.112
-#> Std. Err.                0.0375          0.0386            0.038
-#> z-value                  2.9988          2.9139            2.956
-#> p-value                 0.00271         0.00357          0.00312
-#> CI              [0.0389, 0.186] [0.0368, 0.188] [0.0514, -0.273]
+#>                          Sobel         Delta        Bootstrap
+#> Indirect effect         0.1124        0.1124           0.1124
+#> Std. Err.               0.0399        0.0395           0.0409
+#> z-value                 2.8195        2.8467           2.7499
+#> p-value                0.00481       0.00442          0.00596
+#> CI              [0.0343, 0.19] [0.035, 0.19] [0.0387, -0.274]
 #> 
 #> Baron and Kenny approach to testing mediation
 #>    STEP 1 - 'Attractive:Appearance' (X -> M) with B=0.236 and p=0.001
 #>    STEP 2 - 'Appearance:Muscle' (M -> Y) with B=0.475 and p=0.000
-#>    STEP 3 - 'Attractive:Muscle' (X -> Y) with B=-0.010 and p=0.896
+#>    STEP 3 - 'Attractive:Muscle' (X -> Y) with B=-0.010 and p=0.900
 #>             As STEP 1, STEP 2 and the Sobel's test above are significant
 #>             and STEP 3 is not significant the mediation is complete.
 #> 
 #> Zhao, Lynch & Chen's approach to testing mediation
 #> Based on p-value estimated using Bootstrap
-#>   STEP 1 - 'Attractive:Muscle' (X -> Y) with B=-0.010 and p=0.896
+#>   STEP 1 - 'Attractive:Muscle' (X -> Y) with B=-0.010 and p=0.900
 #>             As the Bootstrap test above is significant and STEP 1 is not
 #>             significant there indirect-only mediation (full mediation).
 #> 

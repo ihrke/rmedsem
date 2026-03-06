@@ -15,6 +15,7 @@ rmedsem(
   p.threshold = 0.05,
   effect.size = c("RIT", "RID"),
   nbootstrap = 1000,
+  ci.two.tailed = 0.95,
   ...
 )
 ```
@@ -53,6 +54,11 @@ rmedsem(
 - nbootstrap:
 
   number of bootstrap samples, default=1000
+
+- ci.two.tailed:
+
+  A double giving the confidence level for two-tailed confidence
+  intervals (default 0.95)
 
 - ...:
 
