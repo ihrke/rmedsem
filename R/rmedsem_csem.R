@@ -10,6 +10,7 @@
 #'  is significant or not
 #' @param nbootstrap number of bootstrap samples, default=1000
 #' @param effect.size calculate different effect-sizes; one or more of "RIT", "RID"
+#' @param ci.two.tailed A double giving the confidence level for two-tailed confidence intervals (default 0.95)
 #' @param ... additional arguments (currently unused)
 #'
 #' @return A `rmedsem` structure containing the results from the analysis
@@ -17,10 +18,12 @@
 rmedsem.cSEMResults <- function(mod, indep, med, dep,
                                 approach=c("bk", "zlc"), p.threshold=0.05,
                                 effect.size=c("RIT","RID"),
-                                nbootstrap=1000, ...){
+                                nbootstrap=1000,
+                                ci.two.tailed=0.95, ...){
   if (!requireNamespace("cSEM", quietly = TRUE))
     stop("Package 'cSEM' is required for this method. Please install it.")
   validate_rmedsem_args(indep, med, dep, approach, p.threshold, effect.size)
+  ci.width <- stats::qnorm(1-(1-ci.two.tailed)/2)
 
   N <- nrow(mod$Information$Data)
   moi <- sprintf("%s ~ %s", med, indep)
@@ -49,8 +52,8 @@ rmedsem.cSEMResults <- function(mod, indep, med, dep,
   se_doi   <- with(coefs, Std_err[Name==doi])
   var_doi  <- se_doi^2
   pval_doi <- with(coefs, p_value[Name==doi])
-  lci_doi <- coef_doi - 1.959964*se_doi
-  uci_doi <- coef_doi + 1.959964*se_doi
+  lci_doi <- coef_doi - ci.width*se_doi
+  uci_doi <- coef_doi + ci.width*se_doi
 
   # Total effect
   totix <- which(smod$Estimates$Effect_estimates$Total_effect$Name==doi)
@@ -64,21 +67,21 @@ rmedsem.cSEMResults <- function(mod, indep, med, dep,
   sobel_se  <- sqrt((coef_dom^2)*var_moi + (coef_moi^2)*var_dom)
   sobel_z   <- prodterm/sobel_se
   sobel_pv  <- 2*(1-stats::pnorm(abs(sobel_z)))
-  sobel_lci <- prodterm - 1.959964*sobel_se
-  sobel_uci <- prodterm + 1.959964*sobel_se
+  sobel_lci <- prodterm - ci.width*sobel_se
+  sobel_uci <- prodterm + ci.width*sobel_se
 
   # see https://github.com/FloSchuberth/cSEM/issues/542 for how to get the
   # covariance matrix of the path estimates for PLS-SEM based on
   # bootstrapping
   V <- stats::cov(smod$Estimates$Estimates_resample$Estimates1$Path_estimates$Resampled)
-  corrmoidom = abs(V[moi,dom])
+  covmoidom = V[moi,dom]
 
   #delta_se <- sqrt( (coef_dom^2)*var_moi + (coef_moi^2)*var_dom + (var_moi*var_dom) )
-  delta_se <- sqrt( (coef_dom^2)*var_moi + (coef_moi^2)*var_dom + 2*coef_dom*coef_moi*corrmoidom )
+  delta_se <- sqrt( (coef_dom^2)*var_moi + (coef_moi^2)*var_dom + 2*coef_dom*coef_moi*covmoidom )
   delta_z  <- prodterm/delta_se
   delta_pv  <- 2*(1-stats::pnorm(abs(delta_z)))
-  delta_lci <- prodterm - 1.959964*delta_se
-  delta_uci <- prodterm + 1.959964*delta_se
+  delta_lci <- prodterm - ci.width*delta_se
+  delta_uci <- prodterm + ci.width*delta_se
 
   indtab <- smod$Estimates$Effect_estimates$Indirect_effect
   boot_se <- with(indtab, Std_err[Name==doi])
