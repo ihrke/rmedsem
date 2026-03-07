@@ -16,7 +16,7 @@ utils::globalVariables(c(
 #' @param dep a string indicating the name of the dependent variable
 #' @param approach either `"bk"` or `"zlc"` or both `c("bk", "zlc")` (default)
 #' @param p.threshold a numeric giving the p-value threshold for significance
-#' @param effect.size character vector; one or more of `"RIT"`, `"RID"`
+#' @param effect.size character vector; one or more of `"RIT"`, `"RID"`, `"UPS"` (Upsilon)
 #' @param ... additional arguments passed to methods
 #'
 #' @return an object of class `rmedsem`
@@ -52,7 +52,7 @@ validate_rmedsem_args <- function(indep, med, dep, approach, p.threshold, effect
     stop("'p.threshold' must be a single number between 0 and 1.")
   if (!all(approach %in% c("bk", "zlc")))
     stop("'approach' must be one or more of 'bk', 'zlc'.")
-  if (!all(effect.size %in% c("RIT", "RID")))
-    stop("'effect.size' must be one or more of 'RIT', 'RID'.")
+  if (!all(effect.size %in% c("RIT", "RID", "UPS")))
+    stop("'effect.size' must be one or more of 'RIT', 'RID', 'UPS'.")
 }
 

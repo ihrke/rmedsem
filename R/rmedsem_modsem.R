@@ -172,6 +172,26 @@ rmedsem.modsem <- function(mod, indep, med, dep,
     es$RIT=list(es=ind_eff/tot_eff, ind_eff=ind_eff, tot_eff=tot_eff)
   if ("RID" %in% effect.size)
     es$RID=list(es=ind_eff/dir_eff, ind_eff=ind_eff, dir_eff=dir_eff)
+  if("UPS" %in% effect.size){
+    if(standardized){
+      std_moi <- coef_moi; std_dom <- coef_dom
+      std_se_moi <- se_moi; std_se_dom <- se_dom
+    } else {
+      std_coefs <- modsem::standardized_estimates(mod)
+      std_coefs <- std_coefs[std_coefs$op == "~", , drop = FALSE]
+      lookup <- c(std.error="se", p.value="pvalue", est="est.std")
+      std_coefs <- dplyr::rename(std_coefs, dplyr::any_of(lookup))
+      std_moi    <- with(std_coefs, est[lhs==med & rhs==indep])
+      std_dom    <- with(std_coefs, est[lhs==dep & rhs==med])
+      std_se_moi <- with(std_coefs, std.error[lhs==med & rhs==indep])
+      std_se_dom <- with(std_coefs, std.error[lhs==dep & rhs==med])
+    }
+    ups_unadj <- std_moi^2 * std_dom^2
+    ups_adj   <- (std_moi^2 - std_se_moi^2) * (std_dom^2 - std_se_dom^2)
+    es$UPS <- list(unadjusted=ups_unadj, adjusted=ups_adj,
+                   beta_MX=std_moi, beta_YMX=std_dom,
+                   se_MX=std_se_moi, se_YMX=std_se_dom)
+  }
 
   if (!is.null(moderator)) {
     modind <- get_correct_intterm(mod_c(indep, moderator), coefs, error=FALSE,

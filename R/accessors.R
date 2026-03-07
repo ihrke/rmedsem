@@ -59,6 +59,41 @@ RID.rmedsem <- function(res, ...) {
   return(res$effect.size$RID$es)
 }
 
+#' Upsilon Effect Size
+#'
+#' Returns the Upsilon effect size (Lachowicz, Preacher & Kelley, 2018),
+#' an R-squared-type measure representing the variance in Y explained
+#' indirectly by X through M.
+#'
+#' @param res fitted `rmedsem` object
+#' @param adjusted logical; if `TRUE` (default), return the bias-adjusted
+#'   estimator; if `FALSE`, return the unadjusted estimator
+#' @param ... additional arguments (currently unused)
+#'
+#' @examples
+#' mod.txt <- "
+#' read ~ math
+#' science ~ read + math
+#' "
+#' mod <- lavaan::sem(mod.txt, data=rmedsem::hsbdemo)
+#' out <- rmedsem(mod, indep="math", med="read", dep="science",
+#'                effect.size=c("RIT","RID","UPS"))
+#' Upsilon(out)
+#' Upsilon(out, adjusted=FALSE)
+#'
+#' @export
+Upsilon <- function (res, ...)
+  UseMethod("Upsilon")
+
+#' @rdname Upsilon
+#' @export
+Upsilon.rmedsem <- function(res, adjusted=TRUE, ...) {
+  if(is.null(res$effect.size$UPS))
+    stop("Upsilon was not computed. Re-run rmedsem() with effect.size including 'UPS'.")
+  if(adjusted) return(res$effect.size$UPS$adjusted)
+  return(res$effect.size$UPS$unadjusted)
+}
+
 #' Summarize an rmedsem Object
 #'
 #' Prints the mediation analysis results to the console.

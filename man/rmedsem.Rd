@@ -28,7 +28,7 @@ rmedsem(
 
 \item{p.threshold}{a numeric giving the p-value threshold for significance}
 
-\item{effect.size}{character vector; one or more of \code{"RIT"}, \code{"RID"}}
+\item{effect.size}{character vector; one or more of \code{"RIT"}, \code{"RID"}, \code{"UPS"} (Upsilon)}
 
 \item{...}{additional arguments passed to methods}
 }

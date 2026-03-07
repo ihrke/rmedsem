@@ -94,6 +94,18 @@ print_effectsize <- function(res, digits=3, indent=3){
     with(es$RID, cat(sprintf("%slarge as the direct effect of '%s' on '%s'\n", indesstr, res$vars$indep, res$vars$dep)))
   }
 
+  if("UPS" %in% names(es)){
+    cat(sprintf("%sUpsilon (v) = Variance in '%s' explained indirectly by '%s' through '%s'\n",
+                indstr, res$vars$dep, res$vars$indep, res$vars$med))
+    cat(sprintf("%sv(unadj) = %5.3f, v(adj) = %5.3f\n",
+                indesstr, es$UPS$unadjusted, es$UPS$adjusted))
+    if(!is.null(es$UPS$posterior_mean)){
+      cat(sprintf("%sPosterior mean(v) = %5.3f, median(v) = %5.3f, 95%% CI [%5.3f, %5.3f]\n",
+                  indesstr, es$UPS$posterior_mean, es$UPS$posterior_median,
+                  es$UPS$lower, es$UPS$upper))
+    }
+  }
+
 }
 
 

@@ -101,6 +101,13 @@ rmedsem.cSEMResults <- function(mod, indep, med, dep,
   if("RID" %in% effect.size ){
     es$RID=list(es=ind_eff/dir_eff, ind_eff=ind_eff, dir_eff=dir_eff)
   }
+  if("UPS" %in% effect.size){
+    ups_unadj <- coef_moi^2 * coef_dom^2
+    ups_adj   <- (coef_moi^2 - se_moi^2) * (coef_dom^2 - se_dom^2)
+    es$UPS <- list(unadjusted=ups_unadj, adjusted=ups_adj,
+                   beta_MX=coef_moi, beta_YMX=coef_dom,
+                   se_MX=se_moi, se_YMX=se_dom)
+  }
 
   res <- list(package="cSEM", standardized=TRUE,
               vars =list(med=med, indep=indep, dep=dep),

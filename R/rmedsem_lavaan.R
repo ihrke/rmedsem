@@ -139,7 +139,23 @@ rmedsem.lavaan <- function(mod, indep, med, dep,
   if("RID" %in% effect.size ){
     es$RID=list(es=ind_eff/dir_eff, ind_eff=ind_eff, dir_eff=dir_eff)
   }
-
+  if("UPS" %in% effect.size){
+    if(standardized){
+      std_moi <- coef_moi; std_dom <- coef_dom
+      std_se_moi <- se_moi; std_se_dom <- se_dom
+    } else {
+      std_coefs <- lavaan::standardizedsolution(mod)
+      std_moi    <- with(std_coefs, est.std[lhs==med & rhs==indep])
+      std_dom    <- with(std_coefs, est.std[lhs==dep & rhs==med])
+      std_se_moi <- with(std_coefs, se[lhs==med & rhs==indep])
+      std_se_dom <- with(std_coefs, se[lhs==dep & rhs==med])
+    }
+    ups_unadj <- std_moi^2 * std_dom^2
+    ups_adj   <- (std_moi^2 - std_se_moi^2) * (std_dom^2 - std_se_dom^2)
+    es$UPS <- list(unadjusted=ups_unadj, adjusted=ups_adj,
+                   beta_MX=std_moi, beta_YMX=std_dom,
+                   se_MX=std_se_moi, se_YMX=std_se_dom)
+  }
 
   res <- list(package="lavaan", standardized=standardized,
               vars =list(med=med, indep=indep, dep=dep),
