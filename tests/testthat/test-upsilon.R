@@ -7,7 +7,7 @@ fit_hsbdemo <- function(standardized = TRUE) {
   mod <- lavaan::sem(mod.txt, data = rmedsem::hsbdemo)
   rmedsem(mod, indep = "math", med = "read", dep = "science",
           standardized = standardized,
-          effect.size = c("RIT", "RID", "UPS"))
+          effect.size = c("RIT", "RID", "upsilon"))
 }
 
 
@@ -20,7 +20,7 @@ test_that("Upsilon matches hand-computed values (lavaan, standardized)", {
   "
   mod <- lavaan::sem(mod.txt, data = rmedsem::hsbdemo)
   out <- rmedsem(mod, indep = "math", med = "read", dep = "science",
-                 standardized = TRUE, effect.size = c("UPS"))
+                 standardized = TRUE, effect.size = c("upsilon"))
 
   std <- lavaan::standardizedsolution(mod)
   beta_MX  <- std$est.std[std$lhs == "read" & std$rhs == "math" & std$op == "~"]
@@ -31,10 +31,10 @@ test_that("Upsilon matches hand-computed values (lavaan, standardized)", {
   expected_unadj <- beta_MX^2 * beta_YMX^2
   expected_adj   <- (beta_MX^2 - se_MX^2) * (beta_YMX^2 - se_YMX^2)
 
-  expect_equal(out$effect.size$UPS$unadjusted, expected_unadj)
-  expect_equal(out$effect.size$UPS$adjusted, expected_adj)
-  expect_equal(out$effect.size$UPS$beta_MX, beta_MX)
-  expect_equal(out$effect.size$UPS$beta_YMX, beta_YMX)
+  expect_equal(out$effect.size$upsilon$unadjusted, expected_unadj)
+  expect_equal(out$effect.size$upsilon$adjusted, expected_adj)
+  expect_equal(out$effect.size$upsilon$beta_MX, beta_MX)
+  expect_equal(out$effect.size$upsilon$beta_YMX, beta_YMX)
 })
 
 
@@ -48,15 +48,15 @@ test_that("Upsilon computed from standardized solution even when standardized=FA
   mod <- lavaan::sem(mod.txt, data = rmedsem::hsbdemo)
 
   out_std   <- rmedsem(mod, indep = "math", med = "read", dep = "science",
-                       standardized = TRUE, effect.size = "UPS")
+                       standardized = TRUE, effect.size = "upsilon")
   out_unstd <- rmedsem(mod, indep = "math", med = "read", dep = "science",
-                       standardized = FALSE, effect.size = "UPS")
+                       standardized = FALSE, effect.size = "upsilon")
 
-  expect_true(!is.null(out_unstd$effect.size$UPS))
-  expect_equal(out_unstd$effect.size$UPS$unadjusted,
-               out_std$effect.size$UPS$unadjusted, tolerance = 1e-6)
-  expect_equal(out_unstd$effect.size$UPS$adjusted,
-               out_std$effect.size$UPS$adjusted, tolerance = 1e-6)
+  expect_true(!is.null(out_unstd$effect.size$upsilon))
+  expect_equal(out_unstd$effect.size$upsilon$unadjusted,
+               out_std$effect.size$upsilon$unadjusted, tolerance = 1e-6)
+  expect_equal(out_unstd$effect.size$upsilon$adjusted,
+               out_std$effect.size$upsilon$adjusted, tolerance = 1e-6)
 })
 
 
@@ -69,22 +69,22 @@ test_that("Upsilon unadjusted is the squared standardized indirect effect", {
   indirect <- unname(out$sobel["coef"])  # already standardized
   expected <- indirect^2
 
-  expect_equal(out$effect.size$UPS$unadjusted, expected, tolerance = 1e-10)
+  expect_equal(out$effect.size$upsilon$unadjusted, expected, tolerance = 1e-10)
 })
 
 test_that("Upsilon unadjusted >= 0", {
   out <- fit_hsbdemo()
-  expect_true(out$effect.size$UPS$unadjusted >= 0)
+  expect_true(out$effect.size$upsilon$unadjusted >= 0)
 })
 
 test_that("Upsilon unadjusted <= 1 for well-behaved models", {
   out <- fit_hsbdemo()
-  expect_true(out$effect.size$UPS$unadjusted <= 1)
+  expect_true(out$effect.size$upsilon$unadjusted <= 1)
 })
 
 test_that("Upsilon adjusted < unadjusted (bias correction shrinks)", {
   out <- fit_hsbdemo()
-  expect_true(out$effect.size$UPS$adjusted < out$effect.size$UPS$unadjusted)
+  expect_true(out$effect.size$upsilon$adjusted < out$effect.size$upsilon$unadjusted)
 })
 
 
@@ -92,12 +92,12 @@ test_that("Upsilon adjusted < unadjusted (bias correction shrinks)", {
 
 test_that("Upsilon accessor returns adjusted by default", {
   out <- fit_hsbdemo()
-  expect_equal(Upsilon(out), out$effect.size$UPS$adjusted)
+  expect_equal(Upsilon(out), out$effect.size$upsilon$adjusted)
 })
 
 test_that("Upsilon accessor returns unadjusted when requested", {
   out <- fit_hsbdemo()
-  expect_equal(Upsilon(out, adjusted = FALSE), out$effect.size$UPS$unadjusted)
+  expect_equal(Upsilon(out, adjusted = FALSE), out$effect.size$upsilon$unadjusted)
 })
 
 test_that("Upsilon accessor errors when not computed", {
@@ -136,11 +136,11 @@ test_that("Upsilon works with latent variables", {
   "
   mod <- lavaan::sem(mod.txt, data = lavaan::PoliticalDemocracy)
   out <- rmedsem(mod, indep = "ind60", med = "dem60", dep = "dem65",
-                 effect.size = c("UPS"))
+                 effect.size = c("upsilon"))
 
-  expect_true(!is.null(out$effect.size$UPS))
-  expect_true(is.finite(out$effect.size$UPS$unadjusted))
-  expect_true(is.finite(out$effect.size$UPS$adjusted))
+  expect_true(!is.null(out$effect.size$upsilon))
+  expect_true(is.finite(out$effect.size$upsilon$unadjusted))
+  expect_true(is.finite(out$effect.size$upsilon$adjusted))
 })
 
 
@@ -244,14 +244,14 @@ test_that("Upsilon matches MBESS upsilon (patched)", {
 
   mod <- lavaan::sem("read ~ math\nscience ~ read + math", data = d)
   out <- rmedsem(mod, indep = "math", med = "read", dep = "science",
-                 standardized = TRUE, effect.size = "UPS")
+                 standardized = TRUE, effect.size = "upsilon")
 
   # Unadjusted values should match exactly (algebraically equivalent).
   # Adjusted values differ slightly because MBESS uses unstandardized SEs
   # while we use standardized SEs for the bias correction.
-  expect_equal(out$effect.size$UPS$unadjusted, mbess_out["Upsilon", "Estimate"],
+  expect_equal(out$effect.size$upsilon$unadjusted, mbess_out["Upsilon", "Estimate"],
                tolerance = 1e-6)
-  expect_equal(out$effect.size$UPS$adjusted, mbess_out["Adj Upsilon", "Estimate"],
+  expect_equal(out$effect.size$upsilon$adjusted, mbess_out["Adj Upsilon", "Estimate"],
                tolerance = 1e-2)
 })
 
@@ -271,10 +271,10 @@ test_that("Upsilon works with cSEM", {
   "
   mod <- cSEM::csem(model, .data = na.omit(rmedsem::workout), .disattenuate = TRUE)
   out <- rmedsem(mod, indep = "Attractive", med = "Appearance", dep = "Muscle",
-                 effect.size = c("UPS"))
+                 effect.size = c("upsilon"))
 
-  expect_true(!is.null(out$effect.size$UPS))
-  expect_true(out$effect.size$UPS$unadjusted >= 0)
+  expect_true(!is.null(out$effect.size$upsilon))
+  expect_true(out$effect.size$upsilon$unadjusted >= 0)
 })
 
 
@@ -293,10 +293,10 @@ test_that("Upsilon works with modsem", {
   "
   est <- modsem::modsem(m, data = rmedsem::mchoice, method = "lms")
   out <- rmedsem(est, indep = "OwnLook", med = "SelfEst", dep = "MentWell",
-                 effect.size = c("UPS"))
+                 effect.size = c("upsilon"))
 
-  expect_true(!is.null(out$effect.size$UPS))
-  expect_true(out$effect.size$UPS$unadjusted >= 0)
+  expect_true(!is.null(out$effect.size$upsilon))
+  expect_true(out$effect.size$upsilon$unadjusted >= 0)
 })
 
 
@@ -322,9 +322,9 @@ test_that("Upsilon works with blavaan and has posterior samples", {
                          burnin = 250, sample = 250)
   })
   out <- rmedsem(mod, indep = "ind60", med = "dem60", dep = "dem65",
-                 effect.size = c("UPS"))
+                 effect.size = c("upsilon"))
 
-  ups <- out$effect.size$UPS
+  ups <- out$effect.size$upsilon
   expect_true(!is.null(ups))
   expect_true(is.finite(ups$unadjusted))
   expect_true(is.finite(ups$adjusted))

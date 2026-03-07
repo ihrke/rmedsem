@@ -36,6 +36,7 @@ Depends:
 LazyData: true
 Suggests:
     blavaan,
+    boot,
     cSEM,
     HDInterval,
     modsem,

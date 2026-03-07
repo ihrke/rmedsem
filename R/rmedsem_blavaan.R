@@ -105,13 +105,13 @@ rmedsem.blavaan <- function(mod, indep, med, dep,
   if("RID" %in% effect.size ){
     es$RID=list(es=ind_eff/dir_eff, ind_eff=ind_eff, dir_eff=dir_eff)
   }
-  if("UPS" %in% effect.size){
+  if("upsilon" %in% effect.size){
     ups_samples <- draws[,moi]^2 * draws[,dom]^2
     ups_unadj <- mean(draws[,moi])^2 * mean(draws[,dom])^2
     ups_adj   <- (mean(draws[,moi])^2 - stats::var(draws[,moi])) *
                  (mean(draws[,dom])^2 - stats::var(draws[,dom]))
     ups_qs <- stats::quantile(ups_samples, c(0.025, 0.975))
-    es$UPS <- list(unadjusted=ups_unadj, adjusted=ups_adj,
+    es$upsilon <- list(unadjusted=ups_unadj, adjusted=ups_adj,
                    samples=ups_samples,
                    posterior_mean=mean(ups_samples),
                    posterior_median=stats::median(ups_samples),

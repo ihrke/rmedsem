@@ -139,7 +139,7 @@ rmedsem.lavaan <- function(mod, indep, med, dep,
   if("RID" %in% effect.size ){
     es$RID=list(es=ind_eff/dir_eff, ind_eff=ind_eff, dir_eff=dir_eff)
   }
-  if("UPS" %in% effect.size){
+  if("upsilon" %in% effect.size){
     if(standardized){
       std_moi <- coef_moi; std_dom <- coef_dom
       std_se_moi <- se_moi; std_se_dom <- se_dom
@@ -152,7 +152,7 @@ rmedsem.lavaan <- function(mod, indep, med, dep,
     }
     ups_unadj <- std_moi^2 * std_dom^2
     ups_adj   <- (std_moi^2 - std_se_moi^2) * (std_dom^2 - std_se_dom^2)
-    es$UPS <- list(unadjusted=ups_unadj, adjusted=ups_adj,
+    es$upsilon <- list(unadjusted=ups_unadj, adjusted=ups_adj,
                    beta_MX=std_moi, beta_YMX=std_dom,
                    se_MX=std_se_moi, se_YMX=std_se_dom)
   }

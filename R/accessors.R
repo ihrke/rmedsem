@@ -77,7 +77,7 @@ RID.rmedsem <- function(res, ...) {
 #' "
 #' mod <- lavaan::sem(mod.txt, data=rmedsem::hsbdemo)
 #' out <- rmedsem(mod, indep="math", med="read", dep="science",
-#'                effect.size=c("RIT","RID","UPS"))
+#'                effect.size=c("RIT","RID","upsilon"))
 #' Upsilon(out)
 #' Upsilon(out, adjusted=FALSE)
 #'
@@ -88,10 +88,10 @@ Upsilon <- function (res, ...)
 #' @rdname Upsilon
 #' @export
 Upsilon.rmedsem <- function(res, adjusted=TRUE, ...) {
-  if(is.null(res$effect.size$UPS))
-    stop("Upsilon was not computed. Re-run rmedsem() with effect.size including 'UPS'.")
-  if(adjusted) return(res$effect.size$UPS$adjusted)
-  return(res$effect.size$UPS$unadjusted)
+  if(is.null(res$effect.size$upsilon))
+    stop("Upsilon was not computed. Re-run rmedsem() with effect.size including 'upsilon'.")
+  if(adjusted) return(res$effect.size$upsilon$adjusted)
+  return(res$effect.size$upsilon$unadjusted)
 }
 
 #' Summarize an rmedsem Object
