@@ -38,8 +38,9 @@ science ~ read + math
 mod <- lavaan::sem(mod.txt, data=rmedsem::hsbdemo)
 out <- rmedsem(mod, indep="math", med="read", dep="science",
                effect.size=c("RIT","RID","UPS"))
+#> Error in validate_rmedsem_args(indep, med, dep, approach, p.threshold,     effect.size): 'effect.size' must be one or more of 'RIT', 'RID', 'upsilon'.
 Upsilon(out)
-#> [1] 0.06073778
+#> Error: object 'out' not found
 Upsilon(out, adjusted=FALSE)
-#> [1] 0.06280834
+#> Error: object 'out' not found
 ```
