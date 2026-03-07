@@ -6,6 +6,8 @@
   Indirect to Direct Effect (RID)
 - [`RIT()`](https://ihrke.github.io/rmedsem/reference/RIT.md) : Ratio of
   Indirect to Total Effect (RIT)
+- [`Upsilon()`](https://ihrke.github.io/rmedsem/reference/Upsilon.md) :
+  Upsilon Effect Size
 - [`as.data.frame(`*`<rmedsem>`*`)`](https://ihrke.github.io/rmedsem/reference/as.data.frame.rmedsem.md)
   : Convert an rmedsem Object to a Data Frame
 - [`hsbdemo`](https://ihrke.github.io/rmedsem/reference/hsbdemo.md) :

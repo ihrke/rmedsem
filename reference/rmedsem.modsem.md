@@ -108,10 +108,10 @@ if (requireNamespace("modsem", quietly = TRUE)) {
 #> 
 #>                          Sobel          Delta    Monte-Carlo
 #> Indirect effect         0.2532         0.2532         0.2532
-#> Std. Err.               0.0287         0.0287         0.0289
-#> z-value                 8.8217         8.8103         8.7521
+#> Std. Err.               0.0287         0.0287         0.0283
+#> z-value                 8.8217         8.8103         8.9114
 #> p-value                      0              0              0
-#> CI              [0.197, 0.309] [0.197, 0.309] [0.203, 0.314]
+#> CI              [0.197, 0.309] [0.197, 0.309] [0.203, 0.311]
 #> 
 #> Baron and Kenny approach to testing mediation
 #>    STEP 1 - 'OwnLook:SelfEst' (X -> M) with B=0.486 and p=0.000
@@ -142,10 +142,10 @@ if (requireNamespace("modsem", quietly = TRUE)) {
 #>    MentWell -> OwnLook  | smv: B = -0.008, se = 0.034, p = 0.821
 #> 
 #> Indirect moderation effect
-#>    SelfEst  -> OwnLook  | smv: B = -0.071, se = 0.016, p = 0.000
+#>    SelfEst  -> OwnLook  | smv: B = -0.071, se = 0.017, p = 0.000
 #> 
 #> Total moderation effect
-#>    SelfEst  -> OwnLook  | smv: B = -0.079, se = 0.036, p = 0.029
+#>    SelfEst  -> OwnLook  | smv: B = -0.079, se = 0.036, p = 0.030
 #> 
 # }
 ```

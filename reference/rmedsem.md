@@ -46,7 +46,7 @@ rmedsem(
 
 - effect.size:
 
-  character vector; one or more of `"RIT"`, `"RID"`
+  character vector; one or more of `"RIT"`, `"RID"`, `"UPS"` (Upsilon)
 
 - ...:
 
@@ -72,10 +72,10 @@ out
 #> 
 #>                         Sobel         Delta    Monte-Carlo
 #> Indirect effect        0.2506         0.251         0.2506
-#> Std. Err.              0.0456         0.046         0.0414
-#> z-value                5.5006         5.446         5.9490
-#> p-value              3.79e-08      5.15e-08        2.7e-09
-#> CI              [0.161, 0.34] [0.16, 0.341] [0.167, 0.325]
+#> Std. Err.              0.0456         0.046         0.0468
+#> z-value                5.5006         5.446         5.3134
+#> p-value              3.79e-08      5.15e-08       1.08e-07
+#> CI              [0.161, 0.34] [0.16, 0.341] [0.165, 0.335]
 #> 
 #> Baron and Kenny approach to testing mediation
 #>    STEP 1 - 'math:read' (X -> M) with B=0.662 and p=0.000
