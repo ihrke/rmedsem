@@ -36,7 +36,7 @@
 #' }
 rmedsem.blavaan <- function(mod, indep, med, dep,
                             approach=c("bk", "zlc"), p.threshold=0.05,
-                            effect.size=c("RIT","RID"), ...){
+                            effect.size=c("RIT","RID","upsilon"), ...){
   if (!requireNamespace("blavaan", quietly = TRUE))
     stop("Package 'blavaan' is required for this method. Please install it.")
   validate_rmedsem_args(indep, med, dep, approach, p.threshold, effect.size)

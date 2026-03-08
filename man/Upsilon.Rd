@@ -29,7 +29,7 @@ science ~ read + math
 "
 mod <- lavaan::sem(mod.txt, data=rmedsem::hsbdemo)
 out <- rmedsem(mod, indep="math", med="read", dep="science",
-               effect.size=c("RIT","RID","UPS"))
+               effect.size=c("RIT","RID","upsilon"))
 Upsilon(out)
 Upsilon(out, adjusted=FALSE)
 
