@@ -13,7 +13,7 @@ rmedsem(
   dep,
   approach = c("bk", "zlc"),
   p.threshold = 0.05,
-  effect.size = c("RIT", "RID"),
+  effect.size = c("RIT", "RID", "upsilon"),
   standardized = TRUE,
   mcreps = NULL,
   ci.two.tailed = 0.95,
