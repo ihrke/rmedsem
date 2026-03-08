@@ -90,6 +90,8 @@ rmedsem(indep="OwnPers:OwnLook", dep="MentWell", med="SelfEst", mod=est)
 #>          (0.081/0.007) = 11.849
 #>          That is, the mediated effect is about 11.8 times as
 #>          large as the direct effect of 'OwnPers:OwnLook' on 'MentWell'
+#>    Upsilon (v) = Variance in 'MentWell' explained indirectly by 'OwnPers:OwnLook' through 'SelfEst'
+#>          v(unadj) = 0.007, v(adj) = 0.006
 ```
 
 ## Moderated Mediation
@@ -136,6 +138,8 @@ rmedsem(indep="OwnLook", dep="MentWell", med="SelfEst", mod=est,
 #>          (0.253/0.011) = 22.233
 #>          That is, the mediated effect is about 22.2 times as
 #>          large as the direct effect of 'OwnLook' on 'MentWell'
+#>    Upsilon (v) = Variance in 'MentWell' explained indirectly by 'OwnLook' through 'SelfEst'
+#>          v(unadj) = 0.064, v(adj) = 0.063
 #> 
 #> 
 #> Direct moderation effects
@@ -217,6 +221,8 @@ rmedsem(indep="OwnLook", dep="MentWell", med="SelfEst", mod=est2,
 #>          (0.250/0.031) = 8.110
 #>          That is, the mediated effect is about 8.1 times as
 #>          large as the direct effect of 'OwnLook' on 'MentWell'
+#>    Upsilon (v) = Variance in 'MentWell' explained indirectly by 'OwnLook' through 'SelfEst'
+#>          v(unadj) = 0.063, v(adj) = 0.062
 #> 
 #> 
 #> Direct moderation effects

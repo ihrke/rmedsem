@@ -40,10 +40,10 @@ summary(out)
 #> 
 #>                         Sobel         Delta    Monte-Carlo
 #> Indirect effect        0.2506         0.251         0.2506
-#> Std. Err.              0.0456         0.046         0.0454
-#> z-value                5.5006         5.446         5.4890
-#> p-value              3.79e-08      5.15e-08       4.04e-08
-#> CI              [0.161, 0.34] [0.16, 0.341] [0.166, 0.338]
+#> Std. Err.              0.0456         0.046         0.0417
+#> z-value                5.5006         5.446         6.0984
+#> p-value              3.79e-08      5.15e-08       1.07e-09
+#> CI              [0.161, 0.34] [0.16, 0.341] [0.169, 0.327]
 #> 
 #> Baron and Kenny approach to testing mediation
 #>    STEP 1 - 'math:read' (X -> M) with B=0.662 and p=0.000
@@ -68,5 +68,7 @@ summary(out)
 #>          (0.251/0.380) = 0.659
 #>          That is, the mediated effect is about 0.7 times as
 #>          large as the direct effect of 'math' on 'science'
+#>    Upsilon (v) = Variance in 'science' explained indirectly by 'math' through 'read'
+#>          v(unadj) = 0.063, v(adj) = 0.061
 #> 
 ```

@@ -107,11 +107,11 @@ if (requireNamespace("modsem", quietly = TRUE)) {
 #> Mediation effect: 'OwnLook' -> 'SelfEst' -> 'MentWell'
 #> 
 #>                          Sobel          Delta    Monte-Carlo
-#> Indirect effect         0.2532         0.2532          0.253
-#> Std. Err.               0.0287         0.0287          0.029
-#> z-value                 8.8217         8.8103          8.721
+#> Indirect effect         0.2532         0.2532         0.2532
+#> Std. Err.               0.0287         0.0287         0.0283
+#> z-value                 8.8217         8.8103         8.9114
 #> p-value                      0              0              0
-#> CI              [0.197, 0.309] [0.197, 0.309] [0.201, 0.313]
+#> CI              [0.197, 0.309] [0.197, 0.309] [0.203, 0.311]
 #> 
 #> Baron and Kenny approach to testing mediation
 #>    STEP 1 - 'OwnLook:SelfEst' (X -> M) with B=0.486 and p=0.000
@@ -135,6 +135,8 @@ if (requireNamespace("modsem", quietly = TRUE)) {
 #>          (0.253/0.011) = 22.232
 #>          That is, the mediated effect is about 22.2 times as
 #>          large as the direct effect of 'OwnLook' on 'MentWell'
+#>    Upsilon (v) = Variance in 'MentWell' explained indirectly by 'OwnLook' through 'SelfEst'
+#>          v(unadj) = 0.064, v(adj) = 0.063
 #> 
 #> 
 #> Direct moderation effects
@@ -145,7 +147,7 @@ if (requireNamespace("modsem", quietly = TRUE)) {
 #>    SelfEst  -> OwnLook  | smv: B = -0.071, se = 0.017, p = 0.000
 #> 
 #> Total moderation effect
-#>    SelfEst  -> OwnLook  | smv: B = -0.079, se = 0.037, p = 0.031
+#>    SelfEst  -> OwnLook  | smv: B = -0.079, se = 0.036, p = 0.030
 #> 
 # }
 ```

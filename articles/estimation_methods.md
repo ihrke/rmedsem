@@ -63,6 +63,8 @@ print(out)
 #>          (0.251/0.380) = 0.659
 #>          That is, the mediated effect is about 0.7 times as
 #>          large as the direct effect of 'math' on 'science'
+#>    Upsilon (v) = Variance in 'science' explained indirectly by 'math' through 'read'
+#>          v(unadj) = 0.063, v(adj) = 0.061
 ```
 
 ### Example 2 (lavaan)
@@ -116,6 +118,8 @@ print(out)
 #>          (0.409/0.146) = 2.811
 #>          That is, the mediated effect is about 2.8 times as
 #>          large as the direct effect of 'ind60' on 'dem65'
+#>    Upsilon (v) = Variance in 'dem65' explained indirectly by 'ind60' through 'dem60'
+#>          v(unadj) = 0.167, v(adj) = 0.158
 ```
 
 ### Example 3 (lavaan)
@@ -167,6 +171,8 @@ rmedsem(mod, indep="Attractive", med="Appearance", dep="Muscle",
 #>          (0.065/0.014) = 4.714
 #>          That is, the mediated effect is about 4.7 times as
 #>          large as the direct effect of 'Attractive' on 'Muscle'
+#>    Upsilon (v) = Variance in 'Muscle' explained indirectly by 'Attractive' through 'Appearance'
+#>          v(unadj) = 0.004, v(adj) = 0.003
 ```
 
 ``` r
@@ -206,6 +212,8 @@ rmedsem(mod, indep="Attractive", med="Appearance", dep="Weight",
 #>          (0.098/0.125) = 0.784
 #>          That is, the mediated effect is about 0.8 times as
 #>          large as the direct effect of 'Attractive' on 'Weight'
+#>    Upsilon (v) = Variance in 'Weight' explained indirectly by 'Attractive' through 'Appearance'
+#>          v(unadj) = 0.010, v(adj) = 0.007
 ```
 
 ``` r
@@ -245,6 +253,8 @@ rmedsem(mod, indep="age", med="Appearance", dep="Muscle",
 #>          (0.160/0.147) = 1.089
 #>          That is, the mediated effect is about 1.1 times as
 #>          large as the direct effect of 'age' on 'Muscle'
+#>    Upsilon (v) = Variance in 'Muscle' explained indirectly by 'age' through 'Appearance'
+#>          v(unadj) = 0.026, v(adj) = 0.024
 ```
 
 ``` r
@@ -285,6 +295,8 @@ rmedsem(mod, indep="age", med="Appearance", dep="Weight",
 #>          (0.240/0.341) = 0.704
 #>          That is, the mediated effect is about 0.7 times as
 #>          large as the direct effect of 'age' on 'Weight'
+#>    Upsilon (v) = Variance in 'Weight' explained indirectly by 'age' through 'Appearance'
+#>          v(unadj) = 0.057, v(adj) = 0.055
 ```
 
 ## cSEM
@@ -315,10 +327,10 @@ rmedsem(mod, indep="Math", med="Read", dep="Science",
 #> 
 #>                          Sobel          Delta      Bootstrap
 #> Indirect effect         0.2506         0.2506         0.2506
-#> Std. Err.               0.0527         0.0496         0.0499
-#> z-value                 4.7544         5.0555         5.0262
-#> p-value               1.99e-06       4.29e-07          5e-07
-#> CI              [0.147, 0.354] [0.153, 0.348] [0.152, 0.342]
+#> Std. Err.               0.0527         0.0511         0.0512
+#> z-value                 4.7524         4.9085         4.8968
+#> p-value               2.01e-06       9.18e-07       9.74e-07
+#> CI              [0.147, 0.354] [0.151, 0.351] [0.148, 0.343]
 #> 
 #> Baron and Kenny approach to testing mediation
 #>    STEP 1 - 'Math:Read' (X -> M) with B=0.662 and p=0.000
@@ -343,6 +355,8 @@ rmedsem(mod, indep="Math", med="Read", dep="Science",
 #>          (0.251/0.380) = 0.659
 #>          That is, the mediated effect is about 0.7 times as
 #>          large as the direct effect of 'Math' on 'Science'
+#>    Upsilon (v) = Variance in 'Science' explained indirectly by 'Math' through 'Read'
+#>          v(unadj) = 0.063, v(adj) = 0.060
 ```
 
 ### Example 2 (cSEM)
@@ -367,21 +381,21 @@ rmedsem(mod, indep="ind60", med="dem60", dep="dem65",
 #> 
 #>                          Sobel          Delta      Bootstrap
 #> Indirect effect         0.3988         0.3988         0.3988
-#> Std. Err.               0.0879         0.0829         0.0809
-#> z-value                 4.5363         4.8099         4.9279
-#> p-value               5.73e-06       1.51e-06       8.31e-07
-#> CI              [0.226, 0.571] [0.236, 0.561] [0.277, 0.598]
+#> Std. Err.               0.0916         0.0848         0.0835
+#> z-value                 4.3532         4.7016         4.7760
+#> p-value               1.34e-05       2.58e-06       1.79e-06
+#> CI              [0.219, 0.578] [0.233, 0.565] [0.266, 0.594]
 #> 
 #> Baron and Kenny approach to testing mediation
 #>    STEP 1 - 'ind60:dem60' (X -> M) with B=0.439 and p=0.000
 #>    STEP 2 - 'dem60:dem65' (M -> Y) with B=0.909 and p=0.000
-#>    STEP 3 - 'ind60:dem65' (X -> Y) with B=0.159 and p=0.019
+#>    STEP 3 - 'ind60:dem65' (X -> Y) with B=0.159 and p=0.023
 #>             As STEP 1, STEP 2 and STEP 3 as well as the Sobel's test above
 #>             are significant the mediation is partial.
 #> 
 #> Zhao, Lynch & Chen's approach to testing mediation
 #> Based on p-value estimated using Bootstrap
-#>   STEP 1 - 'ind60:dem65' (X -> Y) with B=0.159 and p=0.019
+#>   STEP 1 - 'ind60:dem65' (X -> Y) with B=0.159 and p=0.023
 #>             As the Bootstrap test above is significant, STEP 1 is
 #>             significant and their coefficients point in same direction,
 #>             there is complementary mediation (partial mediation).
@@ -395,6 +409,8 @@ rmedsem(mod, indep="ind60", med="dem60", dep="dem65",
 #>          (0.399/0.159) = 2.514
 #>          That is, the mediated effect is about 2.5 times as
 #>          large as the direct effect of 'ind60' on 'dem65'
+#>    Upsilon (v) = Variance in 'dem65' explained indirectly by 'ind60' through 'dem60'
+#>          v(unadj) = 0.159, v(adj) = 0.151
 ```
 
 ### Example 3 (cSEM)
@@ -418,23 +434,23 @@ rmedsem(mod, indep="Attractive", med="Appearance", dep="Muscle",
 #> Model estimated with package 'cSEM'
 #> Mediation effect: 'Attractive' -> 'Appearance' -> 'Muscle'
 #> 
-#>                         Sobel           Delta        Bootstrap
-#> Indirect effect        0.1124           0.112           0.1124
-#> Std. Err.              0.0395           0.038           0.0401
-#> z-value                2.8457           2.956           2.7994
-#> p-value               0.00443         0.00312          0.00512
-#> CI              [0.035, 0.19] [0.0379, 0.187] [0.0472, -0.278]
+#>                          Sobel           Delta        Bootstrap
+#> Indirect effect          0.112          0.1124           0.1124
+#> Std. Err.                0.039          0.0376           0.0391
+#> z-value                  2.884          2.9906           2.8767
+#> p-value                0.00392         0.00278          0.00402
+#> CI              [0.036, 0.189] [0.0387, 0.186] [0.0456, -0.278]
 #> 
 #> Baron and Kenny approach to testing mediation
 #>    STEP 1 - 'Attractive:Appearance' (X -> M) with B=0.236 and p=0.001
 #>    STEP 2 - 'Appearance:Muscle' (M -> Y) with B=0.475 and p=0.000
-#>    STEP 3 - 'Attractive:Muscle' (X -> Y) with B=-0.010 and p=0.902
+#>    STEP 3 - 'Attractive:Muscle' (X -> Y) with B=-0.010 and p=0.900
 #>             As STEP 1, STEP 2 and the Sobel's test above are significant
 #>             and STEP 3 is not significant the mediation is complete.
 #> 
 #> Zhao, Lynch & Chen's approach to testing mediation
 #> Based on p-value estimated using Bootstrap
-#>   STEP 1 - 'Attractive:Muscle' (X -> Y) with B=-0.010 and p=0.902
+#>   STEP 1 - 'Attractive:Muscle' (X -> Y) with B=-0.010 and p=0.900
 #>             As the Bootstrap test above is significant and STEP 1 is not
 #>             significant there indirect-only mediation (full mediation).
 #> 
@@ -447,6 +463,8 @@ rmedsem(mod, indep="Attractive", med="Appearance", dep="Muscle",
 #>          (0.112/0.010) = 10.768
 #>          That is, the mediated effect is about 10.8 times as
 #>          large as the direct effect of 'Attractive' on 'Muscle'
+#>    Upsilon (v) = Variance in 'Muscle' explained indirectly by 'Attractive' through 'Appearance'
+#>          v(unadj) = 0.013, v(adj) = 0.011
 ```
 
 ## blavaan
