@@ -17,7 +17,7 @@
 }
 \arguments{
 \item{mod}{A fitted SEM model (blavaan). Note that the model has to be fit using
-\code{save.lvs=T} if the mediation model contains latent variables.}
+\code{save.lvs=TRUE} if the mediation model contains latent variables.}
 
 \item{indep}{A string indicating the name of the independent variable in the model.}
 

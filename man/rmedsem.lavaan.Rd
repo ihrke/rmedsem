@@ -35,7 +35,7 @@ is significant or not}
 \item{effect.size}{calculate different effect-sizes; one or more of "RIT", "RID"}
 
 \item{standardized}{A boolean indicating whether the coefficients should be
-standardized. The default value is F.}
+standardized. The default value is FALSE.}
 
 \item{mcreps}{An integer determining the number of monte-carlo samples.}
 

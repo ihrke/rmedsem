@@ -1,7 +1,7 @@
 #' Mediation Analysis for Blavaan Models
 #'
 #' @param mod A fitted SEM model (blavaan). Note that the model has to be fit using
-#'            `save.lvs=T` if the mediation model contains latent variables.
+#'            `save.lvs=TRUE` if the mediation model contains latent variables.
 #' @param indep A string indicating the name of the independent variable in the model.
 #' @param med A string indicating the name of the mediator variable in the model.
 #' @param dep A string indicating the name of the dependent variable in the model.
@@ -120,7 +120,7 @@ rmedsem.blavaan <- function(mod, indep, med, dep,
                    se_MX=stats::sd(draws[,moi]), se_YMX=stats::sd(draws[,dom]))
   }
 
-  res <- list(package="blavaan", standardized=T,
+  res <- list(package="blavaan", standardized=TRUE,
               vars =list(med=med, indep=indep, dep=dep),
               direct.effect = c(coef=coef_doi, se=se_doi, pval=pval_doi, lower=lci_doi, upper=uci_doi),
               total.effect =  c(coef=coef_tot, se=se_tot, lower=lci_tot, upper=uci_tot),

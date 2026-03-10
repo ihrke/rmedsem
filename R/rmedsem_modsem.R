@@ -7,7 +7,7 @@
 #' @param moderator A string indicating the name of the moderator variable in the model.
 #'
 #' @param standardized A boolean indicating whether the coefficients should be
-#' standardized. The default value is F.
+#' standardized. The default value is FALSE.
 #' @param approach either 'bk' or 'zlc' or both c("bk", "zlc") (default)
 #' @param mcreps An integer determining the number of monte-carlo samples.
 #' @param p.threshold A double giving the p-value for determining whether a path

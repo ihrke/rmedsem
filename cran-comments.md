@@ -3,6 +3,7 @@
 This is a resubmission. In this version I have:
 
 - Added `\value` tags to all exported function documentation (RIT, RID, Upsilon)
+- Added a new effect-size estimate "upsilon" to the package
 - Replaced `\dontrun{}` with `\donttest{}` in blavaan examples
 
 ## R CMD check results
