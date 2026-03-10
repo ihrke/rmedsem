@@ -60,7 +60,7 @@ rmedsem(
 - standardized:
 
   A boolean indicating whether the coefficients should be standardized.
-  The default value is F.
+  The default value is FALSE.
 
 - mcreps:
 

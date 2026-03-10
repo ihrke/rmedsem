@@ -23,7 +23,7 @@ rmedsem(
 - mod:
 
   A fitted SEM model (blavaan). Note that the model has to be fit using
-  `save.lvs=T` if the mediation model contains latent variables.
+  `save.lvs=TRUE` if the mediation model contains latent variables.
 
 - indep:
 
@@ -61,7 +61,8 @@ A `rmedsem` structure containing the results from the analysis
 ## Examples
 
 ``` r
-# \donttest{
+if (FALSE) { # \dontrun{
+# Requires blavaan and a MCMC backend (Stan/JAGS)
 model02 <- "
   # measurement model
     ind60 =~ x1 + x2 + x3
@@ -71,13 +72,10 @@ model02 <- "
     dem60 ~ ind60
     dem65 ~ ind60 + dem60
 "
-if (requireNamespace("blavaan", quietly = TRUE)) {
-  mod <- blavaan::bsem(model02, data=lavaan::PoliticalDemocracy, std.lv=TRUE,
-              meanstructure=TRUE, n.chains=1,
-              save.lvs=TRUE, burnin=500, sample=500)
-  out <- rmedsem(mod,  indep="ind60", med="dem60", dep="dem65")
-  print(out)
-}
-#> Error in blavaan(model02, data = lavaan::PoliticalDemocracy, std.lv = TRUE,     meanstructure = TRUE, n.chains = 1, burnin = 500, sample = 500,     save.lvs = TRUE, model.type = "sem", int.ov.free = TRUE,     int.lv.free = FALSE, auto.fix.first = FALSE, auto.fix.single = TRUE,     auto.var = TRUE, auto.cov.lv.x = TRUE, auto.cov.y = TRUE,     auto.th = TRUE, auto.delta = TRUE, adapt = 1000L): could not find function "blavaan"
-# }
+mod <- blavaan::bsem(model02, data=lavaan::PoliticalDemocracy, std.lv=TRUE,
+            meanstructure=TRUE, n.chains=1,
+            save.lvs=TRUE, burnin=500, sample=500)
+out <- rmedsem(mod,  indep="ind60", med="dem60", dep="dem65")
+print(out)
+} # }
 ```
