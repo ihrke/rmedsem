@@ -17,6 +17,11 @@ Upsilon(res, ...)
 \item{adjusted}{logical; if \code{TRUE} (default), return the bias-adjusted
 estimator; if \code{FALSE}, return the unadjusted estimator}
 }
+\value{
+A numeric scalar giving the Upsilon effect size, an R-squared-type
+measure of the variance in the dependent variable explained indirectly
+through the mediator.
+}
 \description{
 Returns the Upsilon effect size (Lachowicz, Preacher & Kelley, 2018),
 an R-squared-type measure representing the variance in Y explained

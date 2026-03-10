@@ -16,7 +16,7 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' model02 <- "
 #'   # measurement model
 #'     ind60 =~ x1 + x2 + x3

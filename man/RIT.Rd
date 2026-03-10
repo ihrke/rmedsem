@@ -14,6 +14,10 @@ RIT(res, ...)
 
 \item{...}{additional arguments (currently unused)}
 }
+\value{
+A numeric scalar giving the ratio of the indirect effect to
+the total effect (indirect / total).
+}
 \description{
 Ratio of Indirect to Total Effect (RIT)
 }

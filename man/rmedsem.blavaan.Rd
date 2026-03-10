@@ -41,7 +41,7 @@ A \code{rmedsem} structure containing the results from the analysis
 Mediation Analysis for Blavaan Models
 }
 \examples{
-\dontrun{
+\donttest{
 model02 <- "
   # measurement model
     ind60 =~ x1 + x2 + x3

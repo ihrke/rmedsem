@@ -14,6 +14,10 @@ RID(res, ...)
 
 \item{...}{additional arguments (currently unused)}
 }
+\value{
+A numeric scalar giving the ratio of the indirect effect to
+the direct effect (indirect / direct).
+}
 \description{
 Ratio of Indirect to Direct Effect (RID)
 }

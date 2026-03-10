@@ -3,6 +3,9 @@
 #' @param res fitted `rmedsem` object
 #' @param ... additional arguments (currently unused)
 #'
+#' @return A numeric scalar giving the ratio of the indirect effect to
+#'   the total effect (indirect / total).
+#'
 #' @examples
 #' mod.txt <- "
 #' read ~ math
@@ -20,6 +23,9 @@ RIT <- function (res, ...)
 #'
 #' @param res fitted `rmedsem` object
 #' @param ... additional arguments (currently unused)
+#'
+#' @return A numeric scalar giving the ratio of the indirect effect to
+#'   the direct effect (indirect / direct).
 #'
 #' @examples
 #' mod.txt <- "
@@ -69,6 +75,10 @@ RID.rmedsem <- function(res, ...) {
 #' @param adjusted logical; if `TRUE` (default), return the bias-adjusted
 #'   estimator; if `FALSE`, return the unadjusted estimator
 #' @param ... additional arguments (currently unused)
+#'
+#' @return A numeric scalar giving the Upsilon effect size, an R-squared-type
+#'   measure of the variance in the dependent variable explained indirectly
+#'   through the mediator.
 #'
 #' @examples
 #' mod.txt <- "
