@@ -28,6 +28,12 @@ Upsilon(res, adjusted = TRUE, ...)
   logical; if `TRUE` (default), return the bias-adjusted estimator; if
   `FALSE`, return the unadjusted estimator
 
+## Value
+
+A numeric scalar giving the Upsilon effect size, an R-squared-type
+measure of the variance in the dependent variable explained indirectly
+through the mediator.
+
 ## Examples
 
 ``` r

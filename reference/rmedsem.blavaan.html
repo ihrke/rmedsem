@@ -110,7 +110,7 @@ is significant or not</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="va">model02</span> <span class="op">&lt;-</span> <span class="st">"</span></span></span>
 <span class="r-in"><span><span class="st">  # measurement model</span></span></span>
 <span class="r-in"><span><span class="st">    ind60 =~ x1 + x2 + x3</span></span></span>
@@ -127,7 +127,8 @@ is significant or not</p></dd>
 <span class="r-in"><span>  <span class="va">out</span> <span class="op">&lt;-</span> <span class="fu"><a href="rmedsem.html">rmedsem</a></span><span class="op">(</span><span class="va">mod</span>,  indep<span class="op">=</span><span class="st">"ind60"</span>, med<span class="op">=</span><span class="st">"dem60"</span>, dep<span class="op">=</span><span class="st">"dem65"</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">out</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in blavaan(model02, data = lavaan::PoliticalDemocracy, std.lv = TRUE,     meanstructure = TRUE, n.chains = 1, burnin = 500, sample = 500,     save.lvs = TRUE, model.type = "sem", int.ov.free = TRUE,     int.lv.free = FALSE, auto.fix.first = FALSE, auto.fix.single = TRUE,     auto.var = TRUE, auto.cov.lv.x = TRUE, auto.cov.y = TRUE,     auto.th = TRUE, auto.delta = TRUE, adapt = 1000L):</span> could not find function "blavaan"</span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

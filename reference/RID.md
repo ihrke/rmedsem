@@ -21,6 +21,11 @@ RID(res, ...)
 
   additional arguments (currently unused)
 
+## Value
+
+A numeric scalar giving the ratio of the indirect effect to the direct
+effect (indirect / direct).
+
 ## Examples
 
 ``` r

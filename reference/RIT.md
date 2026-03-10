@@ -21,6 +21,11 @@ RIT(res, ...)
 
   additional arguments (currently unused)
 
+## Value
+
+A numeric scalar giving the ratio of the indirect effect to the total
+effect (indirect / total).
+
 ## Examples
 
 ``` r

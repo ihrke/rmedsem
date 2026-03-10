@@ -61,7 +61,7 @@ A `rmedsem` structure containing the results from the analysis
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 model02 <- "
   # measurement model
     ind60 =~ x1 + x2 + x3
@@ -78,5 +78,6 @@ if (requireNamespace("blavaan", quietly = TRUE)) {
   out <- rmedsem(mod,  indep="ind60", med="dem60", dep="dem65")
   print(out)
 }
-} # }
+#> Error in blavaan(model02, data = lavaan::PoliticalDemocracy, std.lv = TRUE,     meanstructure = TRUE, n.chains = 1, burnin = 500, sample = 500,     save.lvs = TRUE, model.type = "sem", int.ov.free = TRUE,     int.lv.free = FALSE, auto.fix.first = FALSE, auto.fix.single = TRUE,     auto.var = TRUE, auto.cov.lv.x = TRUE, auto.cov.y = TRUE,     auto.th = TRUE, auto.delta = TRUE, adapt = 1000L): could not find function "blavaan"
+# }
 ```
