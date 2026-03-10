@@ -16,7 +16,8 @@
 #' @export
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
+#' # Requires blavaan and a MCMC backend (Stan/JAGS)
 #' model02 <- "
 #'   # measurement model
 #'     ind60 =~ x1 + x2 + x3
@@ -26,13 +27,11 @@
 #'     dem60 ~ ind60
 #'     dem65 ~ ind60 + dem60
 #' "
-#' if (requireNamespace("blavaan", quietly = TRUE)) {
-#'   mod <- blavaan::bsem(model02, data=lavaan::PoliticalDemocracy, std.lv=TRUE,
-#'               meanstructure=TRUE, n.chains=1,
-#'               save.lvs=TRUE, burnin=500, sample=500)
-#'   out <- rmedsem(mod,  indep="ind60", med="dem60", dep="dem65")
-#'   print(out)
-#' }
+#' mod <- blavaan::bsem(model02, data=lavaan::PoliticalDemocracy, std.lv=TRUE,
+#'             meanstructure=TRUE, n.chains=1,
+#'             save.lvs=TRUE, burnin=500, sample=500)
+#' out <- rmedsem(mod,  indep="ind60", med="dem60", dep="dem65")
+#' print(out)
 #' }
 rmedsem.blavaan <- function(mod, indep, med, dep,
                             approach=c("bk", "zlc"), p.threshold=0.05,
