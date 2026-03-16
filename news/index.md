@@ -2,6 +2,8 @@
 
 ## rmedsem 1.0.0
 
+CRAN release: 2026-03-16
+
 - Initial CRAN release.
 - Support for mediation analysis with lavaan (CB-SEM), cSEM (PLS-SEM),
   blavaan (Bayesian SEM), and modsem (moderated mediation).

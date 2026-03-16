@@ -13,7 +13,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/ihrke/rmedsem/blob/master/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/ihrke/rmedsem/blob/v1.0.0/DESCRIPTION)
 
 Mehmetoglu M, Mittner M, Slupphaug K (2026). *rmedsem: Statistical
 Mediation Analysis for SEMs*. R package version 1.0.0,
