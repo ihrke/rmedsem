@@ -1,5 +1,9 @@
 # Changelog
 
+## rmedsem 1.0.0.9000 (development)
+
+- Added CRAN badge to README.
+
 ## rmedsem 1.0.0
 
 CRAN release: 2026-03-16
