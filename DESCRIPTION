@@ -1,6 +1,6 @@
 Package: rmedsem
 Title: Statistical Mediation Analysis for SEMs
-Version: 1.0.0
+Version: 1.0.0.9000
 Authors@R: c(
     person("Mehmet", "Mehmetoglu", email="mehmet.mehmetoglu@ntnu.no", role = c("aut"),
            comment = c(ORCID = "0000-0002-6092-8551")),

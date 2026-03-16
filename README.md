@@ -6,6 +6,8 @@ use devtools::build_readme() to update README.md-->
 
 <!-- badges: start -->
 
+[![CRAN
+status](https://www.r-pkg.org/badges/version/rmedsem)](https://CRAN.R-project.org/package=rmedsem)
 [![R-CMD-check](https://github.com/ihrke/rmedsem/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ihrke/rmedsem/actions/workflows/R-CMD-check.yaml)
 [![pkgdown](https://github.com/ihrke/rmedsem/actions/workflows/pkgdown.yaml/badge.svg)](https://ihrke.github.io/rmedsem/)
 <!-- badges: end   -->
@@ -95,10 +97,10 @@ print(out)
 #> 
 #>                         Sobel         Delta    Monte-Carlo
 #> Indirect effect        0.2506         0.251         0.2506
-#> Std. Err.              0.0456         0.046         0.0475
-#> z-value                5.5006         5.446         5.2889
-#> p-value              3.79e-08      5.15e-08       1.23e-07
-#> CI              [0.161, 0.34] [0.16, 0.341] [0.163, 0.338]
+#> Std. Err.              0.0456         0.046         0.0416
+#> z-value                5.5006         5.446         6.0617
+#> p-value              3.79e-08      5.15e-08       1.35e-09
+#> CI              [0.161, 0.34] [0.16, 0.341] [0.175, 0.336]
 #> 
 #> Baron and Kenny approach to testing mediation
 #>    STEP 1 - 'math:read' (X -> M) with B=0.662 and p=0.000
@@ -123,6 +125,8 @@ print(out)
 #>          (0.251/0.380) = 0.659
 #>          That is, the mediated effect is about 0.7 times as
 #>          large as the direct effect of 'math' on 'science'
+#>    Upsilon (v) = Variance in 'science' explained indirectly by 'math' through 'read'
+#>          v(unadj) = 0.063, v(adj) = 0.061
 ```
 
 The result reports the estimated indirect effect using the Sobel, Delta
@@ -143,10 +147,10 @@ rmedsem(mod, indep="math", med="read", dep="science",
 #> 
 #>                         Sobel         Delta    Monte-Carlo
 #> Indirect effect        0.2506         0.251         0.2506
-#> Std. Err.              0.0456         0.046         0.0454
-#> z-value                5.5006         5.446         5.5683
-#> p-value              3.79e-08      5.15e-08       2.57e-08
-#> CI              [0.161, 0.34] [0.16, 0.341] [0.163, 0.339]
+#> Std. Err.              0.0456         0.046         0.0452
+#> z-value                5.5006         5.446         5.6355
+#> p-value              3.79e-08      5.15e-08       1.75e-08
+#> CI              [0.161, 0.34] [0.16, 0.341] [0.165, 0.346]
 #> 
 #> Zhao, Lynch & Chen's approach to testing mediation
 #> Based on p-value estimated using Monte-Carlo
@@ -164,6 +168,8 @@ rmedsem(mod, indep="math", med="read", dep="science",
 #>          (0.251/0.380) = 0.659
 #>          That is, the mediated effect is about 0.7 times as
 #>          large as the direct effect of 'math' on 'science'
+#>    Upsilon (v) = Variance in 'science' explained indirectly by 'math' through 'read'
+#>          v(unadj) = 0.063, v(adj) = 0.061
 ```
 
 We can also apply `rmedsem()` to more complex SEM’s that contain both
@@ -202,10 +208,10 @@ rmedsem(mod, indep="Attractive", med="Appearance", dep="Muscle",
 #> 
 #>                            Sobel              Delta      Monte-Carlo
 #> Indirect effect           0.0654             0.0654           0.0654
-#> Std. Err.                 0.0331             0.0335           0.0320
-#> z-value                   1.9748             1.9544           2.0246
-#> p-value                   0.0483             0.0507           0.0429
-#> CI              [0.000491, 0.13] [-0.000187, 0.131] [0.00984, 0.134]
+#> Std. Err.                 0.0331             0.0335           0.0338
+#> z-value                   1.9748             1.9544           1.9050
+#> p-value                   0.0483             0.0507           0.0568
+#> CI              [0.000491, 0.13] [-0.000187, 0.131] [0.00432, 0.137]
 #> 
 #> Baron and Kenny approach to testing mediation
 #>    STEP 1 - 'Attractive:Appearance' (X -> M) with B=0.158 and p=0.033
@@ -217,8 +223,8 @@ rmedsem(mod, indep="Attractive", med="Appearance", dep="Muscle",
 #> Zhao, Lynch & Chen's approach to testing mediation
 #> Based on p-value estimated using Monte-Carlo
 #>   STEP 1 - 'Attractive:Muscle' (X -> Y) with B=-0.014 and p=0.850
-#>             As the Monte-Carlo test above is significant and STEP 1 is not
-#>             significant there indirect-only mediation (full mediation).
+#>             As the Monte-Carlo test above is not significant and STEP 1 is
+#>             not significant there is no effect nonmediation (no mediation).
 #> 
 #> Effect sizes
 #>    WARNING: Total effect is smaller than indirect effect!
@@ -229,6 +235,8 @@ rmedsem(mod, indep="Attractive", med="Appearance", dep="Muscle",
 #>          (0.065/0.014) = 4.714
 #>          That is, the mediated effect is about 4.7 times as
 #>          large as the direct effect of 'Attractive' on 'Muscle'
+#>    Upsilon (v) = Variance in 'Muscle' explained indirectly by 'Attractive' through 'Appearance'
+#>          v(unadj) = 0.004, v(adj) = 0.003
 ```
 
 Similarly, we could investigate the pathway `Attractive` -\>
@@ -243,12 +251,12 @@ rmedsem(mod, indep="Attractive", med="Appearance", dep="Weight",
 #> Model estimated with package 'lavaan'
 #> Mediation effect: 'Attractive' -> 'Appearance' -> 'Weight'
 #> 
-#>                           Sobel            Delta     Monte-Carlo
-#> Indirect effect          0.0979           0.0979          0.0979
-#> Std. Err.                0.0470           0.0483          0.0450
-#> z-value                  2.0810           2.0267          2.3132
-#> p-value                  0.0374           0.0427          0.0207
-#> CI              [0.00569, 0.19] [0.00322, 0.193] [0.0274, 0.192]
+#>                           Sobel            Delta      Monte-Carlo
+#> Indirect effect          0.0979           0.0979           0.0979
+#> Std. Err.                0.0470           0.0483           0.0492
+#> z-value                  2.0810           2.0267           2.0164
+#> p-value                  0.0374           0.0427           0.0438
+#> CI              [0.00569, 0.19] [0.00322, 0.193] [0.00926, 0.197]
 #> 
 #> Zhao, Lynch & Chen's approach to testing mediation
 #> Based on p-value estimated using Monte-Carlo
@@ -265,6 +273,8 @@ rmedsem(mod, indep="Attractive", med="Appearance", dep="Weight",
 #>          (0.098/0.125) = 0.784
 #>          That is, the mediated effect is about 0.8 times as
 #>          large as the direct effect of 'Attractive' on 'Weight'
+#>    Upsilon (v) = Variance in 'Weight' explained indirectly by 'Attractive' through 'Appearance'
+#>          v(unadj) = 0.010, v(adj) = 0.007
 ```
 
 Note that these models involve latent variables. It is also possible to

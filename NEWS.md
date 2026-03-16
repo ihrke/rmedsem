@@ -1,3 +1,7 @@
+# rmedsem 1.0.0.9000 (development)
+
+* Added CRAN badge to README.
+
 # rmedsem 1.0.0
 
 * Initial CRAN release.

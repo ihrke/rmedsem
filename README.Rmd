@@ -19,6 +19,7 @@ knitr::opts_chunk$set(
 # rmedsem <a href="https://ihrke.github.io/rmedsem/"><img src="man/figures/logo.png" align="right" height="139" /></a>
 
 <!-- badges: start -->
+[![CRAN status](https://www.r-pkg.org/badges/version/rmedsem)](https://CRAN.R-project.org/package=rmedsem)
 [![R-CMD-check](https://github.com/ihrke/rmedsem/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ihrke/rmedsem/actions/workflows/R-CMD-check.yaml)
 [![pkgdown](https://github.com/ihrke/rmedsem/actions/workflows/pkgdown.yaml/badge.svg)](https://ihrke.github.io/rmedsem/)
 <!-- badges: end   -->
