@@ -139,7 +139,7 @@ bk_type <- function(res){
 #' Type of Mediation According to Zhao, Lynch & Chen
 #'
 #' The test of the indirect effect is based on the method returned by
-#' [zlc_method()]. A p-value is considered significant if it is strictly
+#' `zlc_method()`. A p-value is considered significant if it is strictly
 #' smaller than the threshold; a p-value equal to the threshold (or `NA`) is
 #' not significant.
 #' @param res an `rmedsem` object with element `med.data`
@@ -339,33 +339,7 @@ print_moderation <- function(res, ci_moderation=FALSE){
 }
 
 
-#' Print an rmedsem Object
-#'
-#' `print.rmedsem()` is the default method used for frequentist backends. It
-#' prints a header, a table with one column per estimation method in
-#' `x$est.methods`, the Baron and Kenny and/or Zhao, Lynch & Chen steps (as
-#' requested in `x$med.approach`), and the effect sizes. Backends that need a
-#' different output provide their own method for their subclass (e.g.,
-#' `print.rmedsem_blavaan()`), or extend the default output with
-#' [NextMethod()] (e.g., `print.rmedsem_modsem()`).
-#'
-#' @param x the `rmedsem` object to print
-#' @param digits an integer, number of digits to print in table
-#' @param indent an integer, number of spaces to indent
-#' @param ci_moderation a logical, whether to print confidence intervals for
-#'   the moderation effects (only for moderated mediation with `modsem`)
-#' @param ... additional arguments (currently unused)
-#' @return the `rmedsem` object `x` (invisibly)
-#'
-#' @examples
-#' mod.txt <- "
-#' read ~ math
-#' science ~ read + math
-#' "
-#' mod <- lavaan::sem(mod.txt, data=rmedsem::hsbdemo)
-#' out <- rmedsem(mod, indep="math", med="read", dep="science")
-#' print(out)
-#'
+#' @rdname rmedsem-methods
 #' @export
 print.rmedsem <- function(x, digits=3, indent=3, ...){
   check_count(digits, "digits")
@@ -381,7 +355,7 @@ print.rmedsem <- function(x, digits=3, indent=3, ...){
 }
 
 
-#' @rdname print.rmedsem
+#' @rdname rmedsem-methods
 #' @export
 print.rmedsem_blavaan <- function(x, digits=3, indent=3, ...){
   check_count(digits, "digits")
@@ -394,7 +368,7 @@ print.rmedsem_blavaan <- function(x, digits=3, indent=3, ...){
 }
 
 
-#' @rdname print.rmedsem
+#' @rdname rmedsem-methods
 #' @export
 print.rmedsem_modsem <- function(x, digits=3, indent=3, ci_moderation=FALSE, ...){
   check_flag(ci_moderation, "ci_moderation")

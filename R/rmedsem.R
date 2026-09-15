@@ -7,20 +7,75 @@ utils::globalVariables(c(
 
 #' Mediation Analysis for Structural Equation Models
 #'
-#' Conducts mediation analysis on a fitted SEM model using the Baron and Kenny
-#' (1986) and/or Zhao, Lynch & Chen (2010) approaches.
+#' Tests the indirect effect of an independent variable X on a dependent
+#' variable Y through a mediator M in a fitted structural equation model
+#' (SEM), and determines the type of mediation using the Baron and Kenny
+#' (1986) and/or Zhao, Lynch & Chen (2010) approaches. Models estimated with
+#' \pkg{lavaan} (covariance-based SEM), \pkg{cSEM} (PLS-SEM), \pkg{blavaan}
+#' (Bayesian SEM) and \pkg{modsem} (models with latent interactions) are
+#' supported. The model must contain the regression paths X -> M, M -> Y and
+#' X -> Y.
 #'
-#' @param mod a fitted SEM model object (from lavaan, blavaan, cSEM, or modsem)
-#' @param indep a string indicating the name of the independent variable
-#' @param med a string indicating the name of the mediator variable
-#' @param dep a string indicating the name of the dependent variable
-#' @param approach either `"bk"` or `"zlc"` or both `c("bk", "zlc")` (default)
-#' @param p.threshold a numeric giving the p-value threshold for significance
-#' @param effect.size character vector; one or more of `"RIT"`, `"RID"`, `"upsilon"`
-#' @param ... additional arguments passed to methods
+#' @param mod a fitted SEM: an object of class `lavaan`, `cSEMResults`,
+#'   `blavaan` or `modsem`. `blavaan` models containing latent variables must
+#'   be fitted with `save.lvs = TRUE`.
+#' @param indep a string, the name of the independent variable (X). For
+#'   `modsem` models, this can be an interaction term such as `"W:X"`.
+#' @param med a string, the name of the mediator (M)
+#' @param dep a string, the name of the dependent variable (Y)
+#' @param approach approach(es) to determine the type of mediation: `"bk"`
+#'   (Baron and Kenny), `"zlc"` (Zhao, Lynch & Chen), or both (default).
+#'   Ignored for `blavaan` models.
+#' @param p.threshold a number between 0 and 1, the p-value threshold for
+#'   significance (default 0.05). A p-value equal to the threshold counts as
+#'   not significant.
+#' @param effect.size character vector with the effect sizes to compute; one
+#'   or more of `"RIT"` (ratio of indirect to total effect), `"RID"` (ratio
+#'   of indirect to direct effect) and `"upsilon"` (Lachowicz et al., 2018);
+#'   see [effect-sizes].
+#' @param standardized (`lavaan`, `modsem`) a logical, whether to use
+#'   standardized coefficients (default `TRUE`). `cSEM` and `blavaan` results
+#'   are always standardized.
+#' @param mcreps (`lavaan`, `modsem`) the number of Monte-Carlo samples, a
+#'   positive integer or `NULL` (default). Values smaller than the sample size
+#'   (and `NULL`) are replaced by the sample size.
+#' @param ci.two.tailed a number between 0 and 1, the level of all confidence
+#'   (or, for `blavaan`, credible) intervals (default 0.95)
+#' @param nbootstrap (`cSEM`) the number of bootstrap samples (default 1000)
+#' @param moderator (`modsem`) `NULL` (default) or a string, the name of the
+#'   moderator W for moderated mediation. The model must contain an
+#'   interaction of the moderator with `indep` and/or `med`.
+#' @param hdi (`blavaan`) a logical. If `FALSE` (default), equal-tailed
+#'   credible intervals are computed; if `TRUE`, highest density intervals
+#'   (requires the \pkg{HDInterval} package). Applies to the indirect, direct
+#'   and total effects and to Upsilon.
+#' @param ... additional arguments passed to methods (currently unused)
 #'
 #' @return an object of class `c("rmedsem_<pkg>", "rmedsem")`, where `<pkg>`
-#'   identifies the backend (see section 'Adding a backend').
+#'   identifies the backend (`lavaan`, `cSEM`, `blavaan` or `modsem`). See
+#'   [rmedsem-methods] for functions to print, summarize and extract results,
+#'   [effect-sizes] for effect sizes and [plot.rmedsem()] for plots. The
+#'   structure of the object is described in section 'Adding a backend'.
+#'
+#' @section Backends:
+#' \describe{
+#'   \item{`lavaan`}{The indirect effect is tested with the Sobel, Delta and
+#'     Monte-Carlo methods. The Zhao, Lynch & Chen approach is based on the
+#'     Monte-Carlo test.}
+#'   \item{`cSEMResults`}{The model is re-estimated with `nbootstrap`
+#'     bootstrap samples. The indirect effect is tested with the Sobel, Delta
+#'     and bootstrap methods, and the Zhao, Lynch & Chen approach is based on
+#'     the bootstrap test. Only single-group, first-order models are supported.}
+#'   \item{`blavaan`}{Estimates are based on the (standardized) posterior
+#'     samples. The output reports posterior means, standard deviations,
+#'     posterior probabilities of a positive and negative indirect effect,
+#'     evidence ratios and credible intervals; the Baron and Kenny and Zhao,
+#'     Lynch & Chen approaches are not applied.}
+#'   \item{`modsem`}{As for `lavaan`. In addition, moderated mediation (via
+#'     `moderator`) and mediated moderation (an interaction term as `indep`)
+#'     are supported.}
+#' }
+#' Multi-group and multilevel models are not supported.
 #'
 #' @section Adding a backend:
 #' Support for further model classes is added by writing a method
@@ -60,7 +115,22 @@ utils::globalVariables(c(
 #' `print.rmedsem_<pkg>()` method, either replacing the default output (as
 #' for `blavaan`) or extending it via [NextMethod()] (as for `modsem`).
 #'
+#' @references
+#' Baron, R. M., & Kenny, D. A. (1986). The moderator-mediator variable
+#' distinction in social psychological research: Conceptual, strategic, and
+#' statistical considerations. *Journal of Personality and Social
+#' Psychology*, 51(6), 1173--1182. \doi{10.1037/0022-3514.51.6.1173}
+#'
+#' Lachowicz, M. J., Preacher, K. J., & Kelley, K. (2018). A novel measure of
+#' effect size for mediation analysis. *Psychological Methods*, 23(2),
+#' 244--261. \doi{10.1037/met0000165}
+#'
+#' Zhao, X., Lynch, J. G., & Chen, Q. (2010). Reconsidering Baron and Kenny:
+#' Myths and truths about mediation analysis. *Journal of Consumer Research*,
+#' 37(2), 197--206. \doi{10.1086/651257}
+#'
 #' @examples
+#' ## lavaan: observed variables
 #' mod.txt <- "
 #' read ~ math
 #' science ~ read + math
@@ -68,6 +138,62 @@ utils::globalVariables(c(
 #' mod <- lavaan::sem(mod.txt, data=rmedsem::hsbdemo)
 #' out <- rmedsem(mod, indep="math", med="read", dep="science")
 #' out
+#'
+#' # Zhao, Lynch & Chen approach only, unstandardized coefficients
+#' rmedsem(mod, indep="math", med="read", dep="science",
+#'         approach="zlc", standardized=FALSE, mcreps=5000)
+#'
+#' \donttest{
+#' ## cSEM
+#' if (requireNamespace("cSEM", quietly = TRUE)) {
+#'   model <- "
+#'     OwnLook  =~ smv_attr_face + smv_attr_body + smv_sexy
+#'     SelfEst  =~ ses_satis + ses_qualities + ses_able_todo
+#'     MentWell =~ mwb_optimistic + mwb_useful + mwb_energy
+#'     SelfEst  ~ OwnLook
+#'     MentWell ~ OwnLook + SelfEst
+#'   "
+#'   mod <- cSEM::csem(rmedsem::mchoice, model)
+#'   # small number of bootstrap samples to keep the example fast
+#'   rmedsem(mod, indep="OwnLook", med="SelfEst", dep="MentWell",
+#'           nbootstrap=200)
+#' }
+#'
+#' ## modsem: mediated moderation and moderated mediation
+#' if (requireNamespace("modsem", quietly = TRUE)) {
+#'   m <- "
+#'     OwnLook =~ smv_attr_face + smv_attr_body + smv_sexy
+#'     SelfEst =~ ses_satis + ses_qualities + ses_able_todo
+#'     MentWell =~ mwb_optimistic + mwb_useful + mwb_energy
+#'     smv =~ smv_kind + smv_caring + smv_understanding +
+#'       smv_make_laughh + smv_funny + smv_sociable
+#'     SelfEst ~ OwnLook + smv + smv:OwnLook
+#'     MentWell ~ OwnLook + SelfEst + smv + smv:OwnLook
+#'   "
+#'   est <- modsem::modsem(m, data = rmedsem::mchoice, method="lms")
+#'
+#'   # mediated moderation
+#'   rmedsem(est, indep="smv:OwnLook", med="SelfEst", dep="MentWell")
+#'
+#'   # moderated mediation
+#'   rmedsem(est, indep="OwnLook", med="SelfEst", dep="MentWell", moderator="smv")
+#' }
+#'
+#' ## blavaan
+#' if (requireNamespace("blavaan", quietly = TRUE)) {
+#'   # blavaan's fitting functions need the package to be attached
+#'   library(blavaan)
+#'   # short single chain to keep the example fast; use more chains and
+#'   # iterations in practice
+#'   bmod <- bsem(mod.txt, data=rmedsem::hsbdemo, n.chains=1,
+#'                burnin=500, sample=500, seed=1, bcontrol=list(refresh=0))
+#'   rmedsem(bmod, indep="math", med="read", dep="science")
+#'
+#'   # highest density intervals instead of equal-tailed intervals
+#'   if (requireNamespace("HDInterval", quietly = TRUE))
+#'     rmedsem(bmod, indep="math", med="read", dep="science", hdi=TRUE)
+#' }
+#' }
 #'
 #' @export
 rmedsem <- function (mod, indep, med, dep,

@@ -1,18 +1,4 @@
-#' Plot Effect Sizes for an rmedsem Object
-#'
-#' @param res the `rmedsem` object
-#' @param description logical, whether to add a description subtitle
-#' @return a `ggplot` object
-#'
-#' @examples
-#' mod.txt <- "
-#' read ~ math
-#' science ~ read + math
-#' "
-#' mod <- lavaan::sem(mod.txt, data=rmedsem::hsbdemo)
-#' out <- rmedsem(mod, indep="math", med="read", dep="science")
-#' plot_effect(out)
-#'
+#' @rdname plot.rmedsem
 #' @export
 plot_effect <- function(res, description=TRUE){
   if (!inherits(res, "rmedsem"))
@@ -55,20 +41,7 @@ plot_effect <- function(res, description=TRUE){
     ggplot2::theme(plot.caption = ggplot2::element_text(hjust = 0))
 }
 
-#' Plot Coefficients for an rmedsem Object
-#'
-#' @param res the `rmedsem` object
-#' @return a `ggplot` object
-#'
-#' @examples
-#' mod.txt <- "
-#' read ~ math
-#' science ~ read + math
-#' "
-#' mod <- lavaan::sem(mod.txt, data=rmedsem::hsbdemo)
-#' out <- rmedsem(mod, indep="math", med="read", dep="science")
-#' plot_coef(out)
-#'
+#' @rdname plot.rmedsem
 #' @export
 plot_coef <- function(res){
   if (!inherits(res, "rmedsem"))

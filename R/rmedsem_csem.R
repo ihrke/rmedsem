@@ -1,40 +1,5 @@
-#' Mediation Analysis for cSEM Models
-#'
-#' @param mod A fitted SEM model (cSEM).
-#' @param indep A string indicating the name of the independent variable in the model.
-#' @param med A string indicating the name of the mediator variable in the model.
-#' @param dep A string indicating the name of the dependent variable in the model.
-#'
-#' @param approach either 'bk' or 'zlc' or both c("bk", "zlc") (default)
-#' @param p.threshold A double giving the p-value for determining whether a path
-#'  is significant or not
-#' @param nbootstrap number of bootstrap samples (integer >= 2), default=1000
-#' @param effect.size calculate different effect-sizes; one or more of "RIT", "RID"
-#' @param ci.two.tailed A double giving the confidence level for two-tailed confidence intervals (default 0.95)
-#' @param ... additional arguments (currently unused)
-#'
-#' @return A `rmedsem` structure containing the results from the analysis
+#' @rdname rmedsem
 #' @export
-#'
-#' @examples
-#' \donttest{
-#' if (requireNamespace("cSEM", quietly = TRUE)) {
-#'   model <- "
-#'     # measurement model
-#'     OwnLook  =~ smv_attr_face + smv_attr_body + smv_sexy
-#'     SelfEst  =~ ses_satis + ses_qualities + ses_able_todo
-#'     MentWell =~ mwb_optimistic + mwb_useful + mwb_energy
-#'     # structural model
-#'     SelfEst  ~ OwnLook
-#'     MentWell ~ OwnLook + SelfEst
-#'   "
-#'   mod <- cSEM::csem(rmedsem::mchoice, model)
-#'   # small number of bootstrap samples to keep the example fast
-#'   out <- rmedsem(mod, indep="OwnLook", med="SelfEst", dep="MentWell",
-#'                  nbootstrap=200)
-#'   print(out)
-#' }
-#' }
 rmedsem.cSEMResults <- function(mod, indep, med, dep,
                                 approach=c("bk", "zlc"), p.threshold=0.05,
                                 effect.size=c("RIT","RID","upsilon"),

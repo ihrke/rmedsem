@@ -1,49 +1,5 @@
-#' Mediation Analysis for Modsem Models
-#'
-#' @param mod A fitted SEM model (modsem).
-#' @param indep A string indicating the name of the independent variable in the model.
-#' @param med A string indicating the name of the mediator variable in the model.
-#' @param dep A string indicating the name of the dependent variable in the model.
-#' @param moderator A string indicating the name of the moderator variable in
-#'   the model (or `NULL`). The model must contain an interaction of the
-#'   moderator with `indep` and/or `med`.
-#'
-#' @param standardized A boolean indicating whether the coefficients should be
-#' standardized. The default value is TRUE.
-#' @param approach either 'bk' or 'zlc' or both c("bk", "zlc") (default)
-#' @param mcreps An integer determining the number of monte-carlo samples.
-#' @param p.threshold A double giving the p-value for determining whether a path
-#'  is significant or not
-#' @param effect.size calculate different effect-sizes; one or more of "RIT", "RID"
-#' @param ci.two.tailed A double giving the confidence level for two-tailed confidence intervals (default 0.95)
-#' @param ... additional arguments (currently unused)
-#'
-#' @return A `rmedsem` structure containing the results from the analysis
+#' @rdname rmedsem
 #' @export
-#'
-#' @examples
-#' \donttest{
-#' if (requireNamespace("modsem", quietly = TRUE)) {
-#'   m <- "
-#'     OwnLook =~ smv_attr_face + smv_attr_body + smv_sexy
-#'     SelfEst =~ ses_satis + ses_qualities + ses_able_todo
-#'     MentWell =~ mwb_optimistic + mwb_useful + mwb_energy
-#'     smv =~ smv_kind + smv_caring + smv_understanding +
-#'       smv_make_laughh + smv_funny + smv_sociable
-#'     SelfEst ~ OwnLook + smv + smv:OwnLook
-#'     MentWell ~ OwnLook + SelfEst + smv + smv:OwnLook
-#'   "
-#'
-#'   est <- modsem::modsem(m, data = mchoice, method="lms")
-#'
-#'   # mediated moderation
-#'   rmedsem(indep="smv:OwnLook", dep="MentWell", med="SelfEst", mod=est)
-#'
-#'   # moderated mediation
-#'   rmedsem(indep="OwnLook", dep="MentWell", med="SelfEst", mod=est, moderator="smv")
-#' }
-#' }
-#'
 rmedsem.modsem <- function(mod, indep, med, dep,
                            approach=c("bk", "zlc"), p.threshold=0.05,
                            effect.size=c("RIT","RID","upsilon"),

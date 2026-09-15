@@ -63,6 +63,12 @@
 * blavaan: the direct effect's `pval` is now the posterior probability of the
   opposite sign, consistent with the indirect effect (previously
   `P(direct <= 0)`, which is wrong for negative effects).
+* Help pages were merged into a compact set: `?rmedsem` (all backends, with
+  a section on each backend and on adding new backends), `?rmedsem-methods`
+  (`print`, `summary`, `coef`, `confint`, `nobs`, `as.data.frame`),
+  `?effect-sizes` (`RIT`, `RID`, `Upsilon`) and `?plot.rmedsem` (`plot`,
+  `plot_coef`, `plot_effect`). Internal helpers are no longer documented as
+  help pages. The pkgdown reference index is organized accordingly.
 * Examples: `rmedsem.blavaan()` now has a runnable example (`\donttest{}`
   instead of `\dontrun{}`), `rmedsem.cSEMResults()` has a new example, and
   the datasets `hsbdemo`, `mchoice` and `workout` have examples.

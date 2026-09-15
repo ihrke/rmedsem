@@ -1,10 +1,33 @@
-#' Ratio of Indirect to Total Effect (RIT)
+#' Effect Sizes for Mediation Analysis
 #'
-#' @param res fitted `rmedsem` object
+#' Extract the effect sizes computed by [rmedsem()] (argument `effect.size`).
+#'
+#' \describe{
+#'   \item{`RIT()`}{Ratio of the indirect to the total effect,
+#'     |indirect| / |total|, i.e., the proportion of the total effect that is
+#'     mediated. Following Kenny (see \url{https://davidakenny.net/cm/mediate.htm}),
+#'     it should only be interpreted if the total effect is not too small
+#'     (|total| >= 0.2 for standardized coefficients).}
+#'   \item{`RID()`}{Ratio of the indirect to the direct effect,
+#'     |indirect| / |direct|.}
+#'   \item{`Upsilon()`}{The Upsilon effect size (Lachowicz, Preacher & Kelley,
+#'     2018), an R-squared-type measure of the variance in Y explained
+#'     indirectly by X through M, computed from standardized coefficients.}
+#' }
+#' `RIT()` and `RID()` give a warning if the indirect effect is larger than
+#' the total effect, in which case the ratios should not be interpreted.
+#'
+#' @param res an `rmedsem` object
+#' @param adjusted logical; if `TRUE` (default), return the bias-adjusted
+#'   estimator of Upsilon; if `FALSE`, the unadjusted estimator
 #' @param ... additional arguments (currently unused)
 #'
-#' @return A numeric scalar giving the ratio of the indirect effect to
-#'   the total effect (indirect / total).
+#' @return A numeric scalar.
+#'
+#' @references
+#' Lachowicz, M. J., Preacher, K. J., & Kelley, K. (2018). A novel measure of
+#' effect size for mediation analysis. *Psychological Methods*, 23(2),
+#' 244--261. \doi{10.1037/met0000165}
 #'
 #' @examples
 #' mod.txt <- "
@@ -14,41 +37,32 @@
 #' mod <- lavaan::sem(mod.txt, data=rmedsem::hsbdemo)
 #' out <- rmedsem(mod, indep="math", med="read", dep="science")
 #' RIT(out)
+#' RID(out)
+#' Upsilon(out)
+#' Upsilon(out, adjusted=FALSE)
 #'
+#' @name effect-sizes
+NULL
+
+#' @rdname effect-sizes
 #' @export
 RIT <- function (res, ...)
   UseMethod("RIT")
 
-#' Ratio of Indirect to Direct Effect (RID)
-#'
-#' @param res fitted `rmedsem` object
-#' @param ... additional arguments (currently unused)
-#'
-#' @return A numeric scalar giving the ratio of the indirect effect to
-#'   the direct effect (indirect / direct).
-#'
-#' @examples
-#' mod.txt <- "
-#' read ~ math
-#' science ~ read + math
-#' "
-#' mod <- lavaan::sem(mod.txt, data=rmedsem::hsbdemo)
-#' out <- rmedsem(mod, indep="math", med="read", dep="science")
-#' RID(out)
-#'
+#' @rdname effect-sizes
 #' @export
 RID <- function (res, ...)
   UseMethod("RID")
 
 
-#' @rdname RIT
+#' @rdname effect-sizes
 #' @export
 RIT.default <- function(res, ...) {
   stop(sprintf("RIT() requires an 'rmedsem' object, as returned by rmedsem(), not an object of class '%s'.",
                paste(class(res), collapse="', '")), call.=FALSE)
 }
 
-#' @rdname RIT
+#' @rdname effect-sizes
 #' @export
 RIT.rmedsem <- function(res, ...) {
   if(is.null(res$effect.size$RIT))
@@ -59,14 +73,14 @@ RIT.rmedsem <- function(res, ...) {
    return(res$effect.size$RIT$es)
 }
 
-#' @rdname RID
+#' @rdname effect-sizes
 #' @export
 RID.default <- function(res, ...) {
   stop(sprintf("RID() requires an 'rmedsem' object, as returned by rmedsem(), not an object of class '%s'.",
                paste(class(res), collapse="', '")), call.=FALSE)
 }
 
-#' @rdname RID
+#' @rdname effect-sizes
 #' @export
 RID.rmedsem <- function(res, ...) {
   if(is.null(res$effect.size$RID))
@@ -79,44 +93,19 @@ RID.rmedsem <- function(res, ...) {
   return(res$effect.size$RID$es)
 }
 
-#' Upsilon Effect Size
-#'
-#' Returns the Upsilon effect size (Lachowicz, Preacher & Kelley, 2018),
-#' an R-squared-type measure representing the variance in Y explained
-#' indirectly by X through M.
-#'
-#' @param res fitted `rmedsem` object
-#' @param adjusted logical; if `TRUE` (default), return the bias-adjusted
-#'   estimator; if `FALSE`, return the unadjusted estimator
-#' @param ... additional arguments (currently unused)
-#'
-#' @return A numeric scalar giving the Upsilon effect size, an R-squared-type
-#'   measure of the variance in the dependent variable explained indirectly
-#'   through the mediator.
-#'
-#' @examples
-#' mod.txt <- "
-#' read ~ math
-#' science ~ read + math
-#' "
-#' mod <- lavaan::sem(mod.txt, data=rmedsem::hsbdemo)
-#' out <- rmedsem(mod, indep="math", med="read", dep="science",
-#'                effect.size=c("RIT","RID","upsilon"))
-#' Upsilon(out)
-#' Upsilon(out, adjusted=FALSE)
-#'
+#' @rdname effect-sizes
 #' @export
 Upsilon <- function (res, ...)
   UseMethod("Upsilon")
 
-#' @rdname Upsilon
+#' @rdname effect-sizes
 #' @export
 Upsilon.default <- function(res, ...) {
   stop(sprintf("Upsilon() requires an 'rmedsem' object, as returned by rmedsem(), not an object of class '%s'.",
                paste(class(res), collapse="', '")), call.=FALSE)
 }
 
-#' @rdname Upsilon
+#' @rdname effect-sizes
 #' @export
 Upsilon.rmedsem <- function(res, adjusted=TRUE, ...) {
   check_flag(adjusted, "adjusted")
@@ -126,41 +115,101 @@ Upsilon.rmedsem <- function(res, adjusted=TRUE, ...) {
   return(res$effect.size$upsilon$unadjusted)
 }
 
-#' Summarize an rmedsem Object
+#' Methods for rmedsem Objects
 #'
-#' `summary()` collects the main results of a mediation analysis in a compact
-#' form: a table of the indirect (for each estimation method), direct and
-#' total effects, the type of mediation according to the Baron and Kenny
-#' and/or Zhao, Lynch & Chen approaches, and the effect sizes. Printing the
-#' `rmedsem` object itself ([print.rmedsem()]) gives a more verbose, step-by-step
-#' description of the same results.
+#' Print, summarize and extract the results of [rmedsem()].
 #'
-#' @param object the `rmedsem` object
-#' @param x a `summary.rmedsem` object
-#' @param digits an integer, number of significant digits to print
+#' @section Printing and summarizing:
+#' `print()` gives a detailed, step-by-step description of the results: a
+#' table of the tests of the indirect effect (one column per estimation
+#' method), the steps and conclusions of the Baron and Kenny and/or Zhao,
+#' Lynch & Chen approaches, and the effect sizes. For `blavaan` models, the
+#' table reports posterior summaries instead; for moderated mediation with
+#' `modsem`, the moderation effects are printed in addition.
+#'
+#' `summary()` collects the same results in compact form: a table of the
+#' indirect (for each estimation method), direct and total effects, the type
+#' of mediation, and the effect sizes.
+#'
+#' @section Extracting results:
+#' `coef()` returns the estimated indirect, direct and total effects,
+#' `confint()` their confidence (or, for `blavaan` models, credible)
+#' intervals, and `nobs()` the number of observations. `as.data.frame()`
+#' returns the estimates of the indirect effect for all estimation methods.
+#'
+#' The indirect effect is estimated with several methods (see
+#' `object$est.methods`), which all give the same point estimate but
+#' different standard errors and intervals. By default, `coef()` and
+#' `confint()` use the method that also underlies the Zhao, Lynch & Chen
+#' approach: `"montc"` (Monte-Carlo) for `lavaan` and `modsem`, `"boot"`
+#' (bootstrap) for `cSEM` and `"bayes"` for `blavaan`.
+#'
+#' @section Extending the printed output:
+#' `print.rmedsem()` handles all backends that provide the elements described
+#' in section 'Adding a backend' of [rmedsem()]. Backends that need a
+#' different output provide a method for their subclass, either replacing
+#' the default output (`print.rmedsem_blavaan()`) or extending it with
+#' [NextMethod()] (`print.rmedsem_modsem()`).
+#'
+#' @param x an `rmedsem` object; for `print.summary.rmedsem()` a
+#'   `summary.rmedsem` object
+#' @param object an `rmedsem` object
+#' @param digits an integer, the number of (significant) digits to print
+#' @param indent an integer, the number of spaces to indent
+#' @param ci_moderation a logical, whether to print confidence intervals for
+#'   the moderation effects (moderated mediation with `modsem` only)
+#' @param method estimation method for the indirect effect, one of
+#'   `object$est.methods` (e.g., `"sobel"`, `"delta"`, `"montc"`, `"boot"` or
+#'   `"bayes"`); see section 'Extracting results' for the default
+#' @param parm character vector; a subset of `c("indirect", "direct", "total")`
+#' @param level the confidence level. The intervals are computed by
+#'   [rmedsem()] (argument `ci.two.tailed`), so `level` can only be used to
+#'   check that the stored intervals have the requested level.
 #' @param ... additional arguments (currently unused)
-#' @return `summary()` returns an object of class `summary.rmedsem`, a list
-#'   with elements
-#'   \describe{
-#'     \item{`package`, `vars`, `standardized`, `nobs`, `ci.level`}{copied
-#'       from `object`.}
-#'     \item{`ci.type`}{type of the intervals: `"CI"` or, for Bayesian models
-#'       fitted with `hdi = TRUE`, `"HDI"`.}
-#'     \item{`p.threshold`}{the p-value threshold (`NULL` for Bayesian models).}
-#'     \item{`effects`}{a data frame with columns `effect`, `method`,
-#'       `estimate`, `se`, `zval`, `pval`, `lower` and `upper` (see
-#'       [as.data.frame.rmedsem()]); `NA` where a quantity is not available.}
-#'     \item{`mediation`}{a list with elements `bk` and `zlc` giving the type
-#'       of mediation (`NULL` if the approach was not requested). `bk` is one
-#'       of `"none"`, `"complete"` or `"partial"`; `zlc` is one of
-#'       `"indirect-only"`, `"direct-only"`, `"no-effect"`, `"complementary"`
-#'       or `"competitive"`.}
-#'     \item{`zlc.method`}{the estimation method used for the Zhao, Lynch &
-#'       Chen approach.}
-#'     \item{`effect.size`}{a named numeric vector with the requested effect
-#'       sizes (`RIT`, `RID`, `upsilon` (adjusted) and `upsilon.unadjusted`).}
-#'   }
-#'   `print.summary.rmedsem()` returns `x` invisibly.
+#'
+#' @return
+#' `print()` returns `x` invisibly.
+#'
+#' `summary()` returns an object of class `summary.rmedsem`, a list with
+#' elements
+#' \describe{
+#'   \item{`package`, `vars`, `standardized`, `nobs`, `ci.level`}{copied
+#'     from `object`.}
+#'   \item{`ci.type`}{type of the intervals: `"CI"` or, for `blavaan` models
+#'     fitted with `hdi = TRUE`, `"HDI"`.}
+#'   \item{`p.threshold`}{the p-value threshold (`NULL` for `blavaan` models).}
+#'   \item{`effects`}{a data frame with columns `effect`, `method`,
+#'     `estimate`, `se`, `zval`, `pval`, `lower` and `upper`; `NA` where a
+#'     quantity is not available. For `blavaan` models, `pval` is the
+#'     posterior probability of the opposite sign.}
+#'   \item{`mediation`}{a list with elements `bk` and `zlc` giving the type
+#'     of mediation (`NULL` if the approach was not requested). `bk` is one
+#'     of `"none"`, `"complete"` or `"partial"`; `zlc` is one of
+#'     `"indirect-only"`, `"direct-only"`, `"no-effect"`, `"complementary"`
+#'     or `"competitive"`.}
+#'   \item{`zlc.method`}{the estimation method used for the Zhao, Lynch &
+#'     Chen approach.}
+#'   \item{`effect.size`}{a named numeric vector with the requested effect
+#'     sizes (`RIT`, `RID`, `upsilon` (adjusted) and `upsilon.unadjusted`).}
+#' }
+#'
+#' `coef()` returns a named numeric vector with elements `indirect`,
+#' `direct` and `total`.
+#'
+#' `confint()` returns a matrix with one row per effect and columns giving
+#' the lower and upper limits, labelled by their probabilities (e.g.,
+#' `"2.5 %"` and `"97.5 %"`) or, for highest density intervals, `"lower"`
+#' and `"upper"`.
+#'
+#' `nobs()` returns an integer.
+#'
+#' `as.data.frame()` returns a data frame with one row per estimation method
+#' of the indirect effect and columns `package`, `method` and the estimates
+#' stored for that method (`coef`, `se`, `zval`, `pval`, `lower` and `upper`;
+#' `blavaan` results additionally contain the posterior probabilities `pvpos`
+#' and `pvneg` and the evidence ratios `ERpos` and `ERneg`).
+#'
+#' @seealso [rmedsem()], [effect-sizes], [plot.rmedsem()]
 #'
 #' @examples
 #' mod.txt <- "
@@ -169,11 +218,27 @@ Upsilon.rmedsem <- function(res, adjusted=TRUE, ...) {
 #' "
 #' mod <- lavaan::sem(mod.txt, data=rmedsem::hsbdemo)
 #' out <- rmedsem(mod, indep="math", med="read", dep="science")
+#'
+#' # detailed output
+#' print(out)
+#'
+#' # compact summary and its elements
 #' s <- summary(out)
 #' s
 #' s$mediation
 #' s$effects
 #'
+#' # extract estimates
+#' coef(out)
+#' confint(out)
+#' confint(out, parm="indirect", method="sobel")
+#' nobs(out)
+#' as.data.frame(out)
+#'
+#' @name rmedsem-methods
+NULL
+
+#' @rdname rmedsem-methods
 #' @export
 summary.rmedsem <- function(object, ...) {
   bk <- zlc <- NULL
@@ -203,7 +268,7 @@ summary.rmedsem <- function(object, ...) {
   ), class = "summary.rmedsem")
 }
 
-#' @rdname summary.rmedsem
+#' @rdname rmedsem-methods
 #' @export
 print.summary.rmedsem <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
   check_count(digits, "digits")
@@ -263,7 +328,7 @@ print.summary.rmedsem <- function(x, digits = max(3L, getOption("digits") - 3L),
 
 #' Table of Indirect, Direct and Total Effects
 #' @param res an `rmedsem` object
-#' @return a data frame, see [summary.rmedsem()]
+#' @return a data frame, see `summary.rmedsem()`
 #' @noRd
 effects_table <- function(res){
   get_num <- function(v, n) if (n %in% names(v)) unname(v[[n]]) else NA_real_
@@ -281,7 +346,7 @@ effects_table <- function(res){
 #' Resolve the Estimation Method for Accessor Functions
 #' @param res an `rmedsem` object
 #' @param method `NULL` or one of `res$est.methods`
-#' @return a single method name; defaults to [zlc_method()]
+#' @return a single method name; defaults to `zlc_method()`
 #' @noRd
 resolve_method <- function(res, method){
   if (is.null(method))
@@ -293,49 +358,7 @@ resolve_method <- function(res, method){
   method
 }
 
-#' Extract Effects from an rmedsem Object
-#'
-#' `coef()` returns the estimated indirect, direct and total effects,
-#' `confint()` their confidence (or, for Bayesian models, credible) intervals,
-#' and `nobs()` the number of observations used to fit the model.
-#'
-#' The indirect effect is estimated with several methods (see
-#' `object$est.methods`), which all give the same point estimate
-#' (the product of coefficients; for Monte-Carlo and Bayesian estimation the
-#' mean of the samples) but different standard errors and intervals. By
-#' default, the method is used that also underlies the Zhao, Lynch & Chen
-#' approach: `"montc"` (Monte-Carlo) for `lavaan` and `modsem`, `"boot"`
-#' (bootstrap) for `cSEM` and `"bayes"` for `blavaan`.
-#'
-#' @param object the `rmedsem` object
-#' @param method estimation method for the indirect effect, one of
-#'   `object$est.methods` (e.g., `"sobel"`, `"delta"`, `"montc"`, `"boot"` or
-#'   `"bayes"`); see Details for the default
-#' @param parm character vector; a subset of `c("indirect", "direct", "total")`
-#' @param level the confidence level. The intervals are computed when calling
-#'   [rmedsem()] (argument `ci.two.tailed`), so `level` can only be used to
-#'   check that the stored intervals have the requested level.
-#' @param ... additional arguments (currently unused)
-#'
-#' @return `coef()`: a named numeric vector with elements `indirect`, `direct`
-#'   and `total`. `confint()`: a matrix with one row per effect and columns
-#'   giving the lower and upper limits, labelled by their probabilities (e.g.,
-#'   `"2.5 %"` and `"97.5 %"`) or, for highest density intervals
-#'   (`rmedsem(..., hdi = TRUE)` for `blavaan` models), `"lower"` and
-#'   `"upper"`. `nobs()`: an integer.
-#'
-#' @examples
-#' mod.txt <- "
-#' read ~ math
-#' science ~ read + math
-#' "
-#' mod <- lavaan::sem(mod.txt, data=rmedsem::hsbdemo)
-#' out <- rmedsem(mod, indep="math", med="read", dep="science")
-#' coef(out)
-#' confint(out)
-#' confint(out, parm="indirect", method="sobel")
-#' nobs(out)
-#'
+#' @rdname rmedsem-methods
 #' @importFrom stats coef confint nobs
 #' @export
 coef.rmedsem <- function(object, method=NULL, ...){
@@ -345,7 +368,7 @@ coef.rmedsem <- function(object, method=NULL, ...){
     total=unname(object$total.effect[["coef"]]))
 }
 
-#' @rdname coef.rmedsem
+#' @rdname rmedsem-methods
 #' @export
 confint.rmedsem <- function(object, parm, level=NULL, method=NULL, ...){
   method <- resolve_method(object, method)
@@ -374,7 +397,7 @@ confint.rmedsem <- function(object, parm, level=NULL, method=NULL, ...){
   ci
 }
 
-#' @rdname coef.rmedsem
+#' @rdname rmedsem-methods
 #' @export
 nobs.rmedsem <- function(object, ...){
   if (is.null(object$nobs))
@@ -382,17 +405,30 @@ nobs.rmedsem <- function(object, ...){
   as.integer(object$nobs)
 }
 
-#' Plot an rmedsem Object
+#' Plot rmedsem Results
 #'
-#' Creates a visualization of the mediation analysis results. By default,
-#' produces a coefficient plot. Use `type = "effect"` for an effect size
-#' pie chart.
+#' Visualize the results of [rmedsem()].
 #'
-#' @param x the `rmedsem` object
-#' @param type character; either `"coef"` (default) for a coefficient plot or
+#' \describe{
+#'   \item{`plot_coef()`}{A coefficient plot of the indirect effect (for each
+#'     estimation method), the direct effect and the total effect, with their
+#'     confidence (or credible) intervals.}
+#'   \item{`plot_effect()`}{A pie chart of the (absolute) indirect and direct
+#'     effects, i.e., the proportion of the total effect that is mediated.
+#'     Requires the effect sizes `"RIT"` and `"RID"`.}
+#' }
+#' `plot()` calls `plot_coef()` (`type = "coef"`) or `plot_effect()`
+#' (`type = "effect"`).
+#'
+#' @param x,res an `rmedsem` object
+#' @param type character; `"coef"` (default) for a coefficient plot or
 #'   `"effect"` for an effect size plot
-#' @param ... additional arguments passed to [plot_coef()] or [plot_effect()]
+#' @param description logical, whether to add a caption describing the
+#'   proportion of the total effect that is mediated (default `TRUE`)
+#' @param ... additional arguments passed to `plot_coef()` or `plot_effect()`
 #' @return a `ggplot` object
+#'
+#' @seealso [rmedsem()], [rmedsem-methods]
 #'
 #' @examples
 #' mod.txt <- "
@@ -403,6 +439,7 @@ nobs.rmedsem <- function(object, ...){
 #' out <- rmedsem(mod, indep="math", med="read", dep="science")
 #' plot(out)
 #' plot(out, type="effect")
+#' plot_effect(out, description=FALSE)
 #'
 #' @export
 plot.rmedsem <- function(x, type = c("coef", "effect"), ...) {
@@ -414,27 +451,7 @@ plot.rmedsem <- function(x, type = c("coef", "effect"), ...) {
   }
 }
 
-#' Convert an rmedsem Object to a Data Frame
-#'
-#' @param x the `rmedsem` object
-#' @param ... additional arguments (currently unused)
-#' @return a data.frame with one row per estimation method of the indirect
-#'   effect (see `x$est.methods`) and columns `package`, `method` and the
-#'   estimates stored for that method (for frequentist methods `coef`, `se`,
-#'   `zval`, `pval`, `lower` and `upper`; Bayesian estimates additionally
-#'   contain posterior probabilities and evidence ratios). See
-#'   [summary.rmedsem()] for a table that also includes the direct and total
-#'   effects.
-#'
-#' @examples
-#' mod.txt <- "
-#' read ~ math
-#' science ~ read + math
-#' "
-#' mod <- lavaan::sem(mod.txt, data=rmedsem::hsbdemo)
-#' out <- rmedsem(mod, indep="math", med="read", dep="science")
-#' as.data.frame(out)
-#'
+#' @rdname rmedsem-methods
 #' @export
 as.data.frame.rmedsem <- function(x, ...){
   res <- x

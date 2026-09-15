@@ -1,50 +1,5 @@
-#' Mediation Analysis for Blavaan Models
-#'
-#' @param mod A fitted SEM model (blavaan). Note that the model has to be fit using
-#'            `save.lvs=TRUE` if the mediation model contains latent variables.
-#' @param indep A string indicating the name of the independent variable in the model.
-#' @param med A string indicating the name of the mediator variable in the model.
-#' @param dep A string indicating the name of the dependent variable in the model.
-#'
-#' @param approach either 'bk' or 'zlc' or both c("bk", "zlc") (default)
-#' @param p.threshold A double giving the p-value for determining whether a path
-#'  is significant or not
-#' @param effect.size calculate different effect-sizes; one or more of "RIT", "RID"
-#' @param ci.two.tailed A double giving the probability mass of the credible
-#'   intervals (default 0.95)
-#' @param hdi A logical. If `FALSE` (default), equal-tailed credible intervals
-#'   (quantiles of the posterior samples) are computed; if `TRUE`, highest
-#'   density intervals (HDI) are computed using the \pkg{HDInterval} package.
-#'   Applies to the indirect, direct and total effects and to the Upsilon
-#'   effect size.
-#' @param ... additional arguments (currently unused)
-#'
-#' @return A `rmedsem` structure containing the results from the analysis
+#' @rdname rmedsem
 #' @export
-#'
-#' @examples
-#' \donttest{
-#' if (requireNamespace("blavaan", quietly = TRUE)) {
-#'   # blavaan's fitting functions need the package to be attached
-#'   library(blavaan)
-#'   mod.txt <- "
-#'     read ~ math
-#'     science ~ read + math
-#'   "
-#'   # short single chain to keep the example fast; use more chains and
-#'   # iterations in practice
-#'   mod <- bsem(mod.txt, data=rmedsem::hsbdemo, n.chains=1,
-#'               burnin=500, sample=500, seed=1, bcontrol=list(refresh=0))
-#'   out <- rmedsem(mod, indep="math", med="read", dep="science")
-#'   print(out)
-#'
-#'   # highest density intervals instead of equal-tailed intervals
-#'   if (requireNamespace("HDInterval", quietly = TRUE)) {
-#'     out.hdi <- rmedsem(mod, indep="math", med="read", dep="science", hdi=TRUE)
-#'     confint(out.hdi)
-#'   }
-#' }
-#' }
 rmedsem.blavaan <- function(mod, indep, med, dep,
                             approach=c("bk", "zlc"), p.threshold=0.05,
                             effect.size=c("RIT","RID","upsilon"),

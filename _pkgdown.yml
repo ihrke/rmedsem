@@ -14,3 +14,18 @@ template:
         });
       </script>
 
+
+reference:
+- title: Mediation analysis
+  contents:
+  - rmedsem
+- title: Working with the results
+  contents:
+  - rmedsem-methods
+  - effect-sizes
+  - plot.rmedsem
+- title: Datasets
+  contents:
+  - hsbdemo
+  - mchoice
+  - workout

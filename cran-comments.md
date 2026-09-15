@@ -5,7 +5,7 @@ This is a resubmission. In this version I have:
 - Added `\value` tags to all exported function documentation (RIT, RID, Upsilon)
 - Added a new effect-size estimate "upsilon" to the package
 - Replaced `T`/`F` with `TRUE`/`FALSE` throughout
-- The `rmedsem.blavaan`, `rmedsem.cSEMResults` and `rmedsem.modsem` examples
+- The `cSEM`, `modsem` and `blavaan` examples in `?rmedsem`
   use `\donttest{}` (with a `requireNamespace()` guard) because they depend
   on suggested packages and take more than a few seconds (MCMC sampling,
   bootstrapping, LMS estimation)

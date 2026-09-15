@@ -1,35 +1,5 @@
-#' Mediation Analysis for Lavaan Models
-#'
-#' @param mod A fitted SEM model (lavaan).
-#' @param indep A string indicating the name of the independent variable in the model.
-#' @param med A string indicating the name of the mediator variable in the model.
-#' @param dep A string indicating the name of the dependent variable in the model.
-#'
-#' @param standardized A boolean indicating whether the coefficients should be
-#' standardized. The default value is TRUE.
-#' @param approach either 'bk' or 'zlc' or both c("bk", "zlc") (default)
-#' @param mcreps An integer determining the number of monte-carlo samples.
-#' @param p.threshold A double giving the p-value for determining whether a path
-#'  is significant or not
-#' @param effect.size calculate different effect-sizes; one or more of "RIT", "RID"
-#' @param ci.two.tailed A double giving the confidence level for two-tailed confidence intervals (default 0.95)
-#' @param ... additional arguments (currently unused)
-#'
-#' @return A `rmedsem` structure containing the results from the analysis
+#' @rdname rmedsem
 #' @export
-#'
-#' @examples
-#'
-#' mod.txt <- "
-#' read ~ math
-#' science ~ read + math
-#' "
-#' mod <- lavaan::sem(mod.txt, data=rmedsem::hsbdemo)
-#' out <- rmedsem(mod, indep="math", med="read", dep="science",
-#'                standardized=TRUE, mcreps=5000,
-#'                approach = c("bk","zlc"))
-#' print(out)
-#'
 rmedsem.lavaan <- function(mod, indep, med, dep,
                            approach=c("bk", "zlc"), p.threshold=0.05,
                            effect.size=c("RIT","RID","upsilon"),
