@@ -19,7 +19,41 @@ utils::globalVariables(c(
 #' @param effect.size character vector; one or more of `"RIT"`, `"RID"`, `"upsilon"`
 #' @param ... additional arguments passed to methods
 #'
-#' @return an object of class `rmedsem`
+#' @return an object of class `c("rmedsem_<pkg>", "rmedsem")`, where `<pkg>`
+#'   identifies the backend (see section 'Adding a backend').
+#'
+#' @section Adding a backend:
+#' Support for further model classes is added by writing a method
+#' `rmedsem.<class>()` that returns a list of class
+#' `c("rmedsem_<pkg>", "rmedsem")`. For the default [print.rmedsem()],
+#' [plot.rmedsem()] and [as.data.frame.rmedsem()] methods to work, the list
+#' must contain the following elements:
+#' \describe{
+#'   \item{`package`}{name of the estimating package (character).}
+#'   \item{`standardized`}{whether the coefficients are standardized (logical).}
+#'   \item{`vars`}{list with elements `indep`, `med` and `dep`.}
+#'   \item{`est.methods`}{character vector naming the estimation methods for
+#'     the indirect effect, e.g. `c("sobel", "delta", "montc")`.}
+#'   \item{one element per entry in `est.methods`}{a named numeric vector with
+#'     elements `coef`, `se`, `zval`, `pval`, `lower` and `upper`. The Baron
+#'     and Kenny approach requires the element `sobel`.}
+#'   \item{`zlc.method`}{(optional) the entry of `est.methods` whose p-value
+#'     is used for the Zhao, Lynch & Chen approach; defaults to the last
+#'     entry of `est.methods`.}
+#'   \item{`direct.effect`}{named numeric vector with elements `coef`, `se`,
+#'     `pval`, `lower` and `upper`.}
+#'   \item{`total.effect`}{named numeric vector with elements `coef`, `se`,
+#'     `lower` and `upper`.}
+#'   \item{`med.approach`}{character vector, a subset of `c("bk", "zlc")`.}
+#'   \item{`med.data`}{list with elements `sig_thresh` (the p-value
+#'     threshold), `coefs` and `pvals`; the latter two are lists with elements
+#'     `moi` (X -> M), `dom` (M -> Y) and `doi` (X -> Y).}
+#'   \item{`effect.size`}{list with (a subset of) elements `RIT`, `RID` and
+#'     `upsilon`, as returned by the built-in backends.}
+#' }
+#' A backend whose output does not fit this scheme can provide its own
+#' `print.rmedsem_<pkg>()` method, either replacing the default output (as
+#' for `blavaan`) or extending it via [NextMethod()] (as for `modsem`).
 #'
 #' @examples
 #' mod.txt <- "

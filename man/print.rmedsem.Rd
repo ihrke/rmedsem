@@ -2,9 +2,15 @@
 % Please edit documentation in R/printing.R
 \name{print.rmedsem}
 \alias{print.rmedsem}
+\alias{print.rmedsem_blavaan}
+\alias{print.rmedsem_modsem}
 \title{Print an rmedsem Object}
 \usage{
 \method{print}{rmedsem}(x, digits = 3, indent = 3, ...)
+
+\method{print}{rmedsem_blavaan}(x, digits = 3, indent = 3, ...)
+
+\method{print}{rmedsem_modsem}(x, digits = 3, indent = 3, ci_moderation = FALSE, ...)
 }
 \arguments{
 \item{x}{the \code{rmedsem} object to print}
@@ -14,12 +20,21 @@
 \item{indent}{an integer, number of spaces to indent}
 
 \item{...}{additional arguments (currently unused)}
+
+\item{ci_moderation}{a logical, whether to print confidence intervals for
+the moderation effects (only for moderated mediation with \code{modsem})}
 }
 \value{
 the \code{rmedsem} object \code{x} (invisibly)
 }
 \description{
-Print an rmedsem Object
+\code{print.rmedsem()} is the default method used for frequentist backends. It
+prints a header, a table with one column per estimation method in
+\code{x$est.methods}, the Baron and Kenny and/or Zhao, Lynch & Chen steps (as
+requested in \code{x$med.approach}), and the effect sizes. Backends that need a
+different output provide their own method for their subclass (e.g.,
+\code{print.rmedsem_blavaan()}), or extend the default output with
+\code{\link[=NextMethod]{NextMethod()}} (e.g., \code{print.rmedsem_modsem()}).
 }
 \examples{
 mod.txt <- "

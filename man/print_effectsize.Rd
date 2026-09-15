@@ -14,7 +14,7 @@ print_effectsize(res, digits = 3, indent = 3)
 \item{indent}{an integer, number of spaces to indent}
 }
 \value{
-\code{rmedsem} object \code{res} (invisibly)
+\code{NULL} (invisibly)
 }
 \description{
 Print Effect Sizes from Mediation Analysis

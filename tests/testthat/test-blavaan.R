@@ -66,3 +66,20 @@ test_that("blavaan: Bayesian-specific output fields present", {
   expect_true("ERneg" %in% names(out$bayes))
   expect_true("prior" %in% names(out))
 })
+
+test_that("blavaan: print table rows match the stored values", {
+  skip_on_cran()
+  skip_if_not_installed("blavaan")
+
+  mod <- setup_blavaan()
+  out <- rmedsem(mod, indep = "ind60", med = "dem60", dep = "dem65")
+  output <- capture.output(print(out))
+
+  row <- function(lab) trimws(sub(lab, "", output[startsWith(output, lab)], fixed = TRUE))
+  expect_equal(as.numeric(row("P(z>0)")), unname(out$bayes["pvpos"]), tolerance = 1e-3)
+  expect_equal(as.numeric(row("P(z<0)")), unname(out$bayes["pvneg"]), tolerance = 1e-3)
+  ci <- as.numeric(strsplit(gsub("\\[|\\]", "", row("CI")), ",")[[1]])
+  expect_equal(ci, unname(out$bayes[c("lower", "upper")]), tolerance = 1e-2)
+  expect_false(any(grepl("Baron and Kenny", output)))
+  expect_equal(output[length(output)], "")
+})

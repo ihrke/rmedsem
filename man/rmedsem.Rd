@@ -33,12 +33,48 @@ rmedsem(
 \item{...}{additional arguments passed to methods}
 }
 \value{
-an object of class \code{rmedsem}
+an object of class \code{c("rmedsem_<pkg>", "rmedsem")}, where \verb{<pkg>}
+identifies the backend (see section 'Adding a backend').
 }
 \description{
 Conducts mediation analysis on a fitted SEM model using the Baron and Kenny
 (1986) and/or Zhao, Lynch & Chen (2010) approaches.
 }
+\section{Adding a backend}{
+
+Support for further model classes is added by writing a method
+\verb{rmedsem.<class>()} that returns a list of class
+\code{c("rmedsem_<pkg>", "rmedsem")}. For the default \code{\link[=print.rmedsem]{print.rmedsem()}},
+\code{\link[=plot.rmedsem]{plot.rmedsem()}} and \code{\link[=as.data.frame.rmedsem]{as.data.frame.rmedsem()}} methods to work, the list
+must contain the following elements:
+\describe{
+\item{\code{package}}{name of the estimating package (character).}
+\item{\code{standardized}}{whether the coefficients are standardized (logical).}
+\item{\code{vars}}{list with elements \code{indep}, \code{med} and \code{dep}.}
+\item{\code{est.methods}}{character vector naming the estimation methods for
+the indirect effect, e.g. \code{c("sobel", "delta", "montc")}.}
+\item{one element per entry in \code{est.methods}}{a named numeric vector with
+elements \code{coef}, \code{se}, \code{zval}, \code{pval}, \code{lower} and \code{upper}. The Baron
+and Kenny approach requires the element \code{sobel}.}
+\item{\code{zlc.method}}{(optional) the entry of \code{est.methods} whose p-value
+is used for the Zhao, Lynch & Chen approach; defaults to the last
+entry of \code{est.methods}.}
+\item{\code{direct.effect}}{named numeric vector with elements \code{coef}, \code{se},
+\code{pval}, \code{lower} and \code{upper}.}
+\item{\code{total.effect}}{named numeric vector with elements \code{coef}, \code{se},
+\code{lower} and \code{upper}.}
+\item{\code{med.approach}}{character vector, a subset of \code{c("bk", "zlc")}.}
+\item{\code{med.data}}{list with elements \code{sig_thresh} (the p-value
+threshold), \code{coefs} and \code{pvals}; the latter two are lists with elements
+\code{moi} (X -> M), \code{dom} (M -> Y) and \code{doi} (X -> Y).}
+\item{\code{effect.size}}{list with (a subset of) elements \code{RIT}, \code{RID} and
+\code{upsilon}, as returned by the built-in backends.}
+}
+A backend whose output does not fit this scheme can provide its own
+\verb{print.rmedsem_<pkg>()} method, either replacing the default output (as
+for \code{blavaan}) or extending it via \code{\link[=NextMethod]{NextMethod()}} (as for \code{modsem}).
+}
+
 \examples{
 mod.txt <- "
 read ~ math

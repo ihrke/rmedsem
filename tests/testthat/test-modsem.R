@@ -59,3 +59,31 @@ test_that("modsem: moderated mediation with moderator", {
   expect_true(out$moderation$has.moderator)
   expect_equal(out$moderation$moderator, "smv")
 })
+
+test_that("modsem: print extends default output with moderation block", {
+  skip_on_cran()
+  skip_if_not_installed("modsem")
+
+  m <- "
+    OwnLook =~ smv_attr_face + smv_attr_body + smv_sexy
+    SelfEst =~ ses_satis + ses_qualities + ses_able_todo
+    MentWell =~ mwb_optimistic + mwb_useful + mwb_energy
+    smv =~ smv_kind + smv_caring + smv_understanding +
+      smv_make_laughh + smv_funny + smv_sociable
+    SelfEst ~ OwnLook + smv + smv:OwnLook
+    MentWell ~ OwnLook + SelfEst + smv + smv:OwnLook
+  "
+
+  est <- modsem::modsem(m, data = rmedsem::mchoice, method = "lms")
+  out <- rmedsem(est, indep = "OwnLook", med = "SelfEst", dep = "MentWell",
+                 moderator = "smv")
+
+  output <- capture.output(print(out, indent = 5))
+  expect_true(any(grepl("Baron and Kenny", output)))
+  expect_true(any(grepl("^     STEP 1", output)))   # args passed via NextMethod
+  expect_true(any(grepl("Direct moderation effects", output)))
+  expect_false(any(grepl("ci = ", output)))
+
+  output_ci <- capture.output(print(out, ci_moderation = TRUE))
+  expect_true(any(grepl(", ci = \\[", output_ci)))
+})
