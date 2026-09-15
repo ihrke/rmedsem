@@ -9,6 +9,12 @@
 * New result field `zlc.method` naming the method whose p-value is used for
   the Zhao, Lynch & Chen approach.
 * `print(<modsem result>, ci_moderation = TRUE)` now works.
+* modsem: the moderation effects are now printed in causal direction
+  (e.g., `OwnLook -> SelfEst` instead of `SelfEst -> OwnLook`), the indirect
+  moderation effect is labelled `X -> M -> Y` and the total moderation effect
+  `X -> Y` (previously it reused the label of the indirect effect). The
+  `lhs`/`rhs` elements of `$moderation` now hold the unpadded variable names
+  (lavaan convention `lhs ~ rhs`); `$moderation$indirect.effect` gains `med`.
 * Fixed the blavaan output table, whose rows were shifted relative to the
   labels (e.g., `P(z>0)` and `P(z<0)` were swapped and the interval was
   wrong). The interval is now labelled `CI` (it is an equal-tailed quantile

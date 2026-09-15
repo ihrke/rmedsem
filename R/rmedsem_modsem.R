@@ -288,31 +288,27 @@ rmedsem.modsem <- function(mod, indep, med, dep,
     upper_ind_mod <- ind_eff_mod + ci.width*se_ind_mod
     lower_ind_mod <- ind_eff_mod - ci.width*se_ind_mod
 
-    f_vars <- format(c(indep, med, dep))
-    f_indep <- f_vars[1]
-    f_med <- f_vars[2]
-    f_dep <- f_vars[3]
-
+    # lhs/rhs follow the lavaan convention (lhs ~ rhs, i.e., rhs -> lhs)
     moderation.info <- list( 
       has.moderator = TRUE,
       moderator = moderator, 
 
       coefs = list(
-         moi=list(lhs=f_med, rhs=f_indep, coef=coef_moi_mod, 
+         moi=list(lhs=med, rhs=indep, coef=coef_moi_mod, 
                   se=se_moi_mod, pval=pval_moi_mod, 
                   lower=lower_moi_mod, upper=upper_moi_mod),
-         dom=list(lhs=f_dep, rhs=f_med, coef=coef_dom_mod, 
+         dom=list(lhs=dep, rhs=med, coef=coef_dom_mod, 
                   se=se_dom_mod, pval=pval_dom_mod, 
                   lower=lower_dom_mod, upper=upper_dom_mod),
-         doi=list(lhs=f_dep, rhs=f_indep, coef=coef_doi_mod, 
+         doi=list(lhs=dep, rhs=indep, coef=coef_doi_mod, 
                   se=se_doi_mod, pval=pval_doi_mod, 
                   lower=lower_doi_mod, upper=upper_doi_mod)
       ),
 
-      total.effect=list(lhs=f_dep, rhs=f_indep, coef=tot_eff_mod, 
+      total.effect=list(lhs=dep, rhs=indep, coef=tot_eff_mod, 
                         se=se_tot_mod, pval=pv_tot_mod, 
                         lower=lower_tot_mod, upper=upper_tot_mod),
-      indirect.effect=list(lhs=f_med, rhs=f_indep,
+      indirect.effect=list(lhs=dep, rhs=indep, med=med,
                            coef=ind_eff_mod, se=se_ind_mod, pval=pv_ind_mod, 
                            lower=lower_ind_mod, upper=upper_ind_mod)
     )

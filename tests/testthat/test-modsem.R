@@ -83,6 +83,13 @@ test_that("modsem: print extends default output with moderation block", {
   expect_true(any(grepl("^     STEP 1", output)))   # args passed via NextMethod
   expect_true(any(grepl("Direct moderation effects", output)))
   expect_false(any(grepl("ci = ", output)))
+  # arrows point from predictor to outcome
+  expect_true(any(grepl("^   OwnLook -> SelfEst +\\| smv", output)))
+  expect_false(any(grepl("SelfEst +-> OwnLook", output)))
+  ind <- output[which(output == "Indirect moderation effect") + 1]
+  expect_match(ind, "OwnLook -> SelfEst -> MentWell \\| smv")
+  tot <- output[which(output == "Total moderation effect") + 1]
+  expect_match(tot, "OwnLook -> MentWell +\\| smv")
 
   output_ci <- capture.output(print(out, ci_moderation = TRUE))
   expect_true(any(grepl(", ci = \\[", output_ci)))

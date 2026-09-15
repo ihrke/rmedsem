@@ -259,32 +259,32 @@ print_moderation <- function(res, ci_moderation=FALSE){
   moderation <- res$moderation
   moderator <- moderation$moderator
 
-  pattern <- "   %s -> %s | %s: B = %5.3f, se = %5.3f, p = %5.3f"
-  if (ci_moderation) pattern <- paste0(pattern, ", ci = [%5.2f,%5.2f]\n")
-  else               pattern <- paste0(pattern, "\n")
+  # lhs/rhs follow the lavaan convention (lhs ~ rhs), so paths run rhs -> lhs
+  direct <- Filter(\(e) !(e$coef == 0 && e$se == 0), moderation$coefs)
+  indirect <- moderation$indirect.effect
+  total <- moderation$total.effect
+  labels <- format(c(vapply(direct, \(e) sprintf("%s -> %s", e$rhs, e$lhs), ""),
+                     sprintf("%s -> %s -> %s", indirect$rhs, indirect$med, indirect$lhs),
+                     sprintf("%s -> %s", total$rhs, total$lhs)))
+  n.direct <- length(direct)
 
-  fmt_mod <- function(lhs, rhs, coefs) {
+  fmt_mod <- function(label, e) {
+    out <- sprintf("   %s | %s: B = %5.3f, se = %5.3f, p = %5.3f",
+                   label, moderator, e$coef, e$se, e$pval)
     if (ci_moderation)
-      sprintf(pattern, lhs, rhs, moderator,
-              coefs$coef, coefs$se, coefs$pval,
-              coefs$lower, coefs$upper)
-    else
-      sprintf(pattern, lhs, rhs, moderator,
-              coefs$coef, coefs$se, coefs$pval)
+      out <- paste0(out, sprintf(", ci = [%5.2f,%5.2f]", e$lower, e$upper))
+    paste0(out, "\n")
   }
 
   cat("\nDirect moderation effects\n")
-  for (coefs in moderation$coefs) {
-    if (coefs$coef == 0 && coefs$se == 0) next
-    cat(fmt_mod(coefs$lhs, coefs$rhs, coefs))
-  }
+  for (i in seq_len(n.direct))
+    cat(fmt_mod(labels[i], direct[[i]]))
 
   cat("\nIndirect moderation effect\n")
-  indirect <- moderation$indirect.effect
-  cat(fmt_mod(indirect$lhs, indirect$rhs, indirect))
+  cat(fmt_mod(labels[n.direct + 1], indirect))
 
   cat("\nTotal moderation effect\n")
-  cat(fmt_mod(indirect$lhs, indirect$rhs, moderation$total.effect))
+  cat(fmt_mod(labels[n.direct + 2], total))
   cat("\n")
   invisible(NULL)
 }
