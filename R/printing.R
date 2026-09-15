@@ -87,10 +87,19 @@ print_bayes_table <- function(res, digits=3){
                             sprintf("[%s, %s]", format(b[["lower"]], digits=digits),
                                     format(b[["upper"]], digits=digits))))
   rownames(mat) <- c("Indirect effect", "Std. Err.", "z-value", "P(z>0)", "P(z<0)",
-                     "ER+", "ER-", "CI")
+                     "ER+", "ER-", ci_type(res))
   print(mat)
   cat("\n")
   invisible(NULL)
+}
+
+
+#' Type of the stored intervals
+#' @param res an `rmedsem` object (or `summary.rmedsem` object)
+#' @return `res$ci.type` if present (e.g. `"HDI"`), otherwise `"CI"`
+#' @keywords internal
+ci_type <- function(res){
+  if (is.null(res$ci.type)) "CI" else res$ci.type
 }
 
 
@@ -279,9 +288,9 @@ print_effectsize <- function(res, digits=3, indent=3){
                 indesstr, es$upsilon$unadjusted, es$upsilon$adjusted))
     if(!is.null(es$upsilon$posterior_mean)){
       ci.level <- if (is.null(res$ci.level)) 0.95 else res$ci.level
-      cat(sprintf("%sPosterior mean(v) = %5.3f, median(v) = %5.3f, %s CI [%5.3f, %5.3f]\n",
+      cat(sprintf("%sPosterior mean(v) = %5.3f, median(v) = %5.3f, %s %s [%5.3f, %5.3f]\n",
                   indesstr, es$upsilon$posterior_mean, es$upsilon$posterior_median,
-                  format_percent(ci.level),
+                  format_percent(ci.level), ci_type(res),
                   es$upsilon$lower, es$upsilon$upper))
     }
   }

@@ -53,6 +53,8 @@ utils::globalVariables(c(
 #'   \item{`nobs`}{(optional) number of observations, used by [stats::nobs()].}
 #'   \item{`ci.level`}{(optional) level of the stored intervals, used by
 #'     [stats::confint()] and [summary()]; defaults to 0.95.}
+#'   \item{`ci.type`}{(optional) label of the stored intervals, `"CI"`
+#'     (default) or `"HDI"`.}
 #' }
 #' A backend whose output does not fit this scheme can provide its own
 #' `print.rmedsem_<pkg>()` method, either replacing the default output (as

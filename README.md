@@ -96,11 +96,11 @@ print(out)
 #> Mediation effect: 'math' -> 'read' -> 'science'
 #> 
 #>                         Sobel         Delta    Monte-Carlo
-#> Indirect effect        0.2506         0.251         0.2506
-#> Std. Err.              0.0456         0.046         0.0416
-#> z-value                5.5006         5.446         6.0617
-#> p-value              3.79e-08      5.15e-08       1.35e-09
-#> CI              [0.161, 0.34] [0.16, 0.341] [0.175, 0.336]
+#> Indirect effect        0.2506         0.251          0.251
+#> Std. Err.              0.0456         0.046          0.046
+#> z-value                5.5006         5.446          5.299
+#> p-value              3.79e-08      5.15e-08       1.16e-07
+#> CI              [0.161, 0.34] [0.16, 0.341] [0.156, 0.329]
 #> 
 #> Baron and Kenny approach to testing mediation
 #>    STEP 1 - 'math:read' (X -> M) with B=0.662 and p=0.000
@@ -134,6 +134,51 @@ and Monte-Carlo methods (see [technical
 details](https://ihrke.github.io/rmedsem/articles/mediation_technical.html))
 and also explains the Baron-Kenny procedure in detail.
 
+A compact overview of the effects, the type of mediation and the effect
+sizes is provided by `summary()`:
+
+``` r
+summary(out)
+#> Mediation analysis: 'math' -> 'read' -> 'science'
+#> Estimated with 'lavaan' (standardized), N = 200
+#> 
+#> Effects (95% CI):
+#>                        Estimate Std. Err. z-value   p-value  Lower  Upper
+#> Indirect (Sobel)         0.2506   0.04556   5.501 3.786e-08 0.1613 0.3399
+#> Indirect (Delta)         0.2506   0.04602   5.446 5.152e-08 0.1604 0.3408
+#> Indirect (Monte-Carlo)   0.2506   0.04602   5.299 1.163e-07 0.1560 0.3286
+#> Direct                   0.3801   0.06479         4.434e-09 0.2531 0.5071
+#> Total                    0.6281   0.03908                   0.5477 0.7050
+#> 
+#> Type of mediation (significant: p < 0.05):
+#>   Baron & Kenny:      partial mediation
+#>   Zhao, Lynch & Chen: complementary mediation (partial mediation); based on Monte-Carlo
+#> 
+#> Effect sizes:
+#>   RIT = 0.3973
+#>   RID = 0.6593
+#>   Upsilon = 0.06074
+#>   Upsilon (unadj.) = 0.06281
+```
+
+The estimates can also be extracted with the usual functions,
+e.g. `coef()` for the indirect, direct and total effects and `confint()`
+for their intervals (see [this
+article](https://ihrke.github.io/rmedsem/articles/working_with_results.html)
+for more ways of working with the results, including effect sizes and
+plots):
+
+``` r
+coef(out)
+#>  indirect    direct     total 
+#> 0.2506159 0.3801172 0.6281097
+confint(out)
+#>              2.5 %    97.5 %
+#> indirect 0.1559838 0.3285808
+#> direct   0.2531357 0.5070988
+#> total    0.5476938 0.7050230
+```
+
 We can switch to an alternative method by Zhao, Lynch & Chen (2010)
 using the `approach="zlc"` option (here we also switched to standardized
 coefficients using `standardized=T`):
@@ -145,12 +190,12 @@ rmedsem(mod, indep="math", med="read", dep="science",
 #> Model estimated with package 'lavaan'
 #> Mediation effect: 'math' -> 'read' -> 'science'
 #> 
-#>                         Sobel         Delta    Monte-Carlo
-#> Indirect effect        0.2506         0.251         0.2506
-#> Std. Err.              0.0456         0.046         0.0452
-#> z-value                5.5006         5.446         5.6355
-#> p-value              3.79e-08      5.15e-08       1.75e-08
-#> CI              [0.161, 0.34] [0.16, 0.341] [0.165, 0.346]
+#>                         Sobel         Delta   Monte-Carlo
+#> Indirect effect        0.2506         0.251        0.2506
+#> Std. Err.              0.0456         0.046        0.0446
+#> z-value                5.5006         5.446        5.6965
+#> p-value              3.79e-08      5.15e-08      1.22e-08
+#> CI              [0.161, 0.34] [0.16, 0.341] [0.17, 0.342]
 #> 
 #> Zhao, Lynch & Chen's approach to testing mediation
 #> Based on p-value estimated using Monte-Carlo
@@ -188,7 +233,7 @@ model03 <- "
 mod <- sem(model03, data=rmedsem::workout)
 ```
 
-<img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-11-1.png" alt="" width="100%" />
 Here, we have latent variables `Appearance`, `Attractiveness`, `Muscle`
 and `Weight` that measure the motivation of people going to a gym to
 workout.
@@ -208,10 +253,10 @@ rmedsem(mod, indep="Attractive", med="Appearance", dep="Muscle",
 #> 
 #>                            Sobel              Delta      Monte-Carlo
 #> Indirect effect           0.0654             0.0654           0.0654
-#> Std. Err.                 0.0331             0.0335           0.0338
-#> z-value                   1.9748             1.9544           1.9050
-#> p-value                   0.0483             0.0507           0.0568
-#> CI              [0.000491, 0.13] [-0.000187, 0.131] [0.00432, 0.137]
+#> Std. Err.                 0.0331             0.0335           0.0297
+#> z-value                   1.9748             1.9544           2.1432
+#> p-value                   0.0483             0.0507           0.0321
+#> CI              [0.000491, 0.13] [-0.000187, 0.131] [0.00532, 0.121]
 #> 
 #> Baron and Kenny approach to testing mediation
 #>    STEP 1 - 'Attractive:Appearance' (X -> M) with B=0.158 and p=0.033
@@ -223,8 +268,8 @@ rmedsem(mod, indep="Attractive", med="Appearance", dep="Muscle",
 #> Zhao, Lynch & Chen's approach to testing mediation
 #> Based on p-value estimated using Monte-Carlo
 #>   STEP 1 - 'Attractive:Muscle' (X -> Y) with B=-0.014 and p=0.850
-#>             As the Monte-Carlo test above is not significant and STEP 1 is
-#>             not significant there is no effect nonmediation (no mediation).
+#>             As the Monte-Carlo test above is significant and STEP 1 is not
+#>             significant there is indirect-only mediation (full mediation).
 #> 
 #> Effect sizes
 #>    WARNING: Total effect is smaller than indirect effect!
@@ -253,16 +298,16 @@ rmedsem(mod, indep="Attractive", med="Appearance", dep="Weight",
 #> 
 #>                           Sobel            Delta      Monte-Carlo
 #> Indirect effect          0.0979           0.0979           0.0979
-#> Std. Err.                0.0470           0.0483           0.0492
-#> z-value                  2.0810           2.0267           2.0164
-#> p-value                  0.0374           0.0427           0.0438
-#> CI              [0.00569, 0.19] [0.00322, 0.193] [0.00926, 0.197]
+#> Std. Err.                0.0470           0.0483           0.0487
+#> z-value                  2.0810           2.0267           2.0135
+#> p-value                  0.0374           0.0427           0.0441
+#> CI              [0.00569, 0.19] [0.00322, 0.193] [0.00581, 0.194]
 #> 
 #> Zhao, Lynch & Chen's approach to testing mediation
 #> Based on p-value estimated using Monte-Carlo
 #>   STEP 1 - 'Attractive:Weight' (X -> Y) with B=-0.125 and p=0.073
 #>             As the Monte-Carlo test above is significant and STEP 1 is not
-#>             significant there indirect-only mediation (full mediation).
+#>             significant there is indirect-only mediation (full mediation).
 #> 
 #> Effect sizes
 #>    WARNING: Total effect is smaller than indirect effect!

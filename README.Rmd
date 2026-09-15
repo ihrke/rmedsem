@@ -107,6 +107,19 @@ print(out)
 
 The result reports the estimated indirect effect using the Sobel, Delta and Monte-Carlo methods (see [technical details](https://ihrke.github.io/rmedsem/articles/mediation_technical.html)) and also explains the Baron-Kenny procedure in detail.
 
+A compact overview of the effects, the type of mediation and the effect sizes is provided by `summary()`:
+
+```{r}
+summary(out)
+```
+
+The estimates can also be extracted with the usual functions, e.g. `coef()` for the indirect, direct and total effects and `confint()` for their intervals (see [this article](https://ihrke.github.io/rmedsem/articles/working_with_results.html) for more ways of working with the results, including effect sizes and plots):
+
+```{r}
+coef(out)
+confint(out)
+```
+
 We can switch to an alternative method by Zhao, Lynch & Chen (2010) using the `approach="zlc"` option (here we also switched to standardized coefficients using `standardized=T`): 
 ```{r}
 rmedsem(mod, indep="math", med="read", dep="science",

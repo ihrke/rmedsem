@@ -187,6 +187,15 @@ out <- rmedsem(mod, indep="math", med="read", dep="science",
 print(out)
 ```
 
+By default, the credible intervals are equal-tailed intervals. Highest density
+intervals (HDI) can be requested with `hdi = TRUE` (requires the
+[HDInterval](https://cran.r-project.org/package=HDInterval) package):
+
+```{r, message=F}
+out.hdi <- rmedsem(mod, indep="math", med="read", dep="science", hdi=TRUE)
+summary(out.hdi)
+```
+
 ### Example 2 (blavaan)
 
 ```{r, message=F}

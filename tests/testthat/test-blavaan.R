@@ -116,3 +116,28 @@ test_that("blavaan: summary, coef, confint, nobs and as.data.frame work", {
   expect_s3_class(df, "data.frame")
   expect_equal(df$method, "bayes")
 })
+
+test_that("blavaan: hdi switches between equal-tailed intervals and HDI", {
+  skip_on_cran()
+  skip_if_not_installed("blavaan")
+  skip_if_not_installed("HDInterval")
+
+  mod <- setup_blavaan()
+  out_ci  <- rmedsem(mod, indep = "ind60", med = "dem60", dep = "dem65")
+  out_hdi <- rmedsem(mod, indep = "ind60", med = "dem60", dep = "dem65", hdi = TRUE)
+
+  draws <- blavaan::standardizedposterior(mod)
+  ind <- draws[, "dem60~ind60"] * draws[, "dem65~dem60"]
+  expect_equal(unname(out_ci$bayes[c("lower", "upper")]),
+               unname(stats::quantile(ind, c(0.025, 0.975))))
+  expect_equal(unname(out_hdi$bayes[c("lower", "upper")]),
+               unname(HDInterval::hdi(ind, credMass = 0.95)[c("lower", "upper")]))
+
+  expect_equal(out_ci$ci.type, "CI")
+  expect_equal(out_hdi$ci.type, "HDI")
+  expect_equal(colnames(confint(out_hdi)), c("lower", "upper"))
+  expect_true(any(grepl("^HDI ", capture.output(print(out_hdi)))))
+  expect_output(print(summary(out_hdi)), "95% HDI")
+  expect_error(rmedsem(mod, indep = "ind60", med = "dem60", dep = "dem65", hdi = NA),
+               "'hdi'")
+})

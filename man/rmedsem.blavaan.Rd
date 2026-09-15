@@ -13,6 +13,7 @@
   p.threshold = 0.05,
   effect.size = c("RIT", "RID", "upsilon"),
   ci.two.tailed = 0.95,
+  hdi = FALSE,
   ...
 )
 }
@@ -33,8 +34,14 @@ is significant or not}
 
 \item{effect.size}{calculate different effect-sizes; one or more of "RIT", "RID"}
 
-\item{ci.two.tailed}{A double giving the probability mass of the two-tailed
-(equal-tailed) credible intervals (default 0.95)}
+\item{ci.two.tailed}{A double giving the probability mass of the credible
+intervals (default 0.95)}
+
+\item{hdi}{A logical. If \code{FALSE} (default), equal-tailed credible intervals
+(quantiles of the posterior samples) are computed; if \code{TRUE}, highest
+density intervals (HDI) are computed using the \pkg{HDInterval} package.
+Applies to the indirect, direct and total effects and to the Upsilon
+effect size.}
 
 \item{...}{additional arguments (currently unused)}
 }
@@ -59,6 +66,12 @@ if (requireNamespace("blavaan", quietly = TRUE)) {
               burnin=500, sample=500, seed=1, bcontrol=list(refresh=0))
   out <- rmedsem(mod, indep="math", med="read", dep="science")
   print(out)
+
+  # highest density intervals instead of equal-tailed intervals
+  if (requireNamespace("HDInterval", quietly = TRUE)) {
+    out.hdi <- rmedsem(mod, indep="math", med="read", dep="science", hdi=TRUE)
+    confint(out.hdi)
+  }
 }
 }
 }

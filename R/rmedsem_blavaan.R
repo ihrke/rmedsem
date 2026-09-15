@@ -10,8 +10,13 @@
 #' @param p.threshold A double giving the p-value for determining whether a path
 #'  is significant or not
 #' @param effect.size calculate different effect-sizes; one or more of "RIT", "RID"
-#' @param ci.two.tailed A double giving the probability mass of the two-tailed
-#'   (equal-tailed) credible intervals (default 0.95)
+#' @param ci.two.tailed A double giving the probability mass of the credible
+#'   intervals (default 0.95)
+#' @param hdi A logical. If `FALSE` (default), equal-tailed credible intervals
+#'   (quantiles of the posterior samples) are computed; if `TRUE`, highest
+#'   density intervals (HDI) are computed using the \pkg{HDInterval} package.
+#'   Applies to the indirect, direct and total effects and to the Upsilon
+#'   effect size.
 #' @param ... additional arguments (currently unused)
 #'
 #' @return A `rmedsem` structure containing the results from the analysis
@@ -32,18 +37,34 @@
 #'               burnin=500, sample=500, seed=1, bcontrol=list(refresh=0))
 #'   out <- rmedsem(mod, indep="math", med="read", dep="science")
 #'   print(out)
+#'
+#'   # highest density intervals instead of equal-tailed intervals
+#'   if (requireNamespace("HDInterval", quietly = TRUE)) {
+#'     out.hdi <- rmedsem(mod, indep="math", med="read", dep="science", hdi=TRUE)
+#'     confint(out.hdi)
+#'   }
 #' }
 #' }
 rmedsem.blavaan <- function(mod, indep, med, dep,
                             approach=c("bk", "zlc"), p.threshold=0.05,
                             effect.size=c("RIT","RID","upsilon"),
-                            ci.two.tailed=0.95, ...){
+                            ci.two.tailed=0.95, hdi=FALSE, ...){
   if (!requireNamespace("blavaan", quietly = TRUE))
     stop("Package 'blavaan' is required for this method. Please install it.")
   validate_rmedsem_args(indep, med, dep, approach, p.threshold, effect.size)
   check_ci_level(ci.two.tailed)
+  check_flag(hdi, "hdi")
+  if (hdi && !requireNamespace("HDInterval", quietly = TRUE))
+    stop("Package 'HDInterval' is required for 'hdi = TRUE'. Please install it.",
+         call.=FALSE)
   check_lavaan_model(mod, indep, med, dep)
-  probs <- c((1-ci.two.tailed)/2, 1-(1-ci.two.tailed)/2)
+  # credible interval (lower, upper) of posterior samples
+  interval <- function(x) {
+    if (hdi)
+      unname(HDInterval::hdi(x, credMass=ci.two.tailed)[c("lower", "upper")])
+    else
+      unname(stats::quantile(x, c((1-ci.two.tailed)/2, 1-(1-ci.two.tailed)/2)))
+  }
   ## convergence check
   if(max(blavaan::blavInspect(mod, "rhat"))>1.05)
     warning("Some Rhat>1.05, check convergence!")
@@ -56,11 +77,9 @@ rmedsem.blavaan <- function(mod, indep, med, dep,
   ptsamp <- draws[,moi]*draws[,dom]
   nsamp <- length(ptsamp)
   bayes_coef <- mean(ptsamp)
-  bayes_qs <- stats::quantile(ptsamp, probs)
+  bayes_qs <- interval(ptsamp)
   bayes_lci <- bayes_qs[1]
   bayes_uci <- bayes_qs[2]
-  names(bayes_lci) <- NULL
-  names(bayes_uci) <- NULL
   bayes_se <- stats::sd(ptsamp)
   bayes_z <- bayes_coef/bayes_se
 
@@ -74,21 +93,17 @@ rmedsem.blavaan <- function(mod, indep, med, dep,
   coef_doi <- base::mean(desamp)
   se_doi <- stats::sd(desamp)
   pval_doi <- min(base::mean(desamp>0), base::mean(desamp<0))
-  qs_doi <- stats::quantile(desamp, probs)
+  qs_doi <- interval(desamp)
   lci_doi <- qs_doi[1]
   uci_doi <- qs_doi[2]
-  names(lci_doi) <- NULL
-  names(uci_doi) <- NULL
 
   # total effect
   totsamp <- ptsamp+desamp
   coef_tot <- mean(totsamp)
   se_tot <- stats::sd(totsamp)
-  qs_tot <- stats::quantile(totsamp, probs)
+  qs_tot <- interval(totsamp)
   lci_tot <- qs_tot[1]
   uci_tot <- qs_tot[2]
-  names(lci_tot) <- NULL
-  names(uci_tot) <- NULL
 
   # Bayesian p-values and evidence ratios
   bayes_proppos <- sum(ptsamp>0)/nsamp
@@ -114,7 +129,7 @@ rmedsem.blavaan <- function(mod, indep, med, dep,
     ups_unadj <- mean(draws[,moi])^2 * mean(draws[,dom])^2
     ups_adj   <- (mean(draws[,moi])^2 - stats::var(draws[,moi])) *
                  (mean(draws[,dom])^2 - stats::var(draws[,dom]))
-    ups_qs <- stats::quantile(ups_samples, probs)
+    ups_qs <- interval(ups_samples)
     es$upsilon <- list(unadjusted=ups_unadj, adjusted=ups_adj,
                    samples=ups_samples,
                    posterior_mean=mean(ups_samples),
@@ -125,7 +140,7 @@ rmedsem.blavaan <- function(mod, indep, med, dep,
   }
 
   res <- list(package="blavaan", standardized=TRUE, nobs=lavaan::nobs(mod),
-              ci.level=ci.two.tailed,
+              ci.level=ci.two.tailed, ci.type=if (hdi) "HDI" else "CI",
               vars =list(med=med, indep=indep, dep=dep),
               direct.effect = c(coef=coef_doi, se=se_doi, pval=pval_doi, lower=lci_doi, upper=uci_doi),
               total.effect =  c(coef=coef_tot, se=se_tot, lower=lci_tot, upper=uci_tot),

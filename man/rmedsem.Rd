@@ -75,6 +75,8 @@ threshold), \code{coefs} and \code{pvals}; the latter two are lists with element
 \item{\code{nobs}}{(optional) number of observations, used by \code{\link[stats:nobs]{stats::nobs()}}.}
 \item{\code{ci.level}}{(optional) level of the stored intervals, used by
 \code{\link[stats:confint]{stats::confint()}} and \code{\link[=summary]{summary()}}; defaults to 0.95.}
+\item{\code{ci.type}}{(optional) label of the stored intervals, \code{"CI"}
+(default) or \code{"HDI"}.}
 }
 A backend whose output does not fit this scheme can provide its own
 \verb{print.rmedsem_<pkg>()} method, either replacing the default output (as

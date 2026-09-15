@@ -52,6 +52,14 @@
   indirect and total effects (lavaan, modsem); previously these were always
   95% intervals. `rmedsem.blavaan()` gains `ci.two.tailed` (previously fixed
   at 95%).
+* `rmedsem.blavaan()` gains `hdi`: if `TRUE`, highest density intervals
+  (via HDInterval) are computed instead of equal-tailed credible intervals
+  for the indirect, direct and total effects and for Upsilon. The interval
+  type is stored as `ci.type` and shown in `print()`, `summary()` and
+  `confint()`.
+* New article "Working with the results" on `summary()`, `coef()`,
+  `confint()`, `nobs()`, effect sizes, plots and HDIs; README shows
+  `summary()`, `coef()` and `confint()`.
 * blavaan: the direct effect's `pval` is now the posterior probability of the
   opposite sign, consistent with the indirect effect (previously
   `P(direct <= 0)`, which is wrong for negative effects).

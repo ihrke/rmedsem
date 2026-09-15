@@ -24,6 +24,8 @@ with elements
 \describe{
 \item{\code{package}, \code{vars}, \code{standardized}, \code{nobs}, \code{ci.level}}{copied
 from \code{object}.}
+\item{\code{ci.type}}{type of the intervals: \code{"CI"} or, for Bayesian models
+fitted with \code{hdi = TRUE}, \code{"HDI"}.}
 \item{\code{p.threshold}}{the p-value threshold (\code{NULL} for Bayesian models).}
 \item{\code{effects}}{a data frame with columns \code{effect}, \code{method},
 \code{estimate}, \code{se}, \code{zval}, \code{pval}, \code{lower} and \code{upper} (see

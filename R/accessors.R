@@ -144,6 +144,8 @@ Upsilon.rmedsem <- function(res, adjusted=TRUE, ...) {
 #'   \describe{
 #'     \item{`package`, `vars`, `standardized`, `nobs`, `ci.level`}{copied
 #'       from `object`.}
+#'     \item{`ci.type`}{type of the intervals: `"CI"` or, for Bayesian models
+#'       fitted with `hdi = TRUE`, `"HDI"`.}
 #'     \item{`p.threshold`}{the p-value threshold (`NULL` for Bayesian models).}
 #'     \item{`effects`}{a data frame with columns `effect`, `method`,
 #'       `estimate`, `se`, `zval`, `pval`, `lower` and `upper` (see
@@ -192,6 +194,7 @@ summary.rmedsem <- function(object, ...) {
     standardized = object$standardized,
     nobs         = object$nobs,
     ci.level     = object$ci.level,
+    ci.type      = ci_type(object),
     p.threshold  = object$med.data$sig_thresh,
     effects      = effects_table(object),
     mediation    = list(bk=bk, zlc=zlc),
@@ -224,7 +227,7 @@ print.summary.rmedsem <- function(x, digits = max(3L, getOption("digits") - 3L),
                     Lower=fmt(eff$lower), Upper=fmt(eff$upper),
                     row.names=labs, check.names=FALSE)
   ci.level <- if (is.null(x$ci.level)) 0.95 else x$ci.level
-  cat(sprintf("Effects (%s intervals):\n", format_percent(ci.level)))
+  cat(sprintf("Effects (%s %s):\n", format_percent(ci.level), ci_type(x)))
   print(tab)
   if (bayes)
     cat("For Bayesian estimates, 'p-value' is the posterior probability of the",
@@ -316,7 +319,10 @@ resolve_method <- function(res, method){
 #'
 #' @return `coef()`: a named numeric vector with elements `indirect`, `direct`
 #'   and `total`. `confint()`: a matrix with one row per effect and columns
-#'   giving the lower and upper limits. `nobs()`: an integer.
+#'   giving the lower and upper limits, labelled by their probabilities (e.g.,
+#'   `"2.5 %"` and `"97.5 %"`) or, for highest density intervals
+#'   (`rmedsem(..., hdi = TRUE)` for `blavaan` models), `"lower"` and
+#'   `"upper"`. `nobs()`: an integer.
 #'
 #' @examples
 #' mod.txt <- "
@@ -354,8 +360,12 @@ confint.rmedsem <- function(object, parm, level=NULL, method=NULL, ...){
   ci <- rbind(indirect=unname(object[[method]][c("lower", "upper")]),
               direct=unname(object$direct.effect[c("lower", "upper")]),
               total=unname(object$total.effect[c("lower", "upper")]))
-  probs <- c((1-stored)/2, 1-(1-stored)/2)
-  colnames(ci) <- paste(format(100*probs, trim=TRUE, scientific=FALSE, digits=3), "%")
+  if (ci_type(object) == "HDI") {
+    colnames(ci) <- c("lower", "upper")
+  } else {
+    probs <- c((1-stored)/2, 1-(1-stored)/2)
+    colnames(ci) <- paste(format(100*probs, trim=TRUE, scientific=FALSE, digits=3), "%")
+  }
   if (!missing(parm)) {
     if (!is.character(parm) || !all(parm %in% rownames(ci)))
       stop("'parm' must be a subset of 'indirect', 'direct', 'total'.", call.=FALSE)
