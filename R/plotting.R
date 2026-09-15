@@ -19,11 +19,14 @@ plot_effect <- function(res, description=TRUE){
     dplyr::arrange(dplyr::desc(eff)) |>
     dplyr::mutate(ypos = cumsum(value) - 0.5*value ) -> effs
 
+  # wrap long texts so that they fit into small figures
+  wrap <- function(txt, width) paste(strwrap(txt, width=width), collapse="\n")
   descr.label <- ""
   if(description){
-    descr.label <- sprintf("Total effect=%.3f\nThat means %.1f%% of the total effect of '%s' on '%s' is mediated by '%s'.",
-                           es$RIT$tot_eff, 100*es$RIT$ind_eff/es$RIT$tot_eff,
-                           res$vars$indep, res$vars$dep, res$vars$med)
+    descr.label <- wrap(sprintf("Total effect = %.3f. That means %.1f%% of the total effect of '%s' on '%s' is mediated by '%s'.",
+                                es$RIT$tot_eff, 100*es$RIT$ind_eff/es$RIT$tot_eff,
+                                res$vars$indep, res$vars$dep, res$vars$med),
+                        width=45)
   }
 
   ggplot2::ggplot(effs, ggplot2::aes(x="", y=value, fill=eff)) +
@@ -32,10 +35,11 @@ plot_effect <- function(res, description=TRUE){
     ggplot2::theme_void()+
     ggplot2::guides(fill="none")+
     ggplot2::geom_text(ggplot2::aes(y = ypos, label = sprintf("%.3f\n%s",value,eff)),
-                       color = "white", size=6)+
+                       color = "white", size=4.5)+
     ggplot2::scale_fill_brewer(palette="Set1")+
-    ggplot2::labs(title=sprintf("Effect sizes for '%s' on '%s' via '%s'",
-                                res$vars$indep, res$vars$dep, res$vars$med),
+    ggplot2::labs(title=wrap(sprintf("Effect sizes for '%s' on '%s' via '%s'",
+                                     res$vars$indep, res$vars$dep, res$vars$med),
+                             width=35),
                   subtitle=sprintf("Estimation: %s", res$package),
                     caption=descr.label)+
     ggplot2::theme(plot.caption = ggplot2::element_text(hjust = 0))
@@ -53,9 +57,11 @@ plot_coef <- function(res){
   d <- rbind(d, data.frame(method=NA, effect="total", res$total.effect[c("coef","lower","upper")] |> t()))
   ymet <- as.numeric(factor(d$method))
   ymet[is.na(ymet)] <- 0
-  d |> dplyr::mutate(var = ifelse(is.na(method), effect, sprintf("%s - %s", effect, method))) |>
+  # indirect effects of the different methods are spread around their position
+  d |> dplyr::mutate(var = ifelse(is.na(method), effect,
+                                  sprintf("%s (%s)", effect, method_label(method)))) |>
     dplyr::mutate(effect=ordered(effect, levels=c("total", "direct", "indirect")),
-                  ypos=as.numeric(effect)+(ymet>0)*0.1*(ymet-ceiling(length(res$est.methods)/2))) ->d
+                  ypos=as.numeric(effect)+(ymet>0)*0.25*(ymet-ceiling(length(res$est.methods)/2))) ->d
 
   ggplot2::ggplot(d, ggplot2::aes(x=ypos, y=coef, ymin=lower, ymax=upper, color=method))+
     ggplot2::geom_pointrange()+
@@ -71,6 +77,7 @@ plot_coef <- function(res){
     # turn off grid
     ggplot2::theme(panel.grid.major = ggplot2::element_blank(),
                    panel.grid.minor = ggplot2::element_blank(),
-                   panel.background = ggplot2::element_blank())
+                   panel.background = ggplot2::element_blank(),
+                   axis.text = ggplot2::element_text(size = ggplot2::rel(1.1)))
 
 }

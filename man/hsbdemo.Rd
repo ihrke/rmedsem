@@ -36,7 +36,7 @@ Methods and Data Analytics group.
 \examples{
 str(hsbdemo)
 
-mod <- lavaan::sem("read ~ math\nscience ~ read + math", data=hsbdemo)
-rmedsem(mod, indep="math", med="read", dep="science")
+mod <- lavaan::sem("read ~ math\nscience ~ read + math", data = hsbdemo)
+rmedsem(mod, indep = "math", med = "read", dep = "science")
 }
 \keyword{datasets}

@@ -4,11 +4,13 @@ rmedsem.cSEMResults <- function(mod, indep, med, dep,
                                 approach=c("bk", "zlc"), p.threshold=0.05,
                                 effect.size=c("RIT","RID","upsilon"),
                                 nbootstrap=1000,
-                                ci.two.tailed=0.95, ...){
+                                ci.two.tailed=0.95, seed=NULL, ...){
   if (!requireNamespace("cSEM", quietly = TRUE))
     stop("Package 'cSEM' is required for this method. Please install it.")
   validate_rmedsem_args(indep, med, dep, approach, p.threshold, effect.size)
   check_count(nbootstrap, "nbootstrap", min=2)
+  if (!is.null(seed))
+    check_count(seed, "seed", min=0)
   check_ci_level(ci.two.tailed)
   if (!inherits(mod, "cSEMResults_default"))
     stop("Only single-group, first-order cSEM models (class 'cSEMResults_default') ",
@@ -26,8 +28,12 @@ rmedsem.cSEMResults <- function(mod, indep, med, dep,
   dom <- sprintf("%s ~ %s", dep, med)
   doi <- sprintf("%s ~ %s", dep, indep)
 
-  mod <- cSEM::resamplecSEMResults(mod, .force = TRUE, .R=nbootstrap, .resample_method="bootstrap")
-  #imod <- cSEM::infer(mod)
+  # cSEM re-seeds its RNG if no seed is given, which would make set.seed()
+  # ineffective; draw the seed from R's RNG instead
+  if (is.null(seed))
+    seed <- sample.int(.Machine$integer.max, 1)
+  mod <- cSEM::resamplecSEMResults(mod, .force = TRUE, .R=nbootstrap,
+                                   .resample_method="bootstrap", .seed=seed)
   smod <- cSEM::summarize(mod, .alpha = 1-ci.two.tailed, .ci = "CI_percentile")
   coefs <- smod$Estimates$Path_estimates
 
@@ -63,7 +69,7 @@ rmedsem.cSEMResults <- function(mod, indep, med, dep,
 
   sobel_se  <- sqrt((coef_dom^2)*var_moi + (coef_moi^2)*var_dom)
   sobel_z   <- prodterm/sobel_se
-  sobel_pv  <- 2*(1-stats::pnorm(abs(sobel_z)))
+  sobel_pv  <- 2*stats::pnorm(-abs(sobel_z))
   sobel_lci <- prodterm - ci.width*sobel_se
   sobel_uci <- prodterm + ci.width*sobel_se
 
@@ -73,10 +79,9 @@ rmedsem.cSEMResults <- function(mod, indep, med, dep,
   V <- stats::cov(smod$Estimates$Estimates_resample$Estimates1$Path_estimates$Resampled)
   covmoidom = V[moi,dom]
 
-  #delta_se <- sqrt( (coef_dom^2)*var_moi + (coef_moi^2)*var_dom + (var_moi*var_dom) )
   delta_se <- sqrt( (coef_dom^2)*var_moi + (coef_moi^2)*var_dom + 2*coef_dom*coef_moi*covmoidom )
   delta_z  <- prodterm/delta_se
-  delta_pv  <- 2*(1-stats::pnorm(abs(delta_z)))
+  delta_pv  <- 2*stats::pnorm(-abs(delta_z))
   delta_lci <- prodterm - ci.width*delta_se
   delta_uci <- prodterm + ci.width*delta_se
 

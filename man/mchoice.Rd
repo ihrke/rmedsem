@@ -49,7 +49,7 @@ mod.txt <- "
   SelfEst  ~ OwnLook
   MentWell ~ OwnLook + SelfEst
 "
-mod <- lavaan::sem(mod.txt, data=mchoice)
-rmedsem(mod, indep="OwnLook", med="SelfEst", dep="MentWell")
+mod <- lavaan::sem(mod.txt, data = mchoice)
+rmedsem(mod, indep = "OwnLook", med = "SelfEst", dep = "MentWell")
 }
 \keyword{datasets}

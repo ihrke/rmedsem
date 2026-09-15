@@ -15,7 +15,7 @@
 \usage{
 \method{summary}{rmedsem}(object, ...)
 
-\method{print}{summary.rmedsem}(x, digits = max(3L, getOption("digits") - 3L), ...)
+\method{print}{summary.rmedsem}(x, digits = 3, ...)
 
 \method{coef}{rmedsem}(object, method = NULL, ...)
 
@@ -39,7 +39,7 @@
 \item{x}{an \code{rmedsem} object; for \code{print.summary.rmedsem()} a
 \code{summary.rmedsem} object}
 
-\item{digits}{an integer, the number of (significant) digits to print}
+\item{digits}{an integer, the number of decimal places to print}
 
 \item{method}{estimation method for the indirect effect, one of
 \code{object$est.methods} (e.g., \code{"sobel"}, \code{"delta"}, \code{"montc"}, \code{"boot"} or
@@ -144,8 +144,8 @@ mod.txt <- "
 read ~ math
 science ~ read + math
 "
-mod <- lavaan::sem(mod.txt, data=rmedsem::hsbdemo)
-out <- rmedsem(mod, indep="math", med="read", dep="science")
+mod <- lavaan::sem(mod.txt, data = rmedsem::hsbdemo)
+out <- rmedsem(mod, indep = "math", med = "read", dep = "science")
 
 # detailed output
 print(out)
@@ -159,7 +159,7 @@ s$effects
 # extract estimates
 coef(out)
 confint(out)
-confint(out, parm="indirect", method="sobel")
+confint(out, parm = "indirect", method = "sobel")
 nobs(out)
 as.data.frame(out)
 

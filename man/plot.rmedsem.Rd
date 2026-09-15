@@ -46,11 +46,11 @@ mod.txt <- "
 read ~ math
 science ~ read + math
 "
-mod <- lavaan::sem(mod.txt, data=rmedsem::hsbdemo)
-out <- rmedsem(mod, indep="math", med="read", dep="science")
+mod <- lavaan::sem(mod.txt, data = rmedsem::hsbdemo)
+out <- rmedsem(mod, indep = "math", med = "read", dep = "science")
 plot(out)
-plot(out, type="effect")
-plot_effect(out, description=FALSE)
+plot(out, type = "effect")
+plot_effect(out, description = FALSE)
 
 }
 \seealso{

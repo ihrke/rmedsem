@@ -103,3 +103,26 @@ test_that("cSEM: summary, coef, confint and nobs work", {
   expect_equal(confint(out)["indirect", ], unname(out$boot[c("lower", "upper")]),
                ignore_attr = TRUE)
 })
+
+test_that("cSEM: results are reproducible with set.seed() and seed", {
+  skip_on_cran()
+  skip_if_not_installed("cSEM")
+
+  model <- "
+    OwnLook =~ smv_attr_face + smv_attr_body + smv_sexy
+    SelfEst =~ ses_satis + ses_qualities + ses_able_todo
+    MentWell =~ mwb_optimistic + mwb_useful + mwb_energy
+    SelfEst ~ OwnLook
+    MentWell ~ OwnLook + SelfEst
+  "
+  cs <- cSEM::csem(rmedsem::mchoice, model)
+  run <- function(...) rmedsem(cs, indep = "OwnLook", med = "SelfEst",
+                               dep = "MentWell", nbootstrap = 30, ...)
+  set.seed(2025); o1 <- run()
+  set.seed(2025); o2 <- run()
+  expect_identical(o1$boot, o2$boot)
+  expect_identical(o1$direct.effect, o2$direct.effect)
+
+  expect_identical(run(seed = 7)$boot, run(seed = 7)$boot)
+  expect_error(run(seed = -1), "'seed'")
+})

@@ -46,6 +46,7 @@ rmedsem(
   effect.size = c("RIT", "RID", "upsilon"),
   nbootstrap = 1000,
   ci.two.tailed = 0.95,
+  seed = NULL,
   ...
 )
 
@@ -58,7 +59,7 @@ rmedsem(
   p.threshold = 0.05,
   effect.size = c("RIT", "RID", "upsilon"),
   standardized = TRUE,
-  mcreps = NULL,
+  mcreps = 5000,
   ci.two.tailed = 0.95,
   ...
 )
@@ -73,7 +74,7 @@ rmedsem(
   effect.size = c("RIT", "RID", "upsilon"),
   moderator = NULL,
   standardized = TRUE,
-  mcreps = NULL,
+  mcreps = 5000,
   ci.two.tailed = 0.95,
   ...
 )
@@ -115,13 +116,16 @@ and total effects and to Upsilon.}
 
 \item{nbootstrap}{(\code{cSEM}) the number of bootstrap samples (default 1000)}
 
+\item{seed}{(\code{cSEM}) \code{NULL} (default) or a non-negative integer, the seed
+for the bootstrap. If \code{NULL}, the seed is drawn from R's random number
+generator, so that results can be reproduced with \code{\link[=set.seed]{set.seed()}}.}
+
 \item{standardized}{(\code{lavaan}, \code{modsem}) a logical, whether to use
 standardized coefficients (default \code{TRUE}). \code{cSEM} and \code{blavaan} results
 are always standardized.}
 
 \item{mcreps}{(\code{lavaan}, \code{modsem}) the number of Monte-Carlo samples, a
-positive integer or \code{NULL} (default). Values smaller than the sample size
-(and \code{NULL}) are replaced by the sample size.}
+positive integer (default 5000)}
 
 \item{moderator}{(\code{modsem}) \code{NULL} (default) or a string, the name of the
 moderator W for moderated mediation. The model must contain an
@@ -212,13 +216,13 @@ mod.txt <- "
 read ~ math
 science ~ read + math
 "
-mod <- lavaan::sem(mod.txt, data=rmedsem::hsbdemo)
-out <- rmedsem(mod, indep="math", med="read", dep="science")
+mod <- lavaan::sem(mod.txt, data = rmedsem::hsbdemo)
+out <- rmedsem(mod, indep = "math", med = "read", dep = "science")
 out
 
 # Zhao, Lynch & Chen approach only, unstandardized coefficients
-rmedsem(mod, indep="math", med="read", dep="science",
-        approach="zlc", standardized=FALSE, mcreps=5000)
+rmedsem(mod, indep = "math", med = "read", dep = "science",
+        approach = "zlc", standardized = FALSE, mcreps = 5000)
 
 \donttest{
 ## cSEM
@@ -232,8 +236,8 @@ if (requireNamespace("cSEM", quietly = TRUE)) {
   "
   mod <- cSEM::csem(rmedsem::mchoice, model)
   # small number of bootstrap samples to keep the example fast
-  rmedsem(mod, indep="OwnLook", med="SelfEst", dep="MentWell",
-          nbootstrap=200)
+  rmedsem(mod, indep = "OwnLook", med = "SelfEst", dep = "MentWell",
+          nbootstrap = 200)
 }
 
 ## modsem: mediated moderation and moderated mediation
@@ -247,13 +251,14 @@ if (requireNamespace("modsem", quietly = TRUE)) {
     SelfEst ~ OwnLook + smv + smv:OwnLook
     MentWell ~ OwnLook + SelfEst + smv + smv:OwnLook
   "
-  est <- modsem::modsem(m, data = rmedsem::mchoice, method="lms")
+  est <- modsem::modsem(m, data = rmedsem::mchoice, method = "lms")
 
   # mediated moderation
-  rmedsem(est, indep="smv:OwnLook", med="SelfEst", dep="MentWell")
+  rmedsem(est, indep = "smv:OwnLook", med = "SelfEst", dep = "MentWell")
 
   # moderated mediation
-  rmedsem(est, indep="OwnLook", med="SelfEst", dep="MentWell", moderator="smv")
+  rmedsem(est, indep = "OwnLook", med = "SelfEst", dep = "MentWell",
+          moderator = "smv")
 }
 
 ## blavaan
@@ -262,13 +267,14 @@ if (requireNamespace("blavaan", quietly = TRUE)) {
   library(blavaan)
   # short single chain to keep the example fast; use more chains and
   # iterations in practice
-  bmod <- bsem(mod.txt, data=rmedsem::hsbdemo, n.chains=1,
-               burnin=500, sample=500, seed=1, bcontrol=list(refresh=0))
-  rmedsem(bmod, indep="math", med="read", dep="science")
+  bmod <- bsem(mod.txt, data = rmedsem::hsbdemo, n.chains = 1,
+               burnin = 500, sample = 500, seed = 1,
+               bcontrol = list(refresh = 0))
+  rmedsem(bmod, indep = "math", med = "read", dep = "science")
 
   # highest density intervals instead of equal-tailed intervals
   if (requireNamespace("HDInterval", quietly = TRUE))
-    rmedsem(bmod, indep="math", med="read", dep="science", hdi=TRUE)
+    rmedsem(bmod, indep = "math", med = "read", dep = "science", hdi = TRUE)
 }
 }
 

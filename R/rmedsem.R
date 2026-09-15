@@ -37,11 +37,13 @@ utils::globalVariables(c(
 #'   standardized coefficients (default `TRUE`). `cSEM` and `blavaan` results
 #'   are always standardized.
 #' @param mcreps (`lavaan`, `modsem`) the number of Monte-Carlo samples, a
-#'   positive integer or `NULL` (default). Values smaller than the sample size
-#'   (and `NULL`) are replaced by the sample size.
+#'   positive integer (default 5000)
 #' @param ci.two.tailed a number between 0 and 1, the level of all confidence
 #'   (or, for `blavaan`, credible) intervals (default 0.95)
 #' @param nbootstrap (`cSEM`) the number of bootstrap samples (default 1000)
+#' @param seed (`cSEM`) `NULL` (default) or a non-negative integer, the seed
+#'   for the bootstrap. If `NULL`, the seed is drawn from R's random number
+#'   generator, so that results can be reproduced with [set.seed()].
 #' @param moderator (`modsem`) `NULL` (default) or a string, the name of the
 #'   moderator W for moderated mediation. The model must contain an
 #'   interaction of the moderator with `indep` and/or `med`.
@@ -135,13 +137,13 @@ utils::globalVariables(c(
 #' read ~ math
 #' science ~ read + math
 #' "
-#' mod <- lavaan::sem(mod.txt, data=rmedsem::hsbdemo)
-#' out <- rmedsem(mod, indep="math", med="read", dep="science")
+#' mod <- lavaan::sem(mod.txt, data = rmedsem::hsbdemo)
+#' out <- rmedsem(mod, indep = "math", med = "read", dep = "science")
 #' out
 #'
 #' # Zhao, Lynch & Chen approach only, unstandardized coefficients
-#' rmedsem(mod, indep="math", med="read", dep="science",
-#'         approach="zlc", standardized=FALSE, mcreps=5000)
+#' rmedsem(mod, indep = "math", med = "read", dep = "science",
+#'         approach = "zlc", standardized = FALSE, mcreps = 5000)
 #'
 #' \donttest{
 #' ## cSEM
@@ -155,8 +157,8 @@ utils::globalVariables(c(
 #'   "
 #'   mod <- cSEM::csem(rmedsem::mchoice, model)
 #'   # small number of bootstrap samples to keep the example fast
-#'   rmedsem(mod, indep="OwnLook", med="SelfEst", dep="MentWell",
-#'           nbootstrap=200)
+#'   rmedsem(mod, indep = "OwnLook", med = "SelfEst", dep = "MentWell",
+#'           nbootstrap = 200)
 #' }
 #'
 #' ## modsem: mediated moderation and moderated mediation
@@ -170,13 +172,14 @@ utils::globalVariables(c(
 #'     SelfEst ~ OwnLook + smv + smv:OwnLook
 #'     MentWell ~ OwnLook + SelfEst + smv + smv:OwnLook
 #'   "
-#'   est <- modsem::modsem(m, data = rmedsem::mchoice, method="lms")
+#'   est <- modsem::modsem(m, data = rmedsem::mchoice, method = "lms")
 #'
 #'   # mediated moderation
-#'   rmedsem(est, indep="smv:OwnLook", med="SelfEst", dep="MentWell")
+#'   rmedsem(est, indep = "smv:OwnLook", med = "SelfEst", dep = "MentWell")
 #'
 #'   # moderated mediation
-#'   rmedsem(est, indep="OwnLook", med="SelfEst", dep="MentWell", moderator="smv")
+#'   rmedsem(est, indep = "OwnLook", med = "SelfEst", dep = "MentWell",
+#'           moderator = "smv")
 #' }
 #'
 #' ## blavaan
@@ -185,13 +188,14 @@ utils::globalVariables(c(
 #'   library(blavaan)
 #'   # short single chain to keep the example fast; use more chains and
 #'   # iterations in practice
-#'   bmod <- bsem(mod.txt, data=rmedsem::hsbdemo, n.chains=1,
-#'                burnin=500, sample=500, seed=1, bcontrol=list(refresh=0))
-#'   rmedsem(bmod, indep="math", med="read", dep="science")
+#'   bmod <- bsem(mod.txt, data = rmedsem::hsbdemo, n.chains = 1,
+#'                burnin = 500, sample = 500, seed = 1,
+#'                bcontrol = list(refresh = 0))
+#'   rmedsem(bmod, indep = "math", med = "read", dep = "science")
 #'
 #'   # highest density intervals instead of equal-tailed intervals
 #'   if (requireNamespace("HDInterval", quietly = TRUE))
-#'     rmedsem(bmod, indep="math", med="read", dep="science", hdi=TRUE)
+#'     rmedsem(bmod, indep = "math", med = "read", dep = "science", hdi = TRUE)
 #' }
 #' }
 #'
@@ -273,20 +277,14 @@ check_ci_level <- function(x, name="ci.two.tailed"){
 
 #' Number of Monte-Carlo replications
 #'
-#' @param mcreps `NULL` or a positive integer
-#' @param N sample size
-#' @return `N` if `mcreps` is `NULL` or smaller than `N` (with a message in
-#'   the latter case), otherwise `mcreps`
+#' @param mcreps `NULL` (for backward compatibility; means 5000) or a positive
+#'   integer
+#' @return the number of Monte-Carlo samples
 #' @noRd
-resolve_mcreps <- function(mcreps, N){
+resolve_mcreps <- function(mcreps){
   if (is.null(mcreps))
-    return(N)
+    return(5000L)
   check_count(mcreps, "mcreps")
-  if (mcreps < N) {
-    message(sprintf("'mcreps' (%d) is smaller than the sample size; using mcreps = %d.",
-                    as.integer(mcreps), as.integer(N)))
-    return(N)
-  }
   mcreps
 }
 

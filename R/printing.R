@@ -58,17 +58,16 @@ print_header <- function(res){
 #' @return `NULL` (invisibly)
 #' @noRd
 print_freq_table <- function(res, digits=3){
-  cols <- lapply(res$est.methods, \(m){
-    est <- res[[m]]
-    c(format(est[c("coef","se","zval")], digits=digits),
-      format(est[["pval"]], digits=digits),
-      sprintf("[%s, %s]", format(est[["lower"]], digits=digits),
-              format(est[["upper"]], digits=digits)))
-  })
-  mat <- as.data.frame(cols, col.names=method_label(res$est.methods),
-                       check.names=FALSE)
-  rownames(mat) <- c("Indirect effect", "Std. Err.", "z-value", "p-value", "CI")
-  print(mat)
+  # one row per quantity; fixed decimal places so that all columns use the
+  # same precision
+  get <- function(n) vapply(res$est.methods, \(m) unname(res[[m]][[n]]), numeric(1))
+  fmt <- function(v) format_fixed(v, digits)
+  mat <- rbind(fmt(get("coef")), fmt(get("se")), fmt(get("zval")),
+               format.pval(get("pval"), digits=digits),
+               sprintf("[%s, %s]", fmt(get("lower")), fmt(get("upper"))))
+  dimnames(mat) <- list(c("Indirect effect", "Std. Err.", "z-value", "p-value", "CI"),
+                        method_label(res$est.methods))
+  print(mat, quote=FALSE, right=TRUE)
   cat("\n")
   invisible(NULL)
 }
@@ -81,11 +80,11 @@ print_freq_table <- function(res, digits=3){
 #' @noRd
 print_bayes_table <- function(res, digits=3){
   b <- res$bayes
-  fmt_er <- function(x) ifelse(is.infinite(x), "\u221E", format(x, digits=digits))
-  mat <- data.frame(Bayes=c(format(b[c("coef","se","zval","pvpos","pvneg")], digits=digits),
+  fmt_er <- function(x) ifelse(is.infinite(x), "\u221E", format_fixed(x, digits))
+  mat <- data.frame(Bayes=c(format_fixed(b[c("coef","se","zval","pvpos","pvneg")], digits),
                             fmt_er(b[c("ERpos","ERneg")]),
-                            sprintf("[%s, %s]", format(b[["lower"]], digits=digits),
-                                    format(b[["upper"]], digits=digits))))
+                            sprintf("[%s, %s]", format_fixed(b[["lower"]], digits),
+                                    format_fixed(b[["upper"]], digits))))
   rownames(mat) <- c("Indirect effect", "Std. Err.", "z-value", "P(z>0)", "P(z<0)",
                      "ER+", "ER-", ci_type(res))
   print(mat)
@@ -100,6 +99,16 @@ print_bayes_table <- function(res, digits=3){
 #' @noRd
 ci_type <- function(res){
   if (is.null(res$ci.type)) "CI" else res$ci.type
+}
+
+
+#' Format numbers with a fixed number of decimal places
+#' @param x numeric vector
+#' @param digits number of decimal places
+#' @return character vector; `NA` becomes `""`
+#' @noRd
+format_fixed <- function(x, digits){
+  ifelse(is.na(x), "", formatC(x, format="f", digits=digits))
 }
 
 
@@ -241,6 +250,43 @@ print_zlc <- function(res, indent=3){
 }
 
 
+#' p-value threshold of an rmedsem object
+#' @param res an `rmedsem` object
+#' @return the threshold used by [rmedsem()] (default 0.05)
+#' @noRd
+sig_threshold <- function(res){
+  if (!is.null(res$med.data$sig_thresh)) res$med.data$sig_thresh
+  else if (!is.null(res$p.threshold)) res$p.threshold
+  else 0.05
+}
+
+
+#' Check whether an effect size can be interpreted
+#'
+#' RIT is not interpreted if the total effect is small (|total| < 0.2,
+#' following Kenny, https://davidakenny.net/cm/mediate.htm), RID is not
+#' interpreted if the direct effect is not significant, as the ratio is then
+#' unstable.
+#' @param res an `rmedsem` object
+#' @param which `"RIT"` or `"RID"`
+#' @return `NULL` if the effect size can be interpreted, otherwise a short
+#'   description of the problem
+#' @noRd
+effect_size_problem <- function(res, which){
+  es <- res$effect.size
+  if (which == "RIT") {
+    if (abs(es$RIT$tot_eff) < 0.2)
+      return(sprintf("total effect %5.3f is too small (< 0.2)", es$RIT$tot_eff))
+  } else if (which == "RID") {
+    pval <- res$direct.effect[["pval"]]
+    if (!isTRUE(pval < sig_threshold(res)))
+      return(sprintf("direct effect %5.3f is not significant (p = %5.3f)",
+                     es$RID$dir_eff, pval))
+  }
+  NULL
+}
+
+
 #' Print Effect Sizes from Mediation Analysis
 #'
 #' @param res the `rmedsem` object to print
@@ -263,10 +309,9 @@ print_effectsize <- function(res, digits=3, indent=3){
 
   if("RIT" %in% names(es)){
     cat(sprintf("%sRIT = (Indirect effect / Total effect)\n", indstr))
-    if(abs(es$RIT$tot_eff)<0.2){
-      ## According to https://davidakenny.net/cm/mediate.htm, we should only
-      ## calculate RIT if the total effect is > +-.2
-      with(es$RIT, cat(sprintf("%sTotal effect %5.3f is too small to calculate RIT\n", indesstr, tot_eff)))
+    problem <- effect_size_problem(res, "RIT")
+    if(!is.null(problem)){
+      cat(sprintf("%sRIT is not reported: %s\n", indesstr, problem))
     } else {
       with(es$RIT, cat(sprintf("%s(%5.3f/%5.3f) = %5.3f\n", indesstr, ind_eff, tot_eff, es)))
       with(es$RIT, cat(sprintf("%sMeaning that about %3.0f%% of the effect of '%s'\n", indesstr, es*100, res$vars$indep)))
@@ -276,20 +321,25 @@ print_effectsize <- function(res, digits=3, indent=3){
 
   if("RID" %in% names(es)){
     cat(sprintf("%sRID = (Indirect effect / Direct effect)\n", indstr))
-    with(es$RID, cat(sprintf("%s(%5.3f/%5.3f) = %5.3f\n", indesstr, ind_eff, dir_eff, es)))
-    with(es$RID, cat(sprintf("%sThat is, the mediated effect is about %3.1f times as\n", indesstr, es)))
-    with(es$RID, cat(sprintf("%slarge as the direct effect of '%s' on '%s'\n", indesstr, res$vars$indep, res$vars$dep)))
+    problem <- effect_size_problem(res, "RID")
+    if(!is.null(problem)){
+      cat(sprintf("%sRID is not reported: %s\n", indesstr, problem))
+    } else {
+      with(es$RID, cat(sprintf("%s(%5.3f/%5.3f) = %5.3f\n", indesstr, ind_eff, dir_eff, es)))
+      with(es$RID, cat(sprintf("%sThat is, the mediated effect is about %3.1f times as\n", indesstr, es)))
+      with(es$RID, cat(sprintf("%slarge as the direct effect of '%s' on '%s'\n", indesstr, res$vars$indep, res$vars$dep)))
+    }
   }
 
   if("upsilon" %in% names(es)){
-    cat(sprintf("%sUpsilon (v) = Variance in '%s' explained indirectly by '%s' through '%s'\n",
-                indstr, res$vars$dep, res$vars$indep, res$vars$med))
+    cat(sprintf("%sUpsilon (v) = Variance in Y explained indirectly by X through M\n", indstr))
     cat(sprintf("%sv(unadj) = %5.3f, v(adj) = %5.3f\n",
                 indesstr, es$upsilon$unadjusted, es$upsilon$adjusted))
     if(!is.null(es$upsilon$posterior_mean)){
       ci.level <- if (is.null(res$ci.level)) 0.95 else res$ci.level
-      cat(sprintf("%sPosterior mean(v) = %5.3f, median(v) = %5.3f, %s %s [%5.3f, %5.3f]\n",
-                  indesstr, es$upsilon$posterior_mean, es$upsilon$posterior_median,
+      cat(sprintf("%sPosterior mean(v) = %5.3f, median(v) = %5.3f\n",
+                  indesstr, es$upsilon$posterior_mean, es$upsilon$posterior_median))
+      cat(sprintf("%s%s %s [%5.3f, %5.3f]\n", indesstr,
                   format_percent(ci.level), ci_type(res),
                   es$upsilon$lower, es$upsilon$upper))
     }
@@ -317,12 +367,15 @@ print_moderation <- function(res, ci_moderation=FALSE){
                      sprintf("%s -> %s", total$rhs, total$lhs)))
   n.direct <- length(direct)
 
+  ci.level <- if (is.null(res$ci.level)) 0.95 else res$ci.level
   fmt_mod <- function(label, e) {
-    out <- sprintf("   %s | %s: B = %5.3f, se = %5.3f, p = %5.3f",
+    out <- sprintf("   %s | %s: B = %5.3f, se = %5.3f, p = %5.3f\n",
                    label, moderator, e$coef, e$se, e$pval)
     if (ci_moderation)
-      out <- paste0(out, sprintf(", ci = [%5.2f,%5.2f]", e$lower, e$upper))
-    paste0(out, "\n")
+      out <- paste0(out, sprintf("   %s   %s CI = [%5.3f, %5.3f]\n",
+                                 strrep(" ", nchar(label)), format_percent(ci.level),
+                                 e$lower, e$upper))
+    out
   }
 
   cat("\nDirect moderation effects\n")

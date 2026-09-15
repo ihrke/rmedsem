@@ -3,7 +3,7 @@
 rmedsem.lavaan <- function(mod, indep, med, dep,
                            approach=c("bk", "zlc"), p.threshold=0.05,
                            effect.size=c("RIT","RID","upsilon"),
-                           standardized=TRUE, mcreps=NULL,
+                           standardized=TRUE, mcreps=5000,
                            ci.two.tailed=0.95, ...){
   validate_rmedsem_args(indep, med, dep, approach, p.threshold, effect.size)
   check_flag(standardized, "standardized")
@@ -14,7 +14,7 @@ rmedsem.lavaan <- function(mod, indep, med, dep,
             call.=FALSE)
   ci.width <- stats::qnorm(1-(1-ci.two.tailed)/2)
   N <- lavaan::nobs(mod)
-  mcreps <- resolve_mcreps(mcreps, N)
+  mcreps <- resolve_mcreps(mcreps)
 
   moi <- vcov_name(pt, med, indep)
   dom <- vcov_name(pt, dep, med)
@@ -58,7 +58,7 @@ rmedsem.lavaan <- function(mod, indep, med, dep,
 
   sobel_se  <- sqrt((coef_dom^2)*var_moi + (coef_moi^2)*var_dom)
   sobel_z   <- prodterm/sobel_se
-  sobel_pv  <- 2*(1-stats::pnorm(abs(sobel_z)))
+  sobel_pv  <- 2*stats::pnorm(-abs(sobel_z))
   sobel_lci <- prodterm - ci.width*sobel_se
   sobel_uci <- prodterm + ci.width*sobel_se
 
@@ -67,11 +67,10 @@ rmedsem.lavaan <- function(mod, indep, med, dep,
   # in the DELTA METHOD below, it seems like normaly theory limits
   # are used there as well, that is ci.width is used
 
-  #delta_se <- sqrt( (coef_dom^2)*var_moi + (coef_moi^2)*var_dom + (var_moi*var_dom) )
   delta_se <- sqrt( (coef_dom^2)*var_moi + (coef_moi^2)*var_dom + 2*coef_dom*coef_moi*covmoidom )
 
   delta_z  <- prodterm/delta_se
-  delta_pv  <- 2*(1-stats::pnorm(abs(delta_z)))
+  delta_pv  <- 2*stats::pnorm(-abs(delta_z))
   delta_lci <- prodterm - ci.width*delta_se
   delta_uci <- prodterm + ci.width*delta_se
 
@@ -81,7 +80,7 @@ rmedsem.lavaan <- function(mod, indep, med, dep,
   montc_prod <- mean(prod_coef)
   montc_se   <- stats::sd(prod_coef)
   montc_z    <- montc_prod/montc_se
-  montc_pv  <- 2*(1-stats::pnorm(abs(montc_z)))
+  montc_pv  <- 2*stats::pnorm(-abs(montc_z))
   montc_qs <- stats::quantile(prod_coef, c((1-ci.two.tailed)/2, 1-(1-ci.two.tailed)/2))
   montc_lci <- montc_qs[1]
   montc_uci <- montc_qs[2]
@@ -89,7 +88,6 @@ rmedsem.lavaan <- function(mod, indep, med, dep,
   names(montc_uci) <- NULL
 
   # TE = IND + DE
-  coef_tot <- coef_doi + prodterm
   sigma <- matrix(c(var_moi, covmoidom, covmoidoi,
                     covmoidom, var_dom, covdomdoi,
                     covmoidoi, covdomdoi, var_doi), nrow=3, ncol=3)

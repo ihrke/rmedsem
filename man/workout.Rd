@@ -40,7 +40,7 @@ mod.txt <- "
   Appearance ~ Attractive + age
   Muscle     ~ Appearance + Attractive + age
 "
-mod <- lavaan::sem(mod.txt, data=workout)
-rmedsem(mod, indep="Attractive", med="Appearance", dep="Muscle")
+mod <- lavaan::sem(mod.txt, data = workout)
+rmedsem(mod, indep = "Attractive", med = "Appearance", dep = "Muscle")
 }
 \keyword{datasets}

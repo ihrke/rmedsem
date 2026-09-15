@@ -49,10 +49,19 @@ test_that("backend-specific arguments are checked (lavaan)", {
   expect_error(med_lavaan(mcreps = "1000"), "'mcreps' must be a single integer")
 })
 
-test_that("mcreps below the sample size is raised with a message", {
-  expect_message(med_lavaan(mcreps = 10), "smaller than the sample size")
-  expect_no_message(med_lavaan(mcreps = 5000))
+test_that("mcreps is used as given (default 5000)", {
+  expect_no_message(out <- med_lavaan(mcreps = 10))
   expect_no_message(med_lavaan(mcreps = NULL))
+  # with few Monte-Carlo samples the MC estimates differ from many samples
+  set.seed(1)
+  few <- med_lavaan(mcreps = 10)
+  set.seed(1)
+  many <- med_lavaan()
+  expect_false(isTRUE(all.equal(few$montc[["se"]], many$montc[["se"]], tolerance = 1e-3)))
+  set.seed(1)
+  expect_equal(med_lavaan(mcreps = 5000)$montc, many$montc)
+  set.seed(1)
+  expect_equal(med_lavaan(mcreps = NULL)$montc, many$montc)
 })
 
 

@@ -92,5 +92,28 @@ test_that("modsem: print extends default output with moderation block", {
   expect_match(tot, "OwnLook -> MentWell +\\| smv")
 
   output_ci <- capture.output(print(out, ci_moderation = TRUE))
-  expect_true(any(grepl(", ci = \\[", output_ci)))
+  expect_true(any(grepl("95% CI = \\[", output_ci)))
+})
+
+test_that("modsem: moderation output fits into 80 characters", {
+  skip_on_cran()
+  skip_if_not_installed("modsem")
+
+  m <- "
+    OwnLook =~ smv_attr_face + smv_attr_body + smv_sexy
+    SelfEst =~ ses_satis + ses_qualities + ses_able_todo
+    MentWell =~ mwb_optimistic + mwb_useful + mwb_energy
+    OwnPers =~ smv_kind + smv_caring + smv_understanding +
+      smv_make_laughh + smv_funny + smv_sociable
+    SelfEst ~ OwnLook + OwnPers + OwnPers:OwnLook
+    MentWell ~ OwnLook + SelfEst + OwnPers + OwnPers:OwnLook
+  "
+  est <- modsem::modsem(m, data = rmedsem::mchoice, method = "lms")
+  out1 <- rmedsem(est, indep = "OwnPers:OwnLook", med = "SelfEst", dep = "MentWell")
+  out2 <- rmedsem(est, indep = "OwnLook", med = "SelfEst", dep = "MentWell",
+                  moderator = "OwnPers")
+  output <- c(capture.output(print(out1)), capture.output(print(summary(out1))),
+              capture.output(print(out2, ci_moderation = TRUE)))
+  expect_lte(max(nchar(output)), 80)
+  expect_true(any(grepl("95% CI = \\[", output)))
 })

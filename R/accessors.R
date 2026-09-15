@@ -14,8 +14,12 @@
 #'     2018), an R-squared-type measure of the variance in Y explained
 #'     indirectly by X through M, computed from standardized coefficients.}
 #' }
-#' `RIT()` and `RID()` give a warning if the indirect effect is larger than
-#' the total effect, in which case the ratios should not be interpreted.
+#' `RIT()` and `RID()` give a warning (and the printed output of [rmedsem()]
+#' does not report them) if they should not be interpreted: RIT if the total
+#' effect is small (|total| < 0.2), RID if the direct effect is not
+#' significant (p-value not below `p.threshold`), as the ratio is then
+#' unstable. Both also warn if the indirect effect is larger than the total
+#' effect.
 #'
 #' @param res an `rmedsem` object
 #' @param adjusted logical; if `TRUE` (default), return the bias-adjusted
@@ -34,12 +38,12 @@
 #' read ~ math
 #' science ~ read + math
 #' "
-#' mod <- lavaan::sem(mod.txt, data=rmedsem::hsbdemo)
-#' out <- rmedsem(mod, indep="math", med="read", dep="science")
+#' mod <- lavaan::sem(mod.txt, data = rmedsem::hsbdemo)
+#' out <- rmedsem(mod, indep = "math", med = "read", dep = "science")
 #' RIT(out)
 #' RID(out)
 #' Upsilon(out)
-#' Upsilon(out, adjusted=FALSE)
+#' Upsilon(out, adjusted = FALSE)
 #'
 #' @name effect-sizes
 NULL
@@ -70,7 +74,10 @@ RIT.rmedsem <- function(res, ...) {
   if(with(res$effect.size$RIT, ind_eff>tot_eff)){
     warning("Indirect effect is larger than total effect! RIT should not be interpreted")
   }
-   return(res$effect.size$RIT$es)
+  problem <- effect_size_problem(res, "RIT")
+  if (!is.null(problem))
+    warning(sprintf("RIT should not be interpreted: %s.", problem), call.=FALSE)
+  return(res$effect.size$RIT$es)
 }
 
 #' @rdname effect-sizes
@@ -90,6 +97,9 @@ RID.rmedsem <- function(res, ...) {
   } else if(res$effect.size$RID$ind_eff>res$effect.size$RIT$tot_eff){
     warning("Indirect effect is larger than total effect! RID should not be interpreted")
   }
+  problem <- effect_size_problem(res, "RID")
+  if (!is.null(problem))
+    warning(sprintf("RID should not be interpreted: %s.", problem), call.=FALSE)
   return(res$effect.size$RID$es)
 }
 
@@ -154,7 +164,7 @@ Upsilon.rmedsem <- function(res, adjusted=TRUE, ...) {
 #' @param x an `rmedsem` object; for `print.summary.rmedsem()` a
 #'   `summary.rmedsem` object
 #' @param object an `rmedsem` object
-#' @param digits an integer, the number of (significant) digits to print
+#' @param digits an integer, the number of decimal places to print
 #' @param indent an integer, the number of spaces to indent
 #' @param ci_moderation a logical, whether to print confidence intervals for
 #'   the moderation effects (moderated mediation with `modsem` only)
@@ -216,8 +226,8 @@ Upsilon.rmedsem <- function(res, adjusted=TRUE, ...) {
 #' read ~ math
 #' science ~ read + math
 #' "
-#' mod <- lavaan::sem(mod.txt, data=rmedsem::hsbdemo)
-#' out <- rmedsem(mod, indep="math", med="read", dep="science")
+#' mod <- lavaan::sem(mod.txt, data = rmedsem::hsbdemo)
+#' out <- rmedsem(mod, indep = "math", med = "read", dep = "science")
 #'
 #' # detailed output
 #' print(out)
@@ -231,7 +241,7 @@ Upsilon.rmedsem <- function(res, adjusted=TRUE, ...) {
 #' # extract estimates
 #' coef(out)
 #' confint(out)
-#' confint(out, parm="indirect", method="sobel")
+#' confint(out, parm = "indirect", method = "sobel")
 #' nobs(out)
 #' as.data.frame(out)
 #'
@@ -270,7 +280,7 @@ summary.rmedsem <- function(object, ...) {
 
 #' @rdname rmedsem-methods
 #' @export
-print.summary.rmedsem <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
+print.summary.rmedsem <- function(x, digits = 3, ...) {
   check_count(digits, "digits")
   cat(with(x$vars, sprintf("Mediation analysis: '%s' -> '%s' -> '%s'\n", indep, med, dep)))
   cat(sprintf("Estimated with '%s' (%s)%s\n\n", x$package,
@@ -281,11 +291,11 @@ print.summary.rmedsem <- function(x, digits = max(3L, getOption("digits") - 3L),
   labs <- ifelse(is.na(eff$method), eff$effect,
                  sprintf("%s (%s)", eff$effect, method_label(eff$method)))
   substr(labs, 1, 1) <- toupper(substr(labs, 1, 1))
-  fmt <- function(v) ifelse(is.na(v), "", format(v, digits=digits))
+  fmt <- function(v) format_fixed(v, digits)
   bayes <- "bayes" %in% eff$method
   # Bayesian tail probabilities are estimated from samples: no "< eps" notation
   fmt_p <- function(v) ifelse(is.na(v), "",
-                              if (bayes) format(v, digits=digits)
+                              if (bayes) format_fixed(v, digits)
                               else format.pval(v, digits=digits))
   tab <- data.frame(Estimate=fmt(eff$estimate), `Std. Err.`=fmt(eff$se),
                     `z-value`=fmt(eff$zval), `p-value`=fmt_p(eff$pval),
@@ -295,8 +305,8 @@ print.summary.rmedsem <- function(x, digits = max(3L, getOption("digits") - 3L),
   cat(sprintf("Effects (%s %s):\n", format_percent(ci.level), ci_type(x)))
   print(tab)
   if (bayes)
-    cat("For Bayesian estimates, 'p-value' is the posterior probability of the",
-        "opposite sign.\n")
+    cat("For Bayesian estimates, 'p-value' is the posterior probability of",
+        "the opposite sign.\n", sep="\n")
 
   if (!is.null(x$mediation$bk) || !is.null(x$mediation$zlc)) {
     cat(sprintf("\nType of mediation (significant: p < %s):\n", format(x$p.threshold)))
@@ -305,7 +315,7 @@ print.summary.rmedsem <- function(x, digits = max(3L, getOption("digits") - 3L),
                   switch(x$mediation$bk, none="no mediation",
                          complete="complete mediation", partial="partial mediation")))
     if (!is.null(x$mediation$zlc))
-      cat(sprintf("  Zhao, Lynch & Chen: %s; based on %s\n",
+      cat(sprintf("  Zhao, Lynch & Chen: %s\n                      (based on %s test)\n",
                   switch(x$mediation$zlc,
                          "indirect-only"="indirect-only mediation (full mediation)",
                          "direct-only"="direct-only nonmediation (no mediation)",
@@ -320,7 +330,7 @@ print.summary.rmedsem <- function(x, digits = max(3L, getOption("digits") - 3L),
     names(es) <- sub("^upsilon$", "Upsilon", names(es))
     names(es) <- sub("^upsilon.unadjusted$", "Upsilon (unadj.)", names(es))
     cat("\nEffect sizes:\n")
-    cat(paste0("  ", names(es), " = ", vapply(es, format, "", digits=digits), "\n"), sep="")
+    cat(paste0("  ", names(es), " = ", format_fixed(es, digits), "\n"), sep="")
   }
   cat("\n")
   invisible(x)
@@ -435,11 +445,11 @@ nobs.rmedsem <- function(object, ...){
 #' read ~ math
 #' science ~ read + math
 #' "
-#' mod <- lavaan::sem(mod.txt, data=rmedsem::hsbdemo)
-#' out <- rmedsem(mod, indep="math", med="read", dep="science")
+#' mod <- lavaan::sem(mod.txt, data = rmedsem::hsbdemo)
+#' out <- rmedsem(mod, indep = "math", med = "read", dep = "science")
 #' plot(out)
-#' plot(out, type="effect")
-#' plot_effect(out, description=FALSE)
+#' plot(out, type = "effect")
+#' plot_effect(out, description = FALSE)
 #'
 #' @export
 plot.rmedsem <- function(x, type = c("coef", "effect"), ...) {

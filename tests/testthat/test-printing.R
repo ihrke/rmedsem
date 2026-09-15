@@ -126,3 +126,46 @@ test_that("print and summary agree on the type of mediation", {
     expect_true(grepl(zlc_text[[s$mediation$zlc]], output), info = i)
   }
 })
+
+test_that("very small p-values are not printed as 0", {
+  out <- fake_rmedsem(p_ind = 0)
+  output <- capture.output(print(out))
+  pline <- output[startsWith(output, "p-value")]
+  expect_match(pline, "<")
+  expect_false(grepl("\\b0\\b", sub("<.*", "", sub("^p-value", "", pline))))
+})
+
+test_that("table columns use the same number of decimals", {
+  out <- fit_hsbdemo_out()
+  output <- capture.output(print(out))
+  se <- strsplit(trimws(sub("^Std. Err.", "", output[startsWith(output, "Std. Err.")])), " +")[[1]]
+  expect_equal(unique(nchar(sub(".*\\.", "", se))), 3L)
+})
+
+test_that("RID is not reported if the direct effect is not significant", {
+  out <- fake_rmedsem(p_doi = 0.5)
+  out$effect.size <- list(RID = list(es = 1.5, ind_eff = 0.3, dir_eff = 0.2),
+                          RIT = list(es = 0.6, ind_eff = 0.3, tot_eff = 0.5))
+  output <- capture.output(print(out))
+  expect_true(any(grepl("RID is not reported: direct effect 0.200 is not significant", output)))
+  expect_false(any(grepl("times as", output)))
+  expect_warning(RID(out), "RID should not be interpreted: direct effect")
+  expect_no_warning(RIT(out))
+
+  out$direct.effect[["pval"]] <- 0.01
+  expect_true(any(grepl("times as", capture.output(print(out)))))
+  expect_no_warning(RID(out))
+})
+
+test_that("RIT accessor warns if the total effect is too small", {
+  out <- fake_rmedsem()
+  out$effect.size <- list(RIT = list(es = 0.5, ind_eff = 0.05, tot_eff = 0.1))
+  expect_warning(RIT(out), "total effect 0.100 is too small")
+  expect_true(any(grepl("RIT is not reported", capture.output(print(out)))))
+})
+
+test_that("printed lines are at most 80 characters wide", {
+  out <- fit_hsbdemo_out()
+  widths <- nchar(c(capture.output(print(out)), capture.output(print(summary(out)))))
+  expect_lte(max(widths), 80)
+})

@@ -40,9 +40,6 @@ rmedsem.blavaan <- function(mod, indep, med, dep,
 
   # direct effect samples
   desamp <- draws[,doi]
-  RITsamp <- ptsamp/(ptsamp+desamp)
-  RIT <- stats::median(RITsamp)
-  RID <- bayes_coef/base::mean(desamp)
 
   # direct effect estimates
   coef_doi <- base::mean(desamp)
@@ -68,7 +65,7 @@ rmedsem.blavaan <- function(mod, indep, med, dep,
 
   prior_beta <- blavaan::blavInspect(mod, "dp")["beta"]
 
-  #
+  # effect sizes
   es <- list()
   ind_eff <- abs(bayes_coef)
   tot_eff <- abs(bayes_coef+mean(desamp))
@@ -105,12 +102,9 @@ rmedsem.blavaan <- function(mod, indep, med, dep,
                       pvpos=bayes_proppos, pvneg=bayes_propneg,
                       ERpos=ERpos, ERneg=ERneg,
                       lower=bayes_lci, upper=bayes_uci),
+              p.threshold=p.threshold,
               prior=list(beta=prior_beta),
-              #med.approach=approach,
               effect.size=es
-              #med.data=list(sig_thresh=p.threshold,
-              #              coefs=list(moi=coef_moi, dom=coef_dom, doi=coef_doi),
-              #              pvals=list(moi=pval_moi, dom=pval_dom, doi=pval_doi))
   )
   class(res) <- c("rmedsem_blavaan", "rmedsem")
   res

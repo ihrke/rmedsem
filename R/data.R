@@ -38,8 +38,8 @@
 #'   SelfEst  ~ OwnLook
 #'   MentWell ~ OwnLook + SelfEst
 #' "
-#' mod <- lavaan::sem(mod.txt, data=mchoice)
-#' rmedsem(mod, indep="OwnLook", med="SelfEst", dep="MentWell")
+#' mod <- lavaan::sem(mod.txt, data = mchoice)
+#' rmedsem(mod, indep = "OwnLook", med = "SelfEst", dep = "MentWell")
 "mchoice"
 
 
@@ -74,8 +74,8 @@
 #'   Appearance ~ Attractive + age
 #'   Muscle     ~ Appearance + Attractive + age
 #' "
-#' mod <- lavaan::sem(mod.txt, data=workout)
-#' rmedsem(mod, indep="Attractive", med="Appearance", dep="Muscle")
+#' mod <- lavaan::sem(mod.txt, data = workout)
+#' rmedsem(mod, indep = "Attractive", med = "Appearance", dep = "Muscle")
 "workout"
 
 
@@ -106,6 +106,6 @@
 #' @examples
 #' str(hsbdemo)
 #'
-#' mod <- lavaan::sem("read ~ math\nscience ~ read + math", data=hsbdemo)
-#' rmedsem(mod, indep="math", med="read", dep="science")
+#' mod <- lavaan::sem("read ~ math\nscience ~ read + math", data = hsbdemo)
+#' rmedsem(mod, indep = "math", med = "read", dep = "science")
 "hsbdemo"

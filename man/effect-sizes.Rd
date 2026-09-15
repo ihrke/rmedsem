@@ -58,20 +58,24 @@ it should only be interpreted if the total effect is not too small
 2018), an R-squared-type measure of the variance in Y explained
 indirectly by X through M, computed from standardized coefficients.}
 }
-\code{RIT()} and \code{RID()} give a warning if the indirect effect is larger than
-the total effect, in which case the ratios should not be interpreted.
+\code{RIT()} and \code{RID()} give a warning (and the printed output of \code{\link[=rmedsem]{rmedsem()}}
+does not report them) if they should not be interpreted: RIT if the total
+effect is small (|total| < 0.2), RID if the direct effect is not
+significant (p-value not below \code{p.threshold}), as the ratio is then
+unstable. Both also warn if the indirect effect is larger than the total
+effect.
 }
 \examples{
 mod.txt <- "
 read ~ math
 science ~ read + math
 "
-mod <- lavaan::sem(mod.txt, data=rmedsem::hsbdemo)
-out <- rmedsem(mod, indep="math", med="read", dep="science")
+mod <- lavaan::sem(mod.txt, data = rmedsem::hsbdemo)
+out <- rmedsem(mod, indep = "math", med = "read", dep = "science")
 RIT(out)
 RID(out)
 Upsilon(out)
-Upsilon(out, adjusted=FALSE)
+Upsilon(out, adjusted = FALSE)
 
 }
 \references{

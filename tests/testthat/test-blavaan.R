@@ -141,3 +141,13 @@ test_that("blavaan: hdi switches between equal-tailed intervals and HDI", {
   expect_error(rmedsem(mod, indep = "ind60", med = "dem60", dep = "dem65", hdi = NA),
                "'hdi'")
 })
+
+test_that("blavaan: output fits into 80 characters", {
+  skip_on_cran()
+  skip_if_not_installed("blavaan")
+
+  mod <- setup_blavaan()
+  out <- rmedsem(mod, indep = "ind60", med = "dem60", dep = "dem65")
+  output <- c(capture.output(print(out)), capture.output(print(summary(out))))
+  expect_lte(max(nchar(output)), 80)
+})

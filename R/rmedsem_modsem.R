@@ -3,7 +3,7 @@
 rmedsem.modsem <- function(mod, indep, med, dep,
                            approach=c("bk", "zlc"), p.threshold=0.05,
                            effect.size=c("RIT","RID","upsilon"),
-                           moderator=NULL, standardized=TRUE, mcreps=NULL,
+                           moderator=NULL, standardized=TRUE, mcreps=5000,
                            ci.two.tailed=0.95, ...){
   if (!requireNamespace("modsem", quietly = TRUE))
     stop("Package 'modsem' is required for this method. Please install it.")
@@ -19,7 +19,7 @@ rmedsem.modsem <- function(mod, indep, med, dep,
 
   # if estimated lavaan, we just extract the lavaan document
   N <- modsem::modsem_nobs(mod)
-  mcreps <- resolve_mcreps(mcreps, N)
+  mcreps <- resolve_mcreps(mcreps)
 
   if (standardized)
     coefs <- modsem::standardized_estimates(mod)
@@ -73,7 +73,7 @@ rmedsem.modsem <- function(mod, indep, med, dep,
 
   sobel_se  <- sqrt((coef_dom^2)*var_moi + (coef_moi^2)*var_dom)
   sobel_z   <- prodterm/sobel_se
-  sobel_pv  <- 2*(1-stats::pnorm(abs(sobel_z)))
+  sobel_pv  <- 2*stats::pnorm(-abs(sobel_z))
   sobel_lci <- prodterm - ci.width*sobel_se
   sobel_uci <- prodterm + ci.width*sobel_se
 
@@ -94,11 +94,10 @@ rmedsem.modsem <- function(mod, indep, med, dep,
   delta_se <- sqrt((coef_dom^2)*var_moi + (coef_moi^2)*var_dom + 2*coef_dom*coef_moi*covmoidom)
 
   delta_z  <- prodterm/delta_se
-  delta_pv  <- 2*(1-stats::pnorm(abs(delta_z)))
+  delta_pv  <- 2*stats::pnorm(-abs(delta_z))
   delta_lci <- prodterm - ci.width*delta_se
   delta_uci <- prodterm + ci.width*delta_se
 
-  # sigma <- symmetric(se_moi, covmoidom, covmoidom, se_dom)
   sigma <- S[c(moi, dom), c(moi, dom)]
   coefx <- mvtnorm::rmvnorm(n=mcreps, mean=c(coef_moi, coef_dom), sigma=sigma)
 
@@ -106,7 +105,7 @@ rmedsem.modsem <- function(mod, indep, med, dep,
   montc_prod <- mean(prod_coef)
   montc_se   <- stats::sd(prod_coef)
   montc_z    <- montc_prod/montc_se
-  montc_pv   <- 2*(1-stats::pnorm(abs(montc_z)))
+  montc_pv   <- 2*stats::pnorm(-abs(montc_z))
   montc_qs   <- stats::quantile(prod_coef, c((1-ci.two.tailed)/2, 1-(1-ci.two.tailed)/2))
   montc_lci  <- montc_qs[1]
   montc_uci  <- montc_qs[2]
@@ -114,10 +113,6 @@ rmedsem.modsem <- function(mod, indep, med, dep,
   names(montc_uci) <- NULL
 
   # TE = IND + DE
-  coef_tot <- coef_doi + prodterm
-  # sigma <- symmetric(se_moi, covmoidom, covmoidoi,
-  #                    covmoidom, se_dom, covdomdoi,
-  #                    covmoidoi, covdomdoi, se_doi)
   sigma <- S[c(moi, dom, doi), c(moi, dom, doi)]
   coefx <- mvtnorm::rmvnorm(n=mcreps, mean=c(coef_moi, coef_dom, coef_doi), sigma = sigma)
   tot_eff_samp <- (coefx[,1]*coefx[,2])+coefx[,3]
@@ -233,14 +228,14 @@ rmedsem.modsem <- function(mod, indep, med, dep,
     # total
     se_tot_mod    <- stats::sd(tot_eff_samp_mod)
     zval_tot_mod  <- tot_eff_mod / se_tot_mod
-    pv_tot_mod    <- 2*(1-stats::pnorm(abs(zval_tot_mod)))
+    pv_tot_mod    <- 2*stats::pnorm(-abs(zval_tot_mod))
     upper_tot_mod <- tot_eff_mod + ci.width*se_tot_mod
     lower_tot_mod <- tot_eff_mod - ci.width*se_tot_mod
 
     # indirect
     se_ind_mod    <- stats::sd(ind_eff_samp_mod)
     zval_ind_mod  <- ind_eff_mod / se_ind_mod
-    pv_ind_mod    <- 2*(1-stats::pnorm(abs(zval_ind_mod)))
+    pv_ind_mod    <- 2*stats::pnorm(-abs(zval_ind_mod))
     upper_ind_mod <- ind_eff_mod + ci.width*se_ind_mod
     lower_ind_mod <- ind_eff_mod - ci.width*se_ind_mod
 
@@ -314,16 +309,6 @@ mod_c <- function(...) {
 with0 <- function(data, expr) {
   out <- eval(substitute(expr), envir=data, enclos=parent.frame())
   if (!length(out)) 0 else out
-}
-
-
-symmetric <- function(...) {
-  x <- c(...)
-
-  k <- sqrt(length(x))
-  if (k != round(k)) stop("x must be a square matrix")
-
-  matrix(x, nrow=k, ncol=k, byrow=FALSE)
 }
 
 
