@@ -29,7 +29,7 @@ X -&amp;gt; Y."><meta property="og:image" content="https://ihrke.github.io/rmeds
 
     <a class="navbar-brand me-2" href="../index.html">rmedsem</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -512,20 +512,20 @@ Myths and truths about mediation analysis. <em>Journal of Consumer Research</em>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                          Sobel          Delta    Monte-Carlo</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Indirect effect          0.253          0.253          0.253</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Std. Err.                0.029          0.029          0.029</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> z-value                  8.847          8.836          8.715</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> z-value                  8.843          8.832          8.711</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> p-value                 &lt;2e-16         &lt;2e-16         &lt;2e-16</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> CI              [0.197, 0.309] [0.197, 0.309] [0.199, 0.311]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Baron and Kenny approach to testing mediation</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    STEP 1 - 'OwnLook' -&gt; 'SelfEst' (X -&gt; M) with B=0.486 and p&lt;0.001</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    STEP 1 - 'OwnLook' -&gt; 'SelfEst' (X -&gt; M) with B=0.485 and p&lt;0.001</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    STEP 2 - 'SelfEst' -&gt; 'MentWell' (M -&gt; Y) with B=0.521 and p&lt;0.001</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    STEP 3 - 'OwnLook' -&gt; 'MentWell' (X -&gt; Y) with B=0.011 and p=0.809</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    STEP 3 - 'OwnLook' -&gt; 'MentWell' (X -&gt; Y) with B=0.011 and p=0.808</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             As STEP 1, STEP 2 and the Sobel's test above are significant</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             and STEP 3 is not significant the mediation is complete.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Zhao, Lynch &amp; Chen's approach to testing mediation</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Based on p-value estimated using Monte-Carlo</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   STEP 1 - 'OwnLook' -&gt; 'MentWell' (X -&gt; Y) with B=0.011 and p=0.809</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   STEP 1 - 'OwnLook' -&gt; 'MentWell' (X -&gt; Y) with B=0.011 and p=0.808</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             As the Monte-Carlo test above is significant and STEP 1 is not</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             significant there is indirect-only mediation (full mediation).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -535,14 +535,14 @@ Myths and truths about mediation analysis. <em>Journal of Consumer Research</em>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          Meaning that about 96% of the effect of 'OwnLook'</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          on 'MentWell' is mediated by 'SelfEst'</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    RID = (Indirect effect / Direct effect)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          RID is not reported: direct effect 0.011 is not significant (p = 0.809)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          RID is not reported: direct effect 0.011 is not significant (p = 0.808)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    Upsilon (v) = Variance in Y explained indirectly by X through M</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          v(unadj) = 0.064, v(adj) = 0.063</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Direct moderation effects</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    OwnLook -&gt; SelfEst             | smv: B = -0.136, se = 0.029, p = 0.000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    OwnLook -&gt; MentWell            | smv: B = -0.008, se = 0.034, p = 0.813</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    OwnLook -&gt; MentWell            | smv: B = -0.008, se = 0.035, p = 0.813</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Indirect moderation effect</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    OwnLook -&gt; SelfEst -&gt; MentWell | smv: B = -0.071, se = 0.017, p = 0.000</span>
@@ -577,27 +577,27 @@ Myths and truths about mediation analysis. <em>Journal of Consumer Research</em>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Prior (regression coefs): normal(0,10)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                          Bayes</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Indirect effect          0.246</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Posterior SD             0.044</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Indirect effect          0.248</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Posterior SD             0.047</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> P(&gt;0)                    1.000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> P(&lt;0)                    0.000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ER+                          ∞</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ER-                          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> HDI             [0.172, 0.338]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> HDI             [0.155, 0.334]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Effect sizes</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    RIT = (Indirect effect / Total effect)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          (0.246/0.629) = 0.391</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          Meaning that about 39% of the effect of 'math'</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          (0.248/0.629) = 0.395</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          Meaning that about 40% of the effect of 'math'</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          on 'science' is mediated by 'read'</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    RID = (Indirect effect / Direct effect)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          (0.246/0.383) = 0.643</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          That is, the mediated effect is about 0.6 times as</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          (0.248/0.380) = 0.653</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          That is, the mediated effect is about 0.7 times as</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          large as the direct effect of 'math' on 'science'</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    Upsilon (v) = Variance in Y explained indirectly by X through M</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          v(unadj) = 0.061, v(adj) = 0.059</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          Posterior mean(v) = 0.063, median(v) = 0.061</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          95% HDI [0.024, 0.104]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          v(unadj) = 0.062, v(adj) = 0.059</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          Posterior mean(v) = 0.064, median(v) = 0.062</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          95% HDI [0.024, 0.112]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>

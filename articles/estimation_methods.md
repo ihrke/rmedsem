@@ -503,16 +503,16 @@ summary(out.hdi)
 #> 
 #> Effects (95% HDI):
 #>                  Estimate Std. Err. z-value p-value Lower Upper
-#> Indirect (Bayes)    0.248     0.045   5.447   0.000 0.166 0.337
-#> Direct              0.381     0.063           0.000 0.257 0.502
-#> Total               0.628     0.038                 0.552 0.696
+#> Indirect (Bayes)    0.248     0.046   5.368   0.000 0.167 0.342
+#> Direct              0.382     0.065           0.000 0.264 0.513
+#> Total               0.630     0.039                 0.557 0.707
 #> For Bayesian estimates, 'p-value' is the posterior probability of
 #> the opposite sign.
 #> 
 #> 
 #> Effect sizes:
 #>   RIT = 0.394
-#>   RID = 0.651
+#>   RID = 0.649
 #>   Upsilon = 0.059
 #>   Upsilon (unadj.) = 0.061
 ```

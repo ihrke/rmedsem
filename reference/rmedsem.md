@@ -476,20 +476,20 @@ if (requireNamespace("modsem", quietly = TRUE)) {
 #>                          Sobel          Delta    Monte-Carlo
 #> Indirect effect          0.253          0.253          0.253
 #> Std. Err.                0.029          0.029          0.029
-#> z-value                  8.847          8.836          8.715
+#> z-value                  8.843          8.832          8.711
 #> p-value                 <2e-16         <2e-16         <2e-16
 #> CI              [0.197, 0.309] [0.197, 0.309] [0.199, 0.311]
 #> 
 #> Baron and Kenny approach to testing mediation
-#>    STEP 1 - 'OwnLook' -> 'SelfEst' (X -> M) with B=0.486 and p<0.001
+#>    STEP 1 - 'OwnLook' -> 'SelfEst' (X -> M) with B=0.485 and p<0.001
 #>    STEP 2 - 'SelfEst' -> 'MentWell' (M -> Y) with B=0.521 and p<0.001
-#>    STEP 3 - 'OwnLook' -> 'MentWell' (X -> Y) with B=0.011 and p=0.809
+#>    STEP 3 - 'OwnLook' -> 'MentWell' (X -> Y) with B=0.011 and p=0.808
 #>             As STEP 1, STEP 2 and the Sobel's test above are significant
 #>             and STEP 3 is not significant the mediation is complete.
 #> 
 #> Zhao, Lynch & Chen's approach to testing mediation
 #> Based on p-value estimated using Monte-Carlo
-#>   STEP 1 - 'OwnLook' -> 'MentWell' (X -> Y) with B=0.011 and p=0.809
+#>   STEP 1 - 'OwnLook' -> 'MentWell' (X -> Y) with B=0.011 and p=0.808
 #>             As the Monte-Carlo test above is significant and STEP 1 is not
 #>             significant there is indirect-only mediation (full mediation).
 #> 
@@ -499,14 +499,14 @@ if (requireNamespace("modsem", quietly = TRUE)) {
 #>          Meaning that about 96% of the effect of 'OwnLook'
 #>          on 'MentWell' is mediated by 'SelfEst'
 #>    RID = (Indirect effect / Direct effect)
-#>          RID is not reported: direct effect 0.011 is not significant (p = 0.809)
+#>          RID is not reported: direct effect 0.011 is not significant (p = 0.808)
 #>    Upsilon (v) = Variance in Y explained indirectly by X through M
 #>          v(unadj) = 0.064, v(adj) = 0.063
 #> 
 #> 
 #> Direct moderation effects
 #>    OwnLook -> SelfEst             | smv: B = -0.136, se = 0.029, p = 0.000
-#>    OwnLook -> MentWell            | smv: B = -0.008, se = 0.034, p = 0.813
+#>    OwnLook -> MentWell            | smv: B = -0.008, se = 0.035, p = 0.813
 #> 
 #> Indirect moderation effect
 #>    OwnLook -> SelfEst -> MentWell | smv: B = -0.071, se = 0.017, p = 0.000
@@ -541,27 +541,27 @@ if (requireNamespace("blavaan", quietly = TRUE)) {
 #> 
 #> Prior (regression coefs): normal(0,10)
 #>                          Bayes
-#> Indirect effect          0.246
-#> Posterior SD             0.044
+#> Indirect effect          0.248
+#> Posterior SD             0.047
 #> P(>0)                    1.000
 #> P(<0)                    0.000
 #> ER+                          ∞
 #> ER-                          0
-#> HDI             [0.172, 0.338]
+#> HDI             [0.155, 0.334]
 #> 
 #> Effect sizes
 #>    RIT = (Indirect effect / Total effect)
-#>          (0.246/0.629) = 0.391
-#>          Meaning that about 39% of the effect of 'math'
+#>          (0.248/0.629) = 0.395
+#>          Meaning that about 40% of the effect of 'math'
 #>          on 'science' is mediated by 'read'
 #>    RID = (Indirect effect / Direct effect)
-#>          (0.246/0.383) = 0.643
-#>          That is, the mediated effect is about 0.6 times as
+#>          (0.248/0.380) = 0.653
+#>          That is, the mediated effect is about 0.7 times as
 #>          large as the direct effect of 'math' on 'science'
 #>    Upsilon (v) = Variance in Y explained indirectly by X through M
-#>          v(unadj) = 0.061, v(adj) = 0.059
-#>          Posterior mean(v) = 0.063, median(v) = 0.061
-#>          95% HDI [0.024, 0.104]
+#>          v(unadj) = 0.062, v(adj) = 0.059
+#>          Posterior mean(v) = 0.064, median(v) = 0.062
+#>          95% HDI [0.024, 0.112]
 #> 
 # }
 ```
