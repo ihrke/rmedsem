@@ -17,6 +17,7 @@
 plot_effect <- function(res, description=TRUE){
   if (!inherits(res, "rmedsem"))
     stop("'res' must be an 'rmedsem' object.")
+  check_flag(description, "description")
   if (is.null(res$effect.size$RIT) || is.null(res$effect.size$RID))
     stop("Both RIT and RID effect sizes are required. Re-run rmedsem() with effect.size = c('RIT', 'RID').")
   es <- res$effect.size

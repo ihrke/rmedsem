@@ -16,6 +16,28 @@
 * The Baron and Kenny and Zhao, Lynch & Chen conclusions are now printed in
   all cases; a p-value equal to `p.threshold` counts as not significant.
 * `digits` and `indent` are now passed correctly to the effect-size output.
+* All exported functions now check their arguments and stop with
+  informative messages:
+  * `rmedsem()` checks that `indep`, `med` and `dep` are distinct variables
+    in the model and that the paths X -> M, M -> Y and X -> Y are estimated
+    (lavaan, blavaan, cSEM and modsem). Multi-group/multilevel lavaan models
+    and multi-group cSEM models are rejected.
+  * `standardized`, `mcreps`, `nbootstrap`, `ci.two.tailed` and `moderator`
+    are validated. A `mcreps` value below the sample size is raised to the
+    sample size with a message (previously silently).
+  * `print()` checks `digits` and `indent`, `plot_effect()` checks
+    `description`, `Upsilon()` checks `adjusted`.
+  * New `rmedsem.default()`, `RIT.default()`, `RID.default()` and
+    `Upsilon.default()` methods give informative errors for unsupported
+    objects.
+  * modsem: an unknown moderator, or a moderator without interaction term,
+    is now an error (previously silently ignored).
+* lavaan and modsem models with labelled regression paths (e.g.,
+  `read ~ a*math`) now work (previously "subscript out of bounds").
+* lavaan: a warning is given if the model did not converge.
+* cSEM: the bootstrap confidence intervals of the indirect and total effects
+  now respect `ci.two.tailed` (previously always 95%), and the correct row is
+  selected in models with several indirect effects.
 
 # rmedsem 1.0.0
 

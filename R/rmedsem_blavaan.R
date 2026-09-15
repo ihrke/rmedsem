@@ -39,6 +39,7 @@ rmedsem.blavaan <- function(mod, indep, med, dep,
   if (!requireNamespace("blavaan", quietly = TRUE))
     stop("Package 'blavaan' is required for this method. Please install it.")
   validate_rmedsem_args(indep, med, dep, approach, p.threshold, effect.size)
+  check_lavaan_model(mod, indep, med, dep)
   ## convergence check
   if(max(blavaan::blavInspect(mod, "rhat"))>1.05)
     warning("Some Rhat>1.05, check convergence!")

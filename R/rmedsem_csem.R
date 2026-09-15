@@ -8,7 +8,7 @@
 #' @param approach either 'bk' or 'zlc' or both c("bk", "zlc") (default)
 #' @param p.threshold A double giving the p-value for determining whether a path
 #'  is significant or not
-#' @param nbootstrap number of bootstrap samples, default=1000
+#' @param nbootstrap number of bootstrap samples (integer >= 2), default=1000
 #' @param effect.size calculate different effect-sizes; one or more of "RIT", "RID"
 #' @param ci.two.tailed A double giving the confidence level for two-tailed confidence intervals (default 0.95)
 #' @param ... additional arguments (currently unused)
@@ -23,6 +23,17 @@ rmedsem.cSEMResults <- function(mod, indep, med, dep,
   if (!requireNamespace("cSEM", quietly = TRUE))
     stop("Package 'cSEM' is required for this method. Please install it.")
   validate_rmedsem_args(indep, med, dep, approach, p.threshold, effect.size)
+  check_count(nbootstrap, "nbootstrap", min=2)
+  check_ci_level(ci.two.tailed)
+  if (!inherits(mod, "cSEMResults_default"))
+    stop("Only single-group, first-order cSEM models (class 'cSEMResults_default') ",
+         "are supported by rmedsem().", call.=FALSE)
+  structural <- mod$Information$Model$structural
+  path.idx <- which(structural == 1, arr.ind = TRUE)
+  check_mediation_model(vars=rownames(structural),
+                        paths=data.frame(lhs=rownames(structural)[path.idx[, 1]],
+                                         rhs=colnames(structural)[path.idx[, 2]]),
+                        indep=indep, med=med, dep=dep)
   ci.width <- stats::qnorm(1-(1-ci.two.tailed)/2)
 
   N <- nrow(mod$Information$Data)
@@ -32,7 +43,7 @@ rmedsem.cSEMResults <- function(mod, indep, med, dep,
 
   mod <- cSEM::resamplecSEMResults(mod, .force = TRUE, .R=nbootstrap, .resample_method="bootstrap")
   #imod <- cSEM::infer(mod)
-  smod <- cSEM::summarize(mod)
+  smod <- cSEM::summarize(mod, .alpha = 1-ci.two.tailed, .ci = "CI_percentile")
   coefs <- smod$Estimates$Path_estimates
 
   # IV -> M
@@ -56,11 +67,12 @@ rmedsem.cSEMResults <- function(mod, indep, med, dep,
   uci_doi <- coef_doi + ci.width*se_doi
 
   # Total effect
-  totix <- which(smod$Estimates$Effect_estimates$Total_effect$Name==doi)
-  coef_tot <- smod$Estimates$Effect_estimates$Total_effect$Estimate[totix]
-  se_tot <- smod$Estimates$Effect_estimates$Total_effect$Std_err[totix]
-  lci_tot <- smod$Estimates$Effect_estimates$Total_effect$`CI_percentile.95%L`[totix]
-  uci_tot <- smod$Estimates$Effect_estimates$Total_effect$`CI_percentile.95%U`[totix]
+  tottab <- smod$Estimates$Effect_estimates$Total_effect
+  totix <- which(tottab$Name==doi)
+  coef_tot <- tottab$Estimate[totix]
+  se_tot <- tottab$Std_err[totix]
+  lci_tot <- tottab[totix, grep("^CI_percentile.*L$", names(tottab))]
+  uci_tot <- tottab[totix, grep("^CI_percentile.*U$", names(tottab))]
 
   prodterm <- coef_moi * coef_dom
 
@@ -84,11 +96,12 @@ rmedsem.cSEMResults <- function(mod, indep, med, dep,
   delta_uci <- prodterm + ci.width*delta_se
 
   indtab <- smod$Estimates$Effect_estimates$Indirect_effect
-  boot_se <- with(indtab, Std_err[Name==doi])
+  indix <- which(indtab$Name==doi)
+  boot_se <- indtab$Std_err[indix]
   boot_z <- prodterm/boot_se
-  boot_pv <- with(indtab, p_value[Name==doi])
-  boot_lci <- indtab[,7]
-  boot_uci <- indtab[,8]
+  boot_pv <- indtab$p_value[indix]
+  boot_lci <- indtab[indix, grep("^CI_percentile.*L$", names(indtab))]
+  boot_uci <- indtab[indix, grep("^CI_percentile.*U$", names(indtab))]
 
   #
   es <- list()

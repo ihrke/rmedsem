@@ -83,3 +83,14 @@ test_that("blavaan: print table rows match the stored values", {
   expect_false(any(grepl("Baron and Kenny", output)))
   expect_equal(output[length(output)], "")
 })
+
+test_that("blavaan: model is checked for variables and paths", {
+  skip_on_cran()
+  skip_if_not_installed("blavaan")
+
+  mod <- setup_blavaan()
+  expect_error(rmedsem(mod, indep = "ind60", med = "foo", dep = "dem65"),
+               "Variable 'foo' \\(argument 'med'\\) not found")
+  expect_error(rmedsem(mod, indep = "dem60", med = "ind60", dep = "dem65"),
+               "'ind60 ~ dem60' \\(X -> M\\)")
+})

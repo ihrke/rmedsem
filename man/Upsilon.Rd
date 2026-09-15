@@ -2,10 +2,13 @@
 % Please edit documentation in R/accessors.R
 \name{Upsilon}
 \alias{Upsilon}
+\alias{Upsilon.default}
 \alias{Upsilon.rmedsem}
 \title{Upsilon Effect Size}
 \usage{
 Upsilon(res, ...)
+
+\method{Upsilon}{default}(res, ...)
 
 \method{Upsilon}{rmedsem}(res, adjusted = TRUE, ...)
 }

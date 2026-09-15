@@ -35,10 +35,12 @@ is significant or not}
 
 \item{effect.size}{calculate different effect-sizes; one or more of "RIT", "RID"}
 
-\item{moderator}{A string indicating the name of the moderator variable in the model.}
+\item{moderator}{A string indicating the name of the moderator variable in
+the model (or \code{NULL}). The model must contain an interaction of the
+moderator with \code{indep} and/or \code{med}.}
 
 \item{standardized}{A boolean indicating whether the coefficients should be
-standardized. The default value is FALSE.}
+standardized. The default value is TRUE.}
 
 \item{mcreps}{An integer determining the number of monte-carlo samples.}
 

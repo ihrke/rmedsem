@@ -43,6 +43,13 @@ RID <- function (res, ...)
 
 #' @rdname RIT
 #' @export
+RIT.default <- function(res, ...) {
+  stop(sprintf("RIT() requires an 'rmedsem' object, as returned by rmedsem(), not an object of class '%s'.",
+               paste(class(res), collapse="', '")), call.=FALSE)
+}
+
+#' @rdname RIT
+#' @export
 RIT.rmedsem <- function(res, ...) {
   if(is.null(res$effect.size$RIT))
     stop("RIT was not computed. Re-run rmedsem() with effect.size including 'RIT'.")
@@ -50,6 +57,13 @@ RIT.rmedsem <- function(res, ...) {
     warning("Indirect effect is larger than total effect! RIT should not be interpreted")
   }
    return(res$effect.size$RIT$es)
+}
+
+#' @rdname RID
+#' @export
+RID.default <- function(res, ...) {
+  stop(sprintf("RID() requires an 'rmedsem' object, as returned by rmedsem(), not an object of class '%s'.",
+               paste(class(res), collapse="', '")), call.=FALSE)
 }
 
 #' @rdname RID
@@ -97,7 +111,15 @@ Upsilon <- function (res, ...)
 
 #' @rdname Upsilon
 #' @export
+Upsilon.default <- function(res, ...) {
+  stop(sprintf("Upsilon() requires an 'rmedsem' object, as returned by rmedsem(), not an object of class '%s'.",
+               paste(class(res), collapse="', '")), call.=FALSE)
+}
+
+#' @rdname Upsilon
+#' @export
 Upsilon.rmedsem <- function(res, adjusted=TRUE, ...) {
+  check_flag(adjusted, "adjusted")
   if(is.null(res$effect.size$upsilon))
     stop("Upsilon was not computed. Re-run rmedsem() with effect.size including 'upsilon'.")
   if(adjusted) return(res$effect.size$upsilon$adjusted)

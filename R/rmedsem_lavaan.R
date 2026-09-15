@@ -6,7 +6,7 @@
 #' @param dep A string indicating the name of the dependent variable in the model.
 #'
 #' @param standardized A boolean indicating whether the coefficients should be
-#' standardized. The default value is FALSE.
+#' standardized. The default value is TRUE.
 #' @param approach either 'bk' or 'zlc' or both c("bk", "zlc") (default)
 #' @param mcreps An integer determining the number of monte-carlo samples.
 #' @param p.threshold A double giving the p-value for determining whether a path
@@ -36,15 +36,19 @@ rmedsem.lavaan <- function(mod, indep, med, dep,
                            standardized=TRUE, mcreps=NULL,
                            ci.two.tailed=0.95, ...){
   validate_rmedsem_args(indep, med, dep, approach, p.threshold, effect.size)
+  check_flag(standardized, "standardized")
+  check_ci_level(ci.two.tailed)
+  pt <- check_lavaan_model(mod, indep, med, dep)
+  if (!lavaan::lavInspect(mod, "converged"))
+    warning("The lavaan model did not converge; results may not be trustworthy.",
+            call.=FALSE)
   ci.width <- stats::qnorm(1-(1-ci.two.tailed)/2)
   N <- lavaan::nobs(mod)
-  if (is.null(mcreps) || mcreps < N){
-    mcreps=N
-  }
+  mcreps <- resolve_mcreps(mcreps, N)
 
-  moi <- sprintf("%s~%s", med, indep)
-  dom <- sprintf("%s~%s", dep, med)
-  doi <- sprintf("%s~%s", dep, indep)
+  moi <- vcov_name(pt, med, indep)
+  dom <- vcov_name(pt, dep, med)
+  doi <- vcov_name(pt, dep, indep)
 
   if(standardized){
     V <- lavaan::lavInspect(mod, what="vcov.std.all")
@@ -54,7 +58,8 @@ rmedsem.lavaan <- function(mod, indep, med, dep,
     V <- lavaan::vcov(mod)
     coefs <- lavaan::parameterEstimates(mod)
   }
-  
+  coefs <- coefs[coefs$op == "~", , drop = FALSE]
+
   covmoidom = V[moi,dom]
   covmoidoi = V[moi,doi]
   covdomdoi = V[dom,doi]
@@ -145,6 +150,7 @@ rmedsem.lavaan <- function(mod, indep, med, dep,
       std_se_moi <- se_moi; std_se_dom <- se_dom
     } else {
       std_coefs <- lavaan::standardizedsolution(mod)
+      std_coefs <- std_coefs[std_coefs$op == "~", , drop = FALSE]
       std_moi    <- with(std_coefs, est.std[lhs==med & rhs==indep])
       std_dom    <- with(std_coefs, est.std[lhs==dep & rhs==med])
       std_se_moi <- with(std_coefs, se[lhs==med & rhs==indep])
@@ -174,4 +180,27 @@ rmedsem.lavaan <- function(mod, indep, med, dep,
   )
   class(res) <- c("rmedsem_lavaan", "rmedsem")
   return(res)
+}
+
+
+#' Check a lavaan or blavaan model for suitability
+#'
+#' Stops for multi-group or multilevel models and if a variable or one of the
+#' required regression paths is missing.
+#' @param mod a fitted `lavaan` or `blavaan` model
+#' @param indep,med,dep names of the independent, mediator and dependent
+#'   variable
+#' @return the parameter table of `mod` (invisibly)
+#' @keywords internal
+check_lavaan_model <- function(mod, indep, med, dep){
+  if (lavaan::lavInspect(mod, "ngroups") > 1)
+    stop("Multi-group models are not supported by rmedsem().", call.=FALSE)
+  if (lavaan::lavInspect(mod, "nlevels") > 1)
+    stop("Multilevel models are not supported by rmedsem().", call.=FALSE)
+  pt <- lavaan::parTable(mod)
+  model.rows <- pt$op %in% c("=~", "~", "~~")
+  check_mediation_model(vars=unique(c(pt$lhs[model.rows], pt$rhs[model.rows])),
+                        paths=pt[pt$op == "~", c("lhs", "rhs")],
+                        indep=indep, med=med, dep=dep)
+  invisible(pt)
 }

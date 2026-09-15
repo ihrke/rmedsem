@@ -33,7 +33,7 @@ is significant or not}
 
 \item{effect.size}{calculate different effect-sizes; one or more of "RIT", "RID"}
 
-\item{nbootstrap}{number of bootstrap samples, default=1000}
+\item{nbootstrap}{number of bootstrap samples (integer >= 2), default=1000}
 
 \item{ci.two.tailed}{A double giving the confidence level for two-tailed confidence intervals (default 0.95)}
 

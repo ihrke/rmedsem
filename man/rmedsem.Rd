@@ -2,6 +2,7 @@
 % Please edit documentation in R/rmedsem.R
 \name{rmedsem}
 \alias{rmedsem}
+\alias{rmedsem.default}
 \title{Mediation Analysis for Structural Equation Models}
 \usage{
 rmedsem(
@@ -14,6 +15,8 @@ rmedsem(
   effect.size = c("RIT", "RID", "upsilon"),
   ...
 )
+
+\method{rmedsem}{default}(mod, indep, med, dep, ...)
 }
 \arguments{
 \item{mod}{a fitted SEM model object (from lavaan, blavaan, cSEM, or modsem)}

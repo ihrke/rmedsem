@@ -2,10 +2,13 @@
 % Please edit documentation in R/accessors.R
 \name{RID}
 \alias{RID}
+\alias{RID.default}
 \alias{RID.rmedsem}
 \title{Ratio of Indirect to Direct Effect (RID)}
 \usage{
 RID(res, ...)
+
+\method{RID}{default}(res, ...)
 
 \method{RID}{rmedsem}(res, ...)
 }

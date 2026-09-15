@@ -2,10 +2,13 @@
 % Please edit documentation in R/accessors.R
 \name{RIT}
 \alias{RIT}
+\alias{RIT.default}
 \alias{RIT.rmedsem}
 \title{Ratio of Indirect to Total Effect (RIT)}
 \usage{
 RIT(res, ...)
+
+\method{RIT}{default}(res, ...)
 
 \method{RIT}{rmedsem}(res, ...)
 }

@@ -319,6 +319,8 @@ print_moderation <- function(res, ci_moderation=FALSE){
 #'
 #' @export
 print.rmedsem <- function(x, digits=3, indent=3, ...){
+  check_count(digits, "digits")
+  check_count(indent, "indent", min=0)
   print_header(x)
   print_freq_table(x, digits=digits)
   if ("bk" %in% x$med.approach)
@@ -333,6 +335,8 @@ print.rmedsem <- function(x, digits=3, indent=3, ...){
 #' @rdname print.rmedsem
 #' @export
 print.rmedsem_blavaan <- function(x, digits=3, indent=3, ...){
+  check_count(digits, "digits")
+  check_count(indent, "indent", min=0)
   print_header(x)
   cat(sprintf("Prior (regression coefs): %s\n", x$prior$beta))
   print_bayes_table(x, digits=digits)
@@ -344,6 +348,7 @@ print.rmedsem_blavaan <- function(x, digits=3, indent=3, ...){
 #' @rdname print.rmedsem
 #' @export
 print.rmedsem_modsem <- function(x, digits=3, indent=3, ci_moderation=FALSE, ...){
+  check_flag(ci_moderation, "ci_moderation")
   NextMethod()
   if (isTRUE(x$moderation$has.moderator))
     print_moderation(x, ci_moderation=ci_moderation)

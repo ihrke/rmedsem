@@ -4,10 +4,12 @@
 #' @param indep A string indicating the name of the independent variable in the model.
 #' @param med A string indicating the name of the mediator variable in the model.
 #' @param dep A string indicating the name of the dependent variable in the model.
-#' @param moderator A string indicating the name of the moderator variable in the model.
+#' @param moderator A string indicating the name of the moderator variable in
+#'   the model (or `NULL`). The model must contain an interaction of the
+#'   moderator with `indep` and/or `med`.
 #'
 #' @param standardized A boolean indicating whether the coefficients should be
-#' standardized. The default value is FALSE.
+#' standardized. The default value is TRUE.
 #' @param approach either 'bk' or 'zlc' or both c("bk", "zlc") (default)
 #' @param mcreps An integer determining the number of monte-carlo samples.
 #' @param p.threshold A double giving the p-value for determining whether a path
@@ -50,14 +52,19 @@ rmedsem.modsem <- function(mod, indep, med, dep,
   if (!requireNamespace("modsem", quietly = TRUE))
     stop("Package 'modsem' is required for this method. Please install it.")
   validate_rmedsem_args(indep, med, dep, approach, p.threshold, effect.size)
+  check_flag(standardized, "standardized")
+  check_ci_level(ci.two.tailed)
+  if (!is.null(moderator)) {
+    check_string(moderator, "moderator")
+    if (moderator %in% c(indep, med, dep))
+      stop("'moderator' must be different from 'indep', 'med' and 'dep'.", call.=FALSE)
+  }
   ci.width <- stats::qnorm(1-(1-ci.two.tailed)/2)
 
   # if estimated lavaan, we just extract the lavaan document
   N <- modsem::modsem_nobs(mod)
+  mcreps <- resolve_mcreps(mcreps, N)
 
-  if (is.null(mcreps) || mcreps < N)
-    mcreps=N
-  
   if (standardized)
     coefs <- modsem::standardized_estimates(mod)
   else {
@@ -67,9 +74,10 @@ rmedsem.modsem <- function(mod, indep, med, dep,
  
   lookup <- c(std.error="se", p.value="pvalue", est="est.std") # in case of lavaan
   coefs <- dplyr::rename(coefs, dplyr::any_of(lookup)) # rename columns
+  model.rows <- coefs$op %in% c("=~", "~", "~~")
+  model.vars <- unique(c(coefs$lhs[model.rows], coefs$rhs[model.rows]))
 
   # filter to regression paths only (modsem >= 1.0.17 includes ~~ rows that
-
   # would cause duplicate matches in the with() lookups below)
   coefs <- coefs[coefs$op == "~", , drop = FALSE]
 
@@ -77,11 +85,13 @@ rmedsem.modsem <- function(mod, indep, med, dep,
   indep <- get_correct_intterm(indep, coefs) 
   med <- get_correct_intterm(med, coefs)
   dep <- get_correct_intterm(dep, coefs)
+  check_mediation_model(vars=model.vars, paths=coefs[, c("lhs", "rhs")],
+                        indep=indep, med=med, dep=dep)
 
   V <- modsem::modsem_vcov(mod)
-  moi <- sprintf("%s~%s", med, indep)
-  dom <- sprintf("%s~%s", dep, med)
-  doi <- sprintf("%s~%s", dep, indep)
+  moi <- vcov_name(coefs, med, indep)
+  dom <- vcov_name(coefs, dep, med)
+  doi <- vcov_name(coefs, dep, indep)
 
   # IV -> M
   coef_moi <- with(coefs, est[lhs==med & rhs==indep])
@@ -194,14 +204,21 @@ rmedsem.modsem <- function(mod, indep, med, dep,
   }
 
   if (!is.null(moderator)) {
+    if (!moderator %in% model.vars)
+      stop(sprintf("Moderator '%s' not found in the model.", moderator), call.=FALSE)
     modind <- get_correct_intterm(mod_c(indep, moderator), coefs, error=FALSE,
                                   return_err = "__modmed__")
     modmed <- get_correct_intterm(mod_c(med, moderator), coefs, error=FALSE,
                                   return_err = "__modmmed__")
 
-    moi_mod <- sprintf("%s~%s", med, modind)
-    dom_mod <- sprintf("%s~%s", dep, modmed)
-    doi_mod <- sprintf("%s~%s", dep, modind)
+    if (!any(c(modind, modmed) %in% coefs$rhs))
+      stop(sprintf(paste0("The model contains no interaction term of moderator '%s' ",
+                          "with '%s' or '%s' (e.g., '%s:%s')."),
+                   moderator, indep, med, moderator, indep), call.=FALSE)
+
+    moi_mod <- vcov_name(coefs, med, modind)
+    dom_mod <- vcov_name(coefs, dep, modmed)
+    doi_mod <- vcov_name(coefs, dep, modind)
 
     # IV -> M | mod
     coef_moi_mod  <- with0(coefs, est[lhs==med & rhs==modind])
@@ -372,7 +389,7 @@ get_correct_intterm <- function(x, parTable, error=TRUE, return_err=NULL) {
   else if  (zx %in% rhs) zx
   else if (x_z %in% rhs) x_z
   else if (z_x %in% rhs) z_x
-  else if (error) stop("Unable to find variable ", xz)
+  else if (error) stop(sprintf("Interaction term '%s' not found in the model.", x), call.=FALSE)
   else return_err
 }
 
