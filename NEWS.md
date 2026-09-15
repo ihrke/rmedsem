@@ -1,4 +1,4 @@
-# rmedsem 1.0.0.9000 (development)
+# rmedsem 1.1.0
 
 ## Breaking changes
 
