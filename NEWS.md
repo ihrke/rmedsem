@@ -39,10 +39,7 @@
 * `plot_effect()` title and caption are wrapped to fit small figures
 * `summary()` and `plot_effect()` flag RIT and RID values that should not be
   interpreted
-* Clearer printed output: BK/ZLC steps show paths as `'X' -> 'M'` and
-  `p<0.001`; the Bayesian table shows `Posterior SD`, `P(>0)`, `P(<0)` and
-  readable evidence ratios
-
+* Clearer printed output
 * Dependencies on dplyr and purrr removed
 
 ## Documentation
