@@ -28,6 +28,9 @@
 #'   \item{smv_sociable}{How well does this describe you as a partner? (sociable), \[1\] very bad - \[5\] very well}
 #' }
 #'
+#' @source Survey collected in Norway in 2021 using a convenience sampling
+#'   procedure.
+#'
 #' @examples
 #' str(mchoice)
 #'
@@ -45,24 +48,30 @@
 
 #' Fitness Center Survey Data from Trondheim
 #'
-#' Data from a survey in a fitness center in Trondheim.
+#' Data from a survey among the members of a fitness center in Trondheim,
+#' Norway. Participants rated how important different reasons for working out
+#' are to them and how well two physical features describe them. All items
+#' except `age` are measured on a scale from 1 to 6. The data contain missing
+#' values; 187 of the 246 rows are complete.
 #'
 #' @format ## `workout`
 #' A data frame with 246 rows and 12 columns:
 #' \describe{
 #'    \item{age}{Age in years}
-#'    \item{lweight}{How important is following to workout- to loose weight}
-#'    \item{calories}{How important is following to workout- to burn calories}
-#'    \item{cweight}{How important is following to workout- to control my weight}
-#'    \item{body}{How important is following to workout- to have a good body}
-#'    \item{appear}{How important is following to workout- to improve my appearance}
-#'    \item{attract}{How important is following to workout- to look more attractive}
-#'    \item{muscle}{How important is following to workout- to develop my muscles}
-#'    \item{strength}{How important is following to workout- to get stronger}
-#'    \item{endur}{How important is following to workout- to increase my endurance}
-#'    \item{face}{How well does the following describe you as a person -  attractive face}
-#'    \item{sexy}{How well does the following describe you as a person - sexy}
+#'    \item{lweight}{How important is the following to you to work out: to lose weight, \[1\] not important at all - \[6\] very important}
+#'    \item{calories}{How important is the following to you to work out: to burn calories, \[1\] not important at all - \[6\] very important}
+#'    \item{cweight}{How important is the following to you to work out: to control my weight, \[1\] not important at all - \[6\] very important}
+#'    \item{body}{How important is the following to you to work out: to have a good body, \[1\] not important at all - \[6\] very important}
+#'    \item{appear}{How important is the following to you to work out: to improve my appearance, \[1\] not important at all - \[6\] very important}
+#'    \item{attract}{How important is the following to you to work out: to look more attractive, \[1\] not important at all - \[6\] very important}
+#'    \item{muscle}{How important is the following to you to work out: to develop my muscles, \[1\] not important at all - \[6\] very important}
+#'    \item{strength}{How important is the following to you to work out: to get stronger, \[1\] not important at all - \[6\] very important}
+#'    \item{endur}{How important is the following to you to work out: to increase my endurance, \[1\] not important at all - \[6\] very important}
+#'    \item{face}{How well does the following describe you as a person: attractive face, \[1\] very badly - \[6\] very well}
+#'    \item{sexy}{How well does the following describe you as a person: sexy, \[1\] very badly - \[6\] very well}
 #' }
+#'
+#' @source Survey among the members of a fitness center in Trondheim, Norway.
 #'
 #' @examples
 #' str(workout)
@@ -102,6 +111,9 @@
 #'  \item{awards}{Number of awards}
 #'  \item{cid}{Class ID}
 #' }
+#'
+#' @source UCLA Statistical Methods and Data Analytics,
+#'   <https://stats.oarc.ucla.edu/stat/data/hsbdemo.dta>
 #'
 #' @examples
 #' str(hsbdemo)

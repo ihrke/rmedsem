@@ -15,18 +15,23 @@ plot_effect <- function(res, description=TRUE){
     value=c(es$RIT$ind_eff, es$RID$dir_eff) #, es$RIT$tot_eff)
   )
 
-  effs |>
-    dplyr::arrange(dplyr::desc(eff)) |>
-    dplyr::mutate(ypos = cumsum(value) - 0.5*value ) -> effs
+  effs <- effs[order(effs$eff, decreasing=TRUE), ]
+  effs$ypos <- cumsum(effs$value) - 0.5*effs$value
 
   # wrap long texts so that they fit into small figures
   wrap <- function(txt, width) paste(strwrap(txt, width=width), collapse="\n")
   descr.label <- ""
   if(description){
-    descr.label <- wrap(sprintf("Total effect = %.3f. That means %.1f%% of the total effect of '%s' on '%s' is mediated by '%s'.",
-                                es$RIT$tot_eff, 100*es$RIT$ind_eff/es$RIT$tot_eff,
-                                res$vars$indep, res$vars$dep, res$vars$med),
-                        width=45)
+    problem <- effect_size_problem(res, "RIT")
+    descr.label <- wrap(
+      if (is.null(problem))
+        sprintf("Total effect = %.3f. That means %.1f%% of the total effect of '%s' on '%s' is mediated by '%s'.",
+                es$RIT$tot_eff, 100*es$RIT$ind_eff/es$RIT$tot_eff,
+                res$vars$indep, res$vars$dep, res$vars$med)
+      else
+        sprintf("Total effect = %.3f. The proportion mediated should not be interpreted: %s.",
+                es$RIT$tot_eff, problem),
+      width=45)
   }
 
   ggplot2::ggplot(effs, ggplot2::aes(x="", y=value, fill=eff)) +
@@ -50,18 +55,20 @@ plot_effect <- function(res, description=TRUE){
 plot_coef <- function(res){
   if (!inherits(res, "rmedsem"))
     stop("'res' must be an 'rmedsem' object.")
-  purrr::map_dfr(res$est.methods, \(method){
-    data.frame(method=method, effect="indirect", res[[method]][c("coef","lower","upper")] |> t())
-  }) -> d
-  d <- rbind(d, data.frame(method=NA, effect="direct", res$direct.effect[c("coef","lower","upper")] |> t()))
-  d <- rbind(d, data.frame(method=NA, effect="total", res$total.effect[c("coef","lower","upper")] |> t()))
+  row <- function(method, effect, v)
+    data.frame(method=method, effect=effect, coef=unname(v[["coef"]]),
+               lower=unname(v[["lower"]]), upper=unname(v[["upper"]]))
+  d <- do.call(rbind, c(
+    lapply(res$est.methods, \(m) row(m, "indirect", res[[m]])),
+    list(row(NA, "direct", res$direct.effect), row(NA, "total", res$total.effect))))
   ymet <- as.numeric(factor(d$method))
   ymet[is.na(ymet)] <- 0
+  d$var <- ifelse(is.na(d$method), d$effect,
+                  sprintf("%s (%s)", d$effect, method_label(d$method)))
+  d$effect <- ordered(d$effect, levels=c("total", "direct", "indirect"))
   # indirect effects of the different methods are spread around their position
-  d |> dplyr::mutate(var = ifelse(is.na(method), effect,
-                                  sprintf("%s (%s)", effect, method_label(method)))) |>
-    dplyr::mutate(effect=ordered(effect, levels=c("total", "direct", "indirect")),
-                  ypos=as.numeric(effect)+(ymet>0)*0.25*(ymet-ceiling(length(res$est.methods)/2))) ->d
+  d$ypos <- as.numeric(d$effect) +
+    (ymet>0)*0.25*(ymet-ceiling(length(res$est.methods)/2))
 
   ggplot2::ggplot(d, ggplot2::aes(x=ypos, y=coef, ymin=lower, ymax=upper, color=method))+
     ggplot2::geom_pointrange()+

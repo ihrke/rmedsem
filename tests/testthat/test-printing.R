@@ -182,3 +182,36 @@ test_that("RIT interpretation has no double space", {
   out <- fit_hsbdemo_out()
   expect_true(any(grepl("Meaning that about [0-9]+% of", capture.output(print(out)))))
 })
+
+test_that("summary and plot_effect flag effect sizes that should not be interpreted", {
+  out <- fake_rmedsem(p_doi = 0.5)
+  out$effect.size <- list(RIT = list(es = 0.5, ind_eff = 0.05, tot_eff = 0.1),
+                          RID = list(es = 0.25, ind_eff = 0.05, dir_eff = 0.2))
+  s <- summary(out)
+  expect_named(s$effect.size.problems, c("RIT", "RID"))
+  output <- capture.output(print(s))
+  expect_true(any(grepl("not interpreted: total effect 0.100 is too small", output)))
+  expect_true(any(grepl("not interpreted: direct effect 0.200 is not significant", output)))
+  expect_lte(max(nchar(output)), 80)
+
+  p <- plot_effect(out)
+  expect_match(p$labels$caption, "should not be interpreted")
+  expect_false(grepl("is\\smediated\\sby", p$labels$caption))
+
+  ok <- fake_rmedsem()
+  ok$effect.size <- list(RIT = list(es = 0.6, ind_eff = 0.3, tot_eff = 0.5),
+                         RID = list(es = 1.5, ind_eff = 0.3, dir_eff = 0.2))
+  expect_length(summary(ok)$effect.size.problems, 0)
+  expect_match(plot_effect(ok)$labels$caption, "is\\smediated\\sby")
+})
+
+test_that("as.data.frame handles methods with different stored estimates", {
+  out <- fake_rmedsem()
+  out$perm <- c(out$perm, extra = 42)
+  df <- as.data.frame(out)
+  expect_s3_class(df, "data.frame")
+  expect_equal(names(df), c("package", "method", "coef", "se", "zval", "pval",
+                            "lower", "upper", "extra"))
+  expect_equal(df$extra, c(NA, 42))
+  expect_equal(df$method, c("sobel", "perm"))
+})

@@ -37,13 +37,20 @@
 * `plot_coef()` no longer emits a `position_dodge()` warning
 * Very small p-values are no longer printed as `0`
 * `plot_effect()` title and caption are wrapped to fit small figures
+* `summary()` and `plot_effect()` flag RIT and RID values that should not be
+  interpreted
+* Clearer printed output: BK/ZLC steps show paths as `'X' -> 'M'` and
+  `p<0.001`; the Bayesian table shows `Posterior SD`, `P(>0)`, `P(<0)` and
+  readable evidence ratios
+
+* Dependencies on dplyr and purrr removed
 
 ## Documentation
 
 * Help pages were merged into a compact set: `?rmedsem`, `?rmedsem-methods`, `?effect-sizes` and `?plot.rmedsem` 
 * Examples for all backends
-* Corrected and completed the documentation of the `hsbdemo` and `mchoice`
-  datasets.
+* Corrected and completed the documentation of the datasets (incl. sources
+  and response scales)
 * New article "Working with the results"
 * Added CRAN badge to README
 

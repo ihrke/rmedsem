@@ -29,8 +29,6 @@ Imports:
     lavaan,
     mvtnorm,
     ggplot2,
-    dplyr,
-    purrr,
     stats
 URL: https://github.com/ihrke/rmedsem, https://ihrke.github.io/rmedsem/
 BugReports: https://github.com/ihrke/rmedsem/issues
@@ -39,12 +37,10 @@ Depends:
 LazyData: true
 Suggests:
     blavaan,
-    boot,
     cSEM,
     HDInterval,
     modsem,
-    semPlot,
-    rmarkdown,
     testthat (>= 3.0.0)
+Config/Needs/website: semPlot, rmarkdown
 Config/testthat/edition: 3
 Config/roxygen2/version: 8.1.0

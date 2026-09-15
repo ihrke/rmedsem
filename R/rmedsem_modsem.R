@@ -29,7 +29,7 @@ rmedsem.modsem <- function(mod, indep, med, dep,
   }
  
   lookup <- c(std.error="se", p.value="pvalue", est="est.std") # in case of lavaan
-  coefs <- dplyr::rename(coefs, dplyr::any_of(lookup)) # rename columns
+  coefs <- rename_columns(coefs, lookup)
   model.rows <- coefs$op %in% c("=~", "~", "~~")
   model.vars <- unique(c(coefs$lhs[model.rows], coefs$rhs[model.rows]))
 
@@ -141,7 +141,7 @@ rmedsem.modsem <- function(mod, indep, med, dep,
       std_coefs <- modsem::standardized_estimates(mod)
       std_coefs <- std_coefs[std_coefs$op == "~", , drop = FALSE]
       lookup <- c(std.error="se", p.value="pvalue", est="est.std")
-      std_coefs <- dplyr::rename(std_coefs, dplyr::any_of(lookup))
+      std_coefs <- rename_columns(std_coefs, lookup)
       std_moi    <- with(std_coefs, est[lhs==med & rhs==indep])
       std_dom    <- with(std_coefs, est[lhs==dep & rhs==med])
       std_se_moi <- with(std_coefs, std.error[lhs==med & rhs==indep])
@@ -287,6 +287,15 @@ rmedsem.modsem <- function(mod, indep, med, dep,
 
   class(res) <- c("rmedsem_modsem", "rmedsem")
   return(res)
+}
+
+
+# rename columns of a data frame; lookup is c(new = "old"), missing old names
+# are ignored
+rename_columns <- function(df, lookup) {
+  idx <- match(lookup, names(df))
+  names(df)[idx[!is.na(idx)]] <- names(lookup)[!is.na(idx)]
+  df
 }
 
 

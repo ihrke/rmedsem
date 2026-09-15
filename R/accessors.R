@@ -201,6 +201,9 @@ Upsilon.rmedsem <- function(res, adjusted=TRUE, ...) {
 #'     Chen approach.}
 #'   \item{`effect.size`}{a named numeric vector with the requested effect
 #'     sizes (`RIT`, `RID`, `upsilon` (adjusted) and `upsilon.unadjusted`).}
+#'   \item{`effect.size.problems`}{a named character vector with an entry for
+#'     each of `RIT` and `RID` that should not be interpreted (see
+#'     [effect-sizes]), describing the reason; empty if there is none.}
 #' }
 #'
 #' `coef()` returns a named numeric vector with elements `indirect`,
@@ -262,6 +265,10 @@ summary.rmedsem <- function(object, ...) {
   effect.size <- c(RIT=es$RIT$es, RID=es$RID$es,
                    upsilon=es$upsilon$adjusted,
                    upsilon.unadjusted=es$upsilon$unadjusted)
+  problems <- unlist(lapply(intersect(c("RIT", "RID"), names(es)), \(w) {
+    p <- effect_size_problem(object, w)
+    if (!is.null(p)) stats::setNames(p, w)
+  }))
 
   structure(list(
     package      = object$package,
@@ -274,7 +281,8 @@ summary.rmedsem <- function(object, ...) {
     effects      = effects_table(object),
     mediation    = list(bk=bk, zlc=zlc),
     zlc.method   = if (!is.null(zlc)) zlc_method(object),
-    effect.size  = effect.size
+    effect.size  = effect.size,
+    effect.size.problems = if (is.null(problems)) character(0) else problems
   ), class = "summary.rmedsem")
 }
 
@@ -330,7 +338,12 @@ print.summary.rmedsem <- function(x, digits = 3, ...) {
     names(es) <- sub("^upsilon$", "Upsilon", names(es))
     names(es) <- sub("^upsilon.unadjusted$", "Upsilon (unadj.)", names(es))
     cat("\nEffect sizes:\n")
-    cat(paste0("  ", names(es), " = ", format_fixed(es, digits), "\n"), sep="")
+    problems <- x$effect.size.problems
+    for (i in seq_along(es)) {
+      cat(sprintf("  %s = %s\n", names(es)[i], format_fixed(es[[i]], digits)))
+      if (names(x$effect.size)[i] %in% names(problems))
+        cat(sprintf("      (not interpreted: %s)\n", problems[[names(x$effect.size)[i]]]))
+    }
   }
   cat("\n")
   invisible(x)
@@ -465,8 +478,10 @@ plot.rmedsem <- function(x, type = c("coef", "effect"), ...) {
 #' @export
 as.data.frame.rmedsem <- function(x, ...){
   res <- x
-  df <- purrr::map_dfr(res$est.methods, ~ res[[.x]]) |>
-    dplyr::bind_cols(method=res$est.methods, package=res$package) |>
-    dplyr::relocate(package,method)
-  as.data.frame(df)
+  # union of the estimates stored for the methods (NA where not available)
+  cols <- unique(unlist(lapply(res$est.methods, \(m) names(res[[m]]))))
+  est <- t(vapply(res$est.methods, \(m) unname(res[[m]][cols]), numeric(length(cols))))
+  colnames(est) <- cols
+  data.frame(package=res$package, method=res$est.methods, est,
+             row.names=NULL, check.names=FALSE)
 }

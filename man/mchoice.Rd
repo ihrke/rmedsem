@@ -27,6 +27,10 @@ A data frame with 1067 rows and 15 columns:
 }
 }
 }
+\source{
+Survey collected in Norway in 2021 using a convenience sampling
+procedure.
+}
 \usage{
 mchoice
 }

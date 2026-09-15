@@ -80,6 +80,9 @@ or \code{"competitive"}.}
 Chen approach.}
 \item{\code{effect.size}}{a named numeric vector with the requested effect
 sizes (\code{RIT}, \code{RID}, \code{upsilon} (adjusted) and \code{upsilon.unadjusted}).}
+\item{\code{effect.size.problems}}{a named character vector with an entry for
+each of \code{RIT} and \code{RID} that should not be interpreted (see
+\link{effect-sizes}), describing the reason; empty if there is none.}
 }
 
 \code{coef()} returns a named numeric vector with elements \code{indirect},

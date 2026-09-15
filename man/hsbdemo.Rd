@@ -25,6 +25,10 @@ A data frame with 200 rows and 13 columns:
 }
 }
 }
+\source{
+UCLA Statistical Methods and Data Analytics,
+\url{https://stats.oarc.ucla.edu/stat/data/hsbdemo.dta}
+}
 \usage{
 hsbdemo
 }
