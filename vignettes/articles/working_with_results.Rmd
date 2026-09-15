@@ -1,0 +1,146 @@
+---
+title: "Working with the results"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  warning = FALSE, message = FALSE,
+  comment = "#>"
+)
+set.seed(1)
+```
+
+`rmedsem()` returns an object of class `rmedsem`. Besides printing it, there
+are several functions to summarize the results, extract estimates for further
+processing, and visualize them. We use the simple mediation model from the
+[Getting started](../index.html#getting-started) section as an example:
+
+```{r setup}
+library(rmedsem)
+
+mod.txt <- "
+  read ~ math
+  science ~ read + math
+"
+mod <- lavaan::sem(mod.txt, data = hsbdemo)
+out <- rmedsem(mod, indep = "math", med = "read", dep = "science")
+```
+
+## Detailed output and compact summary
+
+Printing the object gives a detailed, step-by-step description of the tests
+of the indirect effect and of the Baron & Kenny and Zhao, Lynch & Chen
+approaches:
+
+```{r}
+out
+```
+
+`summary()` condenses the same results into a table of the indirect (for each
+estimation method), direct and total effects, the resulting type of mediation
+and the effect sizes:
+
+```{r}
+s <- summary(out)
+s
+```
+
+The summary is itself an object whose elements can be used in further
+analyses, e.g., the type of mediation or the table of effects:
+
+```{r}
+s$mediation
+s$effects
+```
+
+## Extracting estimates
+
+The standard extractor functions `coef()`, `confint()` and `nobs()` work for
+`rmedsem` objects:
+
+```{r}
+coef(out)
+confint(out)
+nobs(out)
+```
+
+The indirect effect is estimated with several methods (here Sobel, Delta and
+Monte-Carlo). They share the same point estimate but differ in their standard
+errors and intervals. By default, `coef()` and `confint()` use the method that
+also underlies the Zhao, Lynch & Chen approach (Monte-Carlo for `lavaan` and
+`modsem`, bootstrap for `cSEM`, and the posterior for `blavaan`). Use the
+`method` argument to choose a different one:
+
+```{r}
+confint(out, parm = "indirect", method = "sobel")
+```
+
+The level of all intervals is set when calling `rmedsem()` with the
+`ci.two.tailed` argument:
+
+```{r}
+out90 <- rmedsem(mod, indep = "math", med = "read", dep = "science",
+                 ci.two.tailed = 0.90)
+confint(out90)
+```
+
+`as.data.frame()` returns the estimates of the indirect effect for all methods
+as a data frame:
+
+```{r}
+as.data.frame(out)
+```
+
+## Effect sizes
+
+The effect sizes are available through dedicated functions:
+
+```{r}
+RIT(out)      # ratio of indirect to total effect
+RID(out)      # ratio of indirect to direct effect
+Upsilon(out)  # variance in 'science' explained indirectly by 'math' via 'read'
+Upsilon(out, adjusted = FALSE)
+```
+
+## Plots
+
+`plot()` shows a coefficient plot of the indirect (for each method), direct
+and total effects, or a pie chart of the indirect and direct effects:
+
+```{r, fig.width=7, fig.height=4}
+plot(out)
+```
+
+```{r, fig.width=6, fig.height=6}
+plot(out, type = "effect")
+```
+
+## Bayesian models: equal-tailed intervals or HDI
+
+For models estimated with `blavaan`, the intervals are credible intervals
+computed from the posterior samples. By default, these are equal-tailed
+intervals (the 2.5% and 97.5% quantiles for `ci.two.tailed = 0.95`). Set
+`hdi = TRUE` to obtain highest density intervals (HDI) instead, which requires
+the [HDInterval](https://cran.r-project.org/package=HDInterval) package:
+
+```{r, include = FALSE}
+has.blavaan <- requireNamespace("blavaan", quietly = TRUE) &&
+  requireNamespace("HDInterval", quietly = TRUE)
+```
+
+```{r, eval = has.blavaan, results = "hide"}
+library(blavaan)
+bmod <- bsem(mod.txt, data = hsbdemo, n.chains = 3, burnin = 500, sample = 500,
+             seed = 1, bcontrol = list(cores = 3, refresh = 0))
+```
+
+```{r, eval = has.blavaan}
+out.ci  <- rmedsem(bmod, indep = "math", med = "read", dep = "science")
+out.hdi <- rmedsem(bmod, indep = "math", med = "read", dep = "science",
+                   hdi = TRUE)
+
+confint(out.ci)
+confint(out.hdi)
+summary(out.hdi)
+```
