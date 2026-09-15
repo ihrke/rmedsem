@@ -169,3 +169,16 @@ test_that("printed lines are at most 80 characters wide", {
   widths <- nchar(c(capture.output(print(out)), capture.output(print(summary(out)))))
   expect_lte(max(widths), 80)
 })
+
+test_that("BK/ZLC steps use arrows and format small p-values", {
+  out <- fake_rmedsem(p_moi = 0.0001, p_dom = 0.02)
+  output <- capture.output(print(out))
+  expect_true(any(grepl("STEP 1 - 'X' -> 'M' \\(X -> M\\) with B=0.500 and p<0.001", output)))
+  expect_true(any(grepl("STEP 2 - 'M' -> 'Y' \\(M -> Y\\) with B=0.600 and p=0.020", output)))
+  expect_false(any(grepl("'X:M'", output)))
+})
+
+test_that("RIT interpretation has no double space", {
+  out <- fit_hsbdemo_out()
+  expect_true(any(grepl("Meaning that about [0-9]+% of", capture.output(print(out)))))
+})

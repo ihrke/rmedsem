@@ -10,14 +10,13 @@
 * blavaan: the direct effect's `pval` is now the posterior probability of the
   opposite sign
 * `mcreps` defaults to 5000 and is no longer raised to the sample size
-* RID is not reported (and `RID()` warns) if the direct effect is not
+* RID is not reported if the direct effect is not
   significant; `RIT()` warns if the total effect is too small
 
 ## New features
 
 * `summary()` method
-* New methods `coef()`, `confint()` (with arguments `parm`, `level` and
-  `method`) and `nobs()` for `rmedsem` objects.
+* New methods `coef()`, `confint()` and `nobs()` for `rmedsem` objects.
 * `rmedsem.blavaan()` gains `ci.two.tailed` and `hdi` (highest-density intervals)
 * Printing is now an extensible S3 method system
 * Result objects gain the elements `zlc.method`
@@ -36,8 +35,7 @@
 * cSEM: the bootstrap interval of the indirect effect was taken from the incorrect row
 * `digits` and `indent` are passed correctly to the effect-size output.
 * `plot_coef()` no longer emits a `position_dodge()` warning
-* Very small p-values are no longer printed as `0`; tables use consistent
-  decimal places and printed lines fit into 80 characters
+* Very small p-values are no longer printed as `0`
 * `plot_effect()` title and caption are wrapped to fit small figures
 
 ## Documentation

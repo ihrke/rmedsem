@@ -76,8 +76,8 @@ test_that("blavaan: print table rows match the stored values", {
   output <- capture.output(print(out))
 
   row <- function(lab) trimws(sub(lab, "", output[startsWith(output, lab)], fixed = TRUE))
-  expect_equal(as.numeric(row("P(z>0)")), unname(out$bayes["pvpos"]), tolerance = 1e-3)
-  expect_equal(as.numeric(row("P(z<0)")), unname(out$bayes["pvneg"]), tolerance = 1e-3)
+  expect_equal(as.numeric(row("P(>0)")), unname(out$bayes["pvpos"]), tolerance = 1e-3)
+  expect_equal(as.numeric(row("P(<0)")), unname(out$bayes["pvneg"]), tolerance = 1e-3)
   ci <- as.numeric(strsplit(gsub("\\[|\\]", "", row("CI")), ",")[[1]])
   expect_equal(ci, unname(out$bayes[c("lower", "upper")]), tolerance = 1e-2)
   expect_false(any(grepl("Baron and Kenny", output)))
@@ -150,4 +150,17 @@ test_that("blavaan: output fits into 80 characters", {
   out <- rmedsem(mod, indep = "ind60", med = "dem60", dep = "dem65")
   output <- c(capture.output(print(out)), capture.output(print(summary(out))))
   expect_lte(max(nchar(output)), 80)
+})
+
+test_that("blavaan: table has no z-value row and readable evidence ratios", {
+  skip_on_cran()
+  skip_if_not_installed("blavaan")
+
+  mod <- setup_blavaan()
+  out <- rmedsem(mod, indep = "ind60", med = "dem60", dep = "dem65")
+  output <- capture.output(print(out))
+  expect_false(any(grepl("^z-value", output)))
+  expect_true(any(grepl("^Posterior SD", output)))
+  er <- trimws(sub("^ER\\+", "", output[startsWith(output, "ER+")]))
+  expect_false(grepl("\\.000$", er))
 })

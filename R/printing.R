@@ -80,12 +80,14 @@ print_freq_table <- function(res, digits=3){
 #' @noRd
 print_bayes_table <- function(res, digits=3){
   b <- res$bayes
-  fmt_er <- function(x) ifelse(is.infinite(x), "\u221E", format_fixed(x, digits))
-  mat <- data.frame(Bayes=c(format_fixed(b[c("coef","se","zval","pvpos","pvneg")], digits),
+  # evidence ratios span many orders of magnitude: significant digits
+  fmt_er <- function(x) ifelse(is.infinite(x), "\u221E",
+                               formatC(x, format="fg", digits=digits))
+  mat <- data.frame(Bayes=c(format_fixed(b[c("coef","se","pvpos","pvneg")], digits),
                             fmt_er(b[c("ERpos","ERneg")]),
                             sprintf("[%s, %s]", format_fixed(b[["lower"]], digits),
                                     format_fixed(b[["upper"]], digits))))
-  rownames(mat) <- c("Indirect effect", "Std. Err.", "z-value", "P(z>0)", "P(z<0)",
+  rownames(mat) <- c("Indirect effect", "Posterior SD", "P(>0)", "P(<0)",
                      "ER+", "ER-", ci_type(res))
   print(mat)
   cat("\n")
@@ -99,6 +101,15 @@ print_bayes_table <- function(res, digits=3){
 #' @noRd
 ci_type <- function(res){
   if (is.null(res$ci.type)) "CI" else res$ci.type
+}
+
+
+#' Format a p-value for the BK/ZLC steps
+#' @param p a p-value
+#' @return e.g. `"p=0.048"` or `"p<0.001"`
+#' @noRd
+format_step_p <- function(p){
+  if (isTRUE(p < 0.001)) "p<0.001" else sprintf("p=%5.3f", p)
 }
 
 
@@ -180,12 +191,12 @@ print_bk <- function(res, indent=3){
   indent.conclusion <- indent + 9
 
   cat("Baron and Kenny approach to testing mediation\n")
-  step1 <- sprintf("%sSTEP 1 - '%s:%s' (X -> M) with B=%5.3f and p=%5.3f\n",
-                   indstr, res$vars$indep, res$vars$med, d$coefs$moi, d$pvals$moi)
-  step2 <- sprintf("%sSTEP 2 - '%s:%s' (M -> Y) with B=%5.3f and p=%5.3f\n",
-                   indstr, res$vars$med,   res$vars$dep, d$coefs$dom, d$pvals$dom)
-  step3 <- sprintf("%sSTEP 3 - '%s:%s' (X -> Y) with B=%5.3f and p=%5.3f\n",
-                   indstr, res$vars$indep, res$vars$dep, d$coefs$doi, d$pvals$doi)
+  step1 <- sprintf("%sSTEP 1 - '%s' -> '%s' (X -> M) with B=%5.3f and %s\n",
+                   indstr, res$vars$indep, res$vars$med, d$coefs$moi, format_step_p(d$pvals$moi))
+  step2 <- sprintf("%sSTEP 2 - '%s' -> '%s' (M -> Y) with B=%5.3f and %s\n",
+                   indstr, res$vars$med,   res$vars$dep, d$coefs$dom, format_step_p(d$pvals$dom))
+  step3 <- sprintf("%sSTEP 3 - '%s' -> '%s' (X -> Y) with B=%5.3f and %s\n",
+                   indstr, res$vars$indep, res$vars$dep, d$coefs$doi, format_step_p(d$pvals$doi))
 
   type <- bk_type(res)
   steps <- if (type == "none") c(step1, step2) else c(step1, step2, step3)
@@ -224,8 +235,8 @@ print_zlc <- function(res, indent=3){
   cat("Zhao, Lynch & Chen's approach to testing mediation\n")
   cat(sprintf("Based on p-value estimated using %s\n", zlc.lab))
 
-  step1 <- sprintf("  STEP 1 - '%s:%s' (X -> Y) with B=%5.3f and p=%5.3f\n",
-                   res$vars$indep, res$vars$dep, d$coefs$doi, d$pvals$doi)
+  step1 <- sprintf("  STEP 1 - '%s' -> '%s' (X -> Y) with B=%5.3f and %s\n",
+                   res$vars$indep, res$vars$dep, d$coefs$doi, format_step_p(d$pvals$doi))
 
   conclusion <- switch(zlc_type(res),
     "indirect-only" = c(
@@ -314,7 +325,7 @@ print_effectsize <- function(res, digits=3, indent=3){
       cat(sprintf("%sRIT is not reported: %s\n", indesstr, problem))
     } else {
       with(es$RIT, cat(sprintf("%s(%5.3f/%5.3f) = %5.3f\n", indesstr, ind_eff, tot_eff, es)))
-      with(es$RIT, cat(sprintf("%sMeaning that about %3.0f%% of the effect of '%s'\n", indesstr, es*100, res$vars$indep)))
+      with(es$RIT, cat(sprintf("%sMeaning that about %.0f%% of the effect of '%s'\n", indesstr, es*100, res$vars$indep)))
       with(es$RIT, cat(sprintf("%son '%s' is mediated by '%s'\n", indesstr, res$vars$dep, res$vars$med)))
     }
   }

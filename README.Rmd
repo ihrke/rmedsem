@@ -45,12 +45,19 @@ detailed in [this article](https://ihrke.github.io/rmedsem/articles/estimation_m
 
 ## Installation
 
-You can install the development version of rmedsem from
-[GitHub](https://github.com/) with:
+You can install the released version of rmedsem from
+[CRAN](https://CRAN.R-project.org/package=rmedsem) with:
 
 ```r
-# install.packages("devtools")
-devtools::install_github("ihrke/rmedsem")
+install.packages("rmedsem")
+```
+
+The development version can be installed from
+[GitHub](https://github.com/ihrke/rmedsem) with:
+
+```r
+# install.packages("pak")
+pak::pak("ihrke/rmedsem")
 ```
 
 ## Getting started
