@@ -87,7 +87,7 @@ rmedsem.default <- function(mod, indep, med, dep, ...){
 }
 
 #' Validate common rmedsem arguments
-#' @keywords internal
+#' @noRd
 validate_rmedsem_args <- function(indep, med, dep, approach, p.threshold, effect.size) {
   check_string(indep, "indep")
   check_string(med, "med")
@@ -113,7 +113,7 @@ validate_rmedsem_args <- function(indep, med, dep, approach, p.threshold, effect
 #' @param name the argument name used in the error message
 #' @param min smallest allowed value
 #' @return `x` (invisibly)
-#' @keywords internal
+#' @noRd
 check_string <- function(x, name){
   if (!is.character(x) || length(x) != 1 || is.na(x) || !nzchar(x))
     stop(sprintf("'%s' must be a single, non-empty character string.", name), call.=FALSE)
@@ -121,7 +121,7 @@ check_string <- function(x, name){
 }
 
 #' @rdname check_string
-#' @keywords internal
+#' @noRd
 check_flag <- function(x, name){
   if (!is.logical(x) || length(x) != 1 || is.na(x))
     stop(sprintf("'%s' must be a single logical value (TRUE or FALSE).", name), call.=FALSE)
@@ -129,7 +129,7 @@ check_flag <- function(x, name){
 }
 
 #' @rdname check_string
-#' @keywords internal
+#' @noRd
 check_count <- function(x, name, min=1){
   if (!is.numeric(x) || length(x) != 1 || !is.finite(x) || x != round(x) || x < min)
     stop(sprintf("'%s' must be a single integer >= %d.", name, min), call.=FALSE)
@@ -137,7 +137,7 @@ check_count <- function(x, name, min=1){
 }
 
 #' @rdname check_string
-#' @keywords internal
+#' @noRd
 check_ci_level <- function(x, name="ci.two.tailed"){
   if (!is.numeric(x) || length(x) != 1 || is.na(x) || x <= 0 || x >= 1)
     stop(sprintf("'%s' must be a single number between 0 and 1 (e.g., 0.95).", name),
@@ -151,7 +151,7 @@ check_ci_level <- function(x, name="ci.two.tailed"){
 #' @param N sample size
 #' @return `N` if `mcreps` is `NULL` or smaller than `N` (with a message in
 #'   the latter case), otherwise `mcreps`
-#' @keywords internal
+#' @noRd
 resolve_mcreps <- function(mcreps, N){
   if (is.null(mcreps))
     return(N)
@@ -173,7 +173,7 @@ resolve_mcreps <- function(mcreps, N){
 #'   variable
 #' @return `NULL` (invisibly); stops with an informative error if a variable
 #'   or one of the paths X -> M, M -> Y and X -> Y is missing
-#' @keywords internal
+#' @noRd
 check_mediation_model <- function(vars, paths, indep, med, dep){
   roles <- c(indep=indep, med=med, dep=dep)
   missing.vars <- roles[!roles %in% vars]
@@ -208,7 +208,7 @@ check_mediation_model <- function(vars, paths, indep, med, dep){
 #'   (optionally) `label`
 #' @param lhs,rhs left- and right-hand side of the regression path
 #' @return a single string
-#' @keywords internal
+#' @noRd
 vcov_name <- function(partable, lhs, rhs){
   if (!is.null(partable$label)) {
     lab <- partable$label[partable$lhs == lhs & partable$op == "~" & partable$rhs == rhs]

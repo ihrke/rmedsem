@@ -2,7 +2,7 @@
 #' @param s a string
 #' @param indent an integer how much to indent s
 #' @return indented string
-#' @keywords internal
+#' @noRd
 pre_indent_merge <- function(s, indent){
   indstr <- strrep(" ", indent)
   sapply(s, \(.x) paste0(indstr,.x,collapse="")) |> paste0(collapse="")
@@ -15,7 +15,7 @@ pre_indent_merge <- function(s, indent){
 #' name in `res$est.methods`.
 #' @param methods character vector of method names
 #' @return character vector of labels
-#' @keywords internal
+#' @noRd
 method_label <- function(methods){
   labels <- c(sobel="Sobel", delta="Delta", montc="Monte-Carlo",
               boot="Bootstrap", bayes="Bayes")
@@ -29,7 +29,7 @@ method_label <- function(methods){
 #' `res$est.methods`.
 #' @param res an `rmedsem` object
 #' @return a single method name
-#' @keywords internal
+#' @noRd
 zlc_method <- function(res){
   if (!is.null(res$zlc.method)) res$zlc.method else res$est.methods[length(res$est.methods)]
 }
@@ -38,7 +38,7 @@ zlc_method <- function(res){
 #' Print the Header of an rmedsem Object
 #' @param res an `rmedsem` object
 #' @return `NULL` (invisibly)
-#' @keywords internal
+#' @noRd
 print_header <- function(res){
   cat(sprintf("Significance testing of indirect effect (%s)\n",
               ifelse(res$standardized, "standardized", "unstandardized")))
@@ -56,7 +56,7 @@ print_header <- function(res){
 #' @param res an `rmedsem` object
 #' @param digits an integer, number of digits to print in table
 #' @return `NULL` (invisibly)
-#' @keywords internal
+#' @noRd
 print_freq_table <- function(res, digits=3){
   cols <- lapply(res$est.methods, \(m){
     est <- res[[m]]
@@ -78,7 +78,7 @@ print_freq_table <- function(res, digits=3){
 #' @param res an `rmedsem` object with a `bayes` element
 #' @param digits an integer, number of digits to print in table
 #' @return `NULL` (invisibly)
-#' @keywords internal
+#' @noRd
 print_bayes_table <- function(res, digits=3){
   b <- res$bayes
   fmt_er <- function(x) ifelse(is.infinite(x), "\u221E", format(x, digits=digits))
@@ -97,7 +97,7 @@ print_bayes_table <- function(res, digits=3){
 #' Type of the stored intervals
 #' @param res an `rmedsem` object (or `summary.rmedsem` object)
 #' @return `res$ci.type` if present (e.g. `"HDI"`), otherwise `"CI"`
-#' @keywords internal
+#' @noRd
 ci_type <- function(res){
   if (is.null(res$ci.type)) "CI" else res$ci.type
 }
@@ -106,7 +106,7 @@ ci_type <- function(res){
 #' Format a proportion as a percentage label
 #' @param x a proportion, e.g. 0.95
 #' @return a string, e.g. `"95%"`
-#' @keywords internal
+#' @noRd
 format_percent <- function(x){
   paste0(format(100*x, trim=TRUE, digits=3), "%")
 }
@@ -121,7 +121,7 @@ format_percent <- function(x){
 #'   (Sobel significant, STEP 3 not), `"partial"` (all significant),
 #'   `"partial_sobel_ns"` (STEP 3 significant, Sobel not) or
 #'   `"partial_all_ns"` (neither STEP 3 nor Sobel significant)
-#' @keywords internal
+#' @noRd
 bk_type <- function(res){
   d <- res$med.data
   sig <- function(p) isTRUE(p < d$sig_thresh)
@@ -145,7 +145,7 @@ bk_type <- function(res){
 #' @param res an `rmedsem` object with element `med.data`
 #' @return one of `"indirect-only"`, `"direct-only"`, `"no-effect"`,
 #'   `"complementary"` or `"competitive"`
-#' @keywords internal
+#' @noRd
 zlc_type <- function(res){
   d <- res$med.data
   sig <- function(p) isTRUE(p < d$sig_thresh)
@@ -164,7 +164,7 @@ zlc_type <- function(res){
 #' @param res an `rmedsem` object
 #' @param indent an integer, number of spaces to indent
 #' @return `NULL` (invisibly)
-#' @keywords internal
+#' @noRd
 print_bk <- function(res, indent=3){
   d <- res$med.data
   indstr <- strrep(" ", indent)
@@ -206,7 +206,7 @@ print_bk <- function(res, indent=3){
 #' @param res an `rmedsem` object
 #' @param indent an integer, number of spaces to indent
 #' @return `NULL` (invisibly)
-#' @keywords internal
+#' @noRd
 print_zlc <- function(res, indent=3){
   d <- res$med.data
   indent.conclusion <- indent + 9
@@ -247,7 +247,7 @@ print_zlc <- function(res, indent=3){
 #' @param digits an integer, number of digits to print in table
 #' @param indent an integer, number of spaces to indent
 #' @return `NULL` (invisibly)
-#' @keywords internal
+#' @noRd
 print_effectsize <- function(res, digits=3, indent=3){
   es <- res$effect.size
   indstr <- strrep(" ", indent)
@@ -303,7 +303,7 @@ print_effectsize <- function(res, digits=3, indent=3){
 #' @param res an `rmedsem` object with a `moderation` element
 #' @param ci_moderation a logical, whether to print confidence intervals
 #' @return `NULL` (invisibly)
-#' @keywords internal
+#' @noRd
 print_moderation <- function(res, ci_moderation=FALSE){
   moderation <- res$moderation
   moderator <- moderation$moderator

@@ -8,9 +8,7 @@
 ^\.github$
 ^data-raw$
 ^vignettes/articles$
-^NOTES\.md$
-^TODO\.md$
 ^test_rmedsem_example_models$
 ^cran-comments\.md$
 ^CRAN-SUBMISSION$
-^JSS_REVIEW_TODO\.md$
+^dev$

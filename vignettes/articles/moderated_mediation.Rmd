@@ -21,7 +21,7 @@ Mediated moderation is available for cases
 corresponding to "Model 2" from Preacher et al., 2007 shown in the following graph:
 
 
-```{r, echo=FALSE}
+```{r}
 #| echo: false
 #| warning: false
 #| eval: true

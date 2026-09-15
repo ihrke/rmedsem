@@ -192,7 +192,7 @@ rmedsem.lavaan <- function(mod, indep, med, dep,
 #' @param indep,med,dep names of the independent, mediator and dependent
 #'   variable
 #' @return the parameter table of `mod` (invisibly)
-#' @keywords internal
+#' @noRd
 check_lavaan_model <- function(mod, indep, med, dep){
   if (lavaan::lavInspect(mod, "ngroups") > 1)
     stop("Multi-group models are not supported by rmedsem().", call.=FALSE)

@@ -264,7 +264,7 @@ print.summary.rmedsem <- function(x, digits = max(3L, getOption("digits") - 3L),
 #' Table of Indirect, Direct and Total Effects
 #' @param res an `rmedsem` object
 #' @return a data frame, see [summary.rmedsem()]
-#' @keywords internal
+#' @noRd
 effects_table <- function(res){
   get_num <- function(v, n) if (n %in% names(v)) unname(v[[n]]) else NA_real_
   row <- function(effect, method, v)
@@ -282,7 +282,7 @@ effects_table <- function(res){
 #' @param res an `rmedsem` object
 #' @param method `NULL` or one of `res$est.methods`
 #' @return a single method name; defaults to [zlc_method()]
-#' @keywords internal
+#' @noRd
 resolve_method <- function(res, method){
   if (is.null(method))
     return(zlc_method(res))
