@@ -8,3 +8,5 @@
   estimation](https://ihrke.github.io/rmedsem/articles/mediation_technical.md):
 - [Moderated mediation and mediated moderation using
   rmedsem](https://ihrke.github.io/rmedsem/articles/moderated_mediation.md):
+- [Working with the
+  results](https://ihrke.github.io/rmedsem/articles/working_with_results.md):
