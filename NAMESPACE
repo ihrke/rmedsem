@@ -7,10 +7,14 @@ S3method(RIT,rmedsem)
 S3method(Upsilon,default)
 S3method(Upsilon,rmedsem)
 S3method(as.data.frame,rmedsem)
+S3method(coef,rmedsem)
+S3method(confint,rmedsem)
+S3method(nobs,rmedsem)
 S3method(plot,rmedsem)
 S3method(print,rmedsem)
 S3method(print,rmedsem_blavaan)
 S3method(print,rmedsem_modsem)
+S3method(print,summary.rmedsem)
 S3method(rmedsem,blavaan)
 S3method(rmedsem,cSEMResults)
 S3method(rmedsem,default)
@@ -23,3 +27,8 @@ export(Upsilon)
 export(plot_coef)
 export(plot_effect)
 export(rmedsem)
+importFrom(stats,
+  coef,
+  confint,
+  nobs
+)

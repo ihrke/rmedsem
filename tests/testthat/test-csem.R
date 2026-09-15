@@ -82,3 +82,24 @@ test_that("cSEM: uses boot estimation method", {
   expect_true("boot" %in% names(out))
   expect_equal(out$est.methods, c("sobel", "delta", "boot"))
 })
+
+test_that("cSEM: summary, coef, confint and nobs work", {
+  skip_on_cran()
+  skip_if_not_installed("cSEM")
+
+  model <- "
+    OwnLook =~ smv_attr_face + smv_attr_body + smv_sexy
+    SelfEst =~ ses_satis + ses_qualities + ses_able_todo
+    MentWell =~ mwb_optimistic + mwb_useful + mwb_energy
+    SelfEst ~ OwnLook
+    MentWell ~ OwnLook + SelfEst
+  "
+  cs <- cSEM::csem(rmedsem::mchoice, model)
+  out <- rmedsem(cs, indep = "OwnLook", med = "SelfEst", dep = "MentWell",
+                 nbootstrap = 50)
+  s <- summary(out)
+  expect_equal(s$zlc.method, "boot")
+  expect_equal(nobs(out), nrow(rmedsem::mchoice))
+  expect_equal(confint(out)["indirect", ], unname(out$boot[c("lower", "upper")]),
+               ignore_attr = TRUE)
+})

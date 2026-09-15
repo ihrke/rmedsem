@@ -41,6 +41,20 @@
 * lavaan and modsem models with labelled regression paths (e.g.,
   `read ~ a*math`) now work (previously "subscript out of bounds").
 * lavaan: a warning is given if the model did not converge.
+* `summary()` now returns a `summary.rmedsem` object (with a compact
+  `print` method) containing a table of indirect, direct and total effects,
+  the type of mediation according to Baron & Kenny and Zhao, Lynch & Chen, and
+  the effect sizes. Previously it only printed the `rmedsem` object.
+* New methods `coef()`, `confint()` (with arguments `method` and `level`) and
+  `nobs()` for `rmedsem` objects. Results now store `nobs` and `ci.level`.
+* `as.data.frame()` now returns a plain data frame instead of a tibble.
+* `ci.two.tailed` now also determines the Monte-Carlo intervals of the
+  indirect and total effects (lavaan, modsem); previously these were always
+  95% intervals. `rmedsem.blavaan()` gains `ci.two.tailed` (previously fixed
+  at 95%).
+* blavaan: the direct effect's `pval` is now the posterior probability of the
+  opposite sign, consistent with the indirect effect (previously
+  `P(direct <= 0)`, which is wrong for negative effects).
 * Examples: `rmedsem.blavaan()` now has a runnable example (`\donttest{}`
   instead of `\dontrun{}`), `rmedsem.cSEMResults()` has a new example, and
   the datasets `hsbdemo`, `mchoice` and `workout` have examples.

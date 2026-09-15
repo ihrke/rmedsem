@@ -94,3 +94,25 @@ test_that("blavaan: model is checked for variables and paths", {
   expect_error(rmedsem(mod, indep = "dem60", med = "ind60", dep = "dem65"),
                "'ind60 ~ dem60' \\(X -> M\\)")
 })
+
+test_that("blavaan: summary, coef, confint, nobs and as.data.frame work", {
+  skip_on_cran()
+  skip_if_not_installed("blavaan")
+
+  mod <- setup_blavaan()
+  out <- rmedsem(mod, indep = "ind60", med = "dem60", dep = "dem65",
+                 ci.two.tailed = 0.9)
+  s <- summary(out)
+  expect_s3_class(s, "summary.rmedsem")
+  expect_equal(s$effects$method[1], "bayes")
+  expect_null(s$mediation$bk)
+  expect_output(print(s), "posterior probability")
+
+  expect_equal(coef(out)[["indirect"]], unname(out$bayes["coef"]))
+  expect_equal(colnames(confint(out)), c("5 %", "95 %"))
+  expect_equal(nobs(out), 75L)
+
+  df <- as.data.frame(out)
+  expect_s3_class(df, "data.frame")
+  expect_equal(df$method, "bayes")
+})

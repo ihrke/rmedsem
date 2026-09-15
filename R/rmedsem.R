@@ -50,6 +50,9 @@ utils::globalVariables(c(
 #'     `moi` (X -> M), `dom` (M -> Y) and `doi` (X -> Y).}
 #'   \item{`effect.size`}{list with (a subset of) elements `RIT`, `RID` and
 #'     `upsilon`, as returned by the built-in backends.}
+#'   \item{`nobs`}{(optional) number of observations, used by [stats::nobs()].}
+#'   \item{`ci.level`}{(optional) level of the stored intervals, used by
+#'     [stats::confint()] and [summary()]; defaults to 0.95.}
 #' }
 #' A backend whose output does not fit this scheme can provide its own
 #' `print.rmedsem_<pkg>()` method, either replacing the default output (as

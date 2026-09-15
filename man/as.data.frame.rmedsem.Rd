@@ -12,7 +12,13 @@
 \item{...}{additional arguments (currently unused)}
 }
 \value{
-a data.frame
+a data.frame with one row per estimation method of the indirect
+effect (see \code{x$est.methods}) and columns \code{package}, \code{method} and the
+estimates stored for that method (for frequentist methods \code{coef}, \code{se},
+\code{zval}, \code{pval}, \code{lower} and \code{upper}; Bayesian estimates additionally
+contain posterior probabilities and evidence ratios). See
+\code{\link[=summary.rmedsem]{summary.rmedsem()}} for a table that also includes the direct and total
+effects.
 }
 \description{
 Convert an rmedsem Object to a Data Frame

@@ -142,7 +142,8 @@ rmedsem.cSEMResults <- function(mod, indep, med, dep,
                        se_MX=se_moi, se_YMX=se_dom)
   }
 
-  res <- list(package="cSEM", standardized=TRUE,
+  res <- list(package="cSEM", standardized=TRUE, nobs=N,
+              ci.level=ci.two.tailed,
               vars =list(med=med, indep=indep, dep=dep),
               est.methods=c("sobel","delta","boot"),
               zlc.method="boot",

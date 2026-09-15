@@ -2,20 +2,51 @@
 % Please edit documentation in R/accessors.R
 \name{summary.rmedsem}
 \alias{summary.rmedsem}
+\alias{print.summary.rmedsem}
 \title{Summarize an rmedsem Object}
 \usage{
 \method{summary}{rmedsem}(object, ...)
+
+\method{print}{summary.rmedsem}(x, digits = max(3L, getOption("digits") - 3L), ...)
 }
 \arguments{
 \item{object}{the \code{rmedsem} object}
 
-\item{...}{additional arguments passed to \code{\link[=print.rmedsem]{print.rmedsem()}}}
+\item{...}{additional arguments (currently unused)}
+
+\item{x}{a \code{summary.rmedsem} object}
+
+\item{digits}{an integer, number of significant digits to print}
 }
 \value{
-the \code{rmedsem} object (invisibly)
+\code{summary()} returns an object of class \code{summary.rmedsem}, a list
+with elements
+\describe{
+\item{\code{package}, \code{vars}, \code{standardized}, \code{nobs}, \code{ci.level}}{copied
+from \code{object}.}
+\item{\code{p.threshold}}{the p-value threshold (\code{NULL} for Bayesian models).}
+\item{\code{effects}}{a data frame with columns \code{effect}, \code{method},
+\code{estimate}, \code{se}, \code{zval}, \code{pval}, \code{lower} and \code{upper} (see
+\code{\link[=as.data.frame.rmedsem]{as.data.frame.rmedsem()}}); \code{NA} where a quantity is not available.}
+\item{\code{mediation}}{a list with elements \code{bk} and \code{zlc} giving the type
+of mediation (\code{NULL} if the approach was not requested). \code{bk} is one
+of \code{"none"}, \code{"complete"} or \code{"partial"}; \code{zlc} is one of
+\code{"indirect-only"}, \code{"direct-only"}, \code{"no-effect"}, \code{"complementary"}
+or \code{"competitive"}.}
+\item{\code{zlc.method}}{the estimation method used for the Zhao, Lynch &
+Chen approach.}
+\item{\code{effect.size}}{a named numeric vector with the requested effect
+sizes (\code{RIT}, \code{RID}, \code{upsilon} (adjusted) and \code{upsilon.unadjusted}).}
+}
+\code{print.summary.rmedsem()} returns \code{x} invisibly.
 }
 \description{
-Prints the mediation analysis results to the console.
+\code{summary()} collects the main results of a mediation analysis in a compact
+form: a table of the indirect (for each estimation method), direct and
+total effects, the type of mediation according to the Baron and Kenny
+and/or Zhao, Lynch & Chen approaches, and the effect sizes. Printing the
+\code{rmedsem} object itself (\code{\link[=print.rmedsem]{print.rmedsem()}}) gives a more verbose, step-by-step
+description of the same results.
 }
 \examples{
 mod.txt <- "
@@ -24,6 +55,9 @@ science ~ read + math
 "
 mod <- lavaan::sem(mod.txt, data=rmedsem::hsbdemo)
 out <- rmedsem(mod, indep="math", med="read", dep="science")
-summary(out)
+s <- summary(out)
+s
+s$mediation
+s$effects
 
 }

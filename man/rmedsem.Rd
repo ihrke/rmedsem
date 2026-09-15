@@ -72,6 +72,9 @@ threshold), \code{coefs} and \code{pvals}; the latter two are lists with element
 \code{moi} (X -> M), \code{dom} (M -> Y) and \code{doi} (X -> Y).}
 \item{\code{effect.size}}{list with (a subset of) elements \code{RIT}, \code{RID} and
 \code{upsilon}, as returned by the built-in backends.}
+\item{\code{nobs}}{(optional) number of observations, used by \code{\link[stats:nobs]{stats::nobs()}}.}
+\item{\code{ci.level}}{(optional) level of the stored intervals, used by
+\code{\link[stats:confint]{stats::confint()}} and \code{\link[=summary]{summary()}}; defaults to 0.95.}
 }
 A backend whose output does not fit this scheme can provide its own
 \verb{print.rmedsem_<pkg>()} method, either replacing the default output (as

@@ -10,6 +10,8 @@
 #' @param p.threshold A double giving the p-value for determining whether a path
 #'  is significant or not
 #' @param effect.size calculate different effect-sizes; one or more of "RIT", "RID"
+#' @param ci.two.tailed A double giving the probability mass of the two-tailed
+#'   (equal-tailed) credible intervals (default 0.95)
 #' @param ... additional arguments (currently unused)
 #'
 #' @return A `rmedsem` structure containing the results from the analysis
@@ -34,11 +36,14 @@
 #' }
 rmedsem.blavaan <- function(mod, indep, med, dep,
                             approach=c("bk", "zlc"), p.threshold=0.05,
-                            effect.size=c("RIT","RID","upsilon"), ...){
+                            effect.size=c("RIT","RID","upsilon"),
+                            ci.two.tailed=0.95, ...){
   if (!requireNamespace("blavaan", quietly = TRUE))
     stop("Package 'blavaan' is required for this method. Please install it.")
   validate_rmedsem_args(indep, med, dep, approach, p.threshold, effect.size)
+  check_ci_level(ci.two.tailed)
   check_lavaan_model(mod, indep, med, dep)
+  probs <- c((1-ci.two.tailed)/2, 1-(1-ci.two.tailed)/2)
   ## convergence check
   if(max(blavaan::blavInspect(mod, "rhat"))>1.05)
     warning("Some Rhat>1.05, check convergence!")
@@ -51,7 +56,7 @@ rmedsem.blavaan <- function(mod, indep, med, dep,
   ptsamp <- draws[,moi]*draws[,dom]
   nsamp <- length(ptsamp)
   bayes_coef <- mean(ptsamp)
-  bayes_qs <- stats::quantile(ptsamp, c(0.025, 0.975))
+  bayes_qs <- stats::quantile(ptsamp, probs)
   bayes_lci <- bayes_qs[1]
   bayes_uci <- bayes_qs[2]
   names(bayes_lci) <- NULL
@@ -68,8 +73,8 @@ rmedsem.blavaan <- function(mod, indep, med, dep,
   # direct effect estimates
   coef_doi <- base::mean(desamp)
   se_doi <- stats::sd(desamp)
-  pval_doi <- 1-base::mean(desamp>0)
-  qs_doi <- stats::quantile(desamp, c(0.025, 0.975))
+  pval_doi <- min(base::mean(desamp>0), base::mean(desamp<0))
+  qs_doi <- stats::quantile(desamp, probs)
   lci_doi <- qs_doi[1]
   uci_doi <- qs_doi[2]
   names(lci_doi) <- NULL
@@ -79,7 +84,7 @@ rmedsem.blavaan <- function(mod, indep, med, dep,
   totsamp <- ptsamp+desamp
   coef_tot <- mean(totsamp)
   se_tot <- stats::sd(totsamp)
-  qs_tot <- stats::quantile(totsamp, c(0.025, 0.975))
+  qs_tot <- stats::quantile(totsamp, probs)
   lci_tot <- qs_tot[1]
   uci_tot <- qs_tot[2]
   names(lci_tot) <- NULL
@@ -109,7 +114,7 @@ rmedsem.blavaan <- function(mod, indep, med, dep,
     ups_unadj <- mean(draws[,moi])^2 * mean(draws[,dom])^2
     ups_adj   <- (mean(draws[,moi])^2 - stats::var(draws[,moi])) *
                  (mean(draws[,dom])^2 - stats::var(draws[,dom]))
-    ups_qs <- stats::quantile(ups_samples, c(0.025, 0.975))
+    ups_qs <- stats::quantile(ups_samples, probs)
     es$upsilon <- list(unadjusted=ups_unadj, adjusted=ups_adj,
                    samples=ups_samples,
                    posterior_mean=mean(ups_samples),
@@ -119,7 +124,8 @@ rmedsem.blavaan <- function(mod, indep, med, dep,
                    se_MX=stats::sd(draws[,moi]), se_YMX=stats::sd(draws[,dom]))
   }
 
-  res <- list(package="blavaan", standardized=TRUE,
+  res <- list(package="blavaan", standardized=TRUE, nobs=lavaan::nobs(mod),
+              ci.level=ci.two.tailed,
               vars =list(med=med, indep=indep, dep=dep),
               direct.effect = c(coef=coef_doi, se=se_doi, pval=pval_doi, lower=lci_doi, upper=uci_doi),
               total.effect =  c(coef=coef_tot, se=se_tot, lower=lci_tot, upper=uci_tot),

@@ -151,7 +151,7 @@ rmedsem.modsem <- function(mod, indep, med, dep,
   montc_se   <- stats::sd(prod_coef)
   montc_z    <- montc_prod/montc_se
   montc_pv   <- 2*(1-stats::pnorm(abs(montc_z)))
-  montc_qs   <- stats::quantile(prod_coef, c(0.025, 0.975))
+  montc_qs   <- stats::quantile(prod_coef, c((1-ci.two.tailed)/2, 1-(1-ci.two.tailed)/2))
   montc_lci  <- montc_qs[1]
   montc_uci  <- montc_qs[2]
   names(montc_lci) <- NULL
@@ -167,7 +167,7 @@ rmedsem.modsem <- function(mod, indep, med, dep,
   tot_eff_samp <- (coefx[,1]*coefx[,2])+coefx[,3]
   coef_tot <- mean(tot_eff_samp)
   se_tot   <- stats::sd(tot_eff_samp)
-  tot_qs   <- stats::quantile(tot_eff_samp, c(0.025, 0.975))
+  tot_qs   <- stats::quantile(tot_eff_samp, c((1-ci.two.tailed)/2, 1-(1-ci.two.tailed)/2))
   lci_tot  <- tot_qs[1]
   uci_tot  <- tot_qs[2]
   names(lci_tot) <- NULL
@@ -316,7 +316,8 @@ rmedsem.modsem <- function(mod, indep, med, dep,
   } else moderation.info <- list(has.moderator = FALSE)
 
 
-  res <- list(package="modsem", standardized=standardized,
+  res <- list(package="modsem", standardized=standardized, nobs=N,
+              ci.level=ci.two.tailed,
               vars =list(med=med, indep=indep, dep=dep),
               est.methods = c("sobel","delta", "montc"),
               zlc.method = "montc",

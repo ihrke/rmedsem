@@ -110,3 +110,19 @@ test_that("output ends with an empty line (prompt on new line)", {
   output <- capture.output(print(fit_hsbdemo_out(effect.size = "RID")))
   expect_equal(output[length(output)], "")
 })
+
+test_that("print and summary agree on the type of mediation", {
+  grid <- expand.grid(p_moi = c(0.01, 0.5), p_doi = c(0.01, 0.5), p_ind = c(0.01, 0.5))
+  bk_text <- c(none = "no mediation", complete = "mediation is complete",
+               partial = "mediation is partial")
+  zlc_text <- c("indirect-only" = "indirect-only", "direct-only" = "direct-only",
+                "no-effect" = "no effect", complementary = "complementary",
+                competitive = "competitive")
+  for (i in seq_len(nrow(grid))) {
+    out <- do.call(fake_rmedsem, as.list(grid[i, ]))
+    s <- summary(out)
+    output <- paste(capture.output(print(out)), collapse = " ")
+    expect_true(grepl(bk_text[[s$mediation$bk]], output), info = i)
+    expect_true(grepl(zlc_text[[s$mediation$zlc]], output), info = i)
+  }
+})

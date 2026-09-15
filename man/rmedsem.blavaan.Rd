@@ -12,6 +12,7 @@
   approach = c("bk", "zlc"),
   p.threshold = 0.05,
   effect.size = c("RIT", "RID", "upsilon"),
+  ci.two.tailed = 0.95,
   ...
 )
 }
@@ -31,6 +32,9 @@
 is significant or not}
 
 \item{effect.size}{calculate different effect-sizes; one or more of "RIT", "RID"}
+
+\item{ci.two.tailed}{A double giving the probability mass of the two-tailed
+(equal-tailed) credible intervals (default 0.95)}
 
 \item{...}{additional arguments (currently unused)}
 }

@@ -94,17 +94,70 @@ print_bayes_table <- function(res, digits=3){
 }
 
 
-#' Print the Baron and Kenny Mediation Steps
+#' Format a proportion as a percentage label
+#' @param x a proportion, e.g. 0.95
+#' @return a string, e.g. `"95%"`
+#' @keywords internal
+format_percent <- function(x){
+  paste0(format(100*x, trim=TRUE, digits=3), "%")
+}
+
+
+#' Type of Mediation According to Baron and Kenny
 #'
 #' A p-value is considered significant if it is strictly smaller than the
 #' threshold; a p-value equal to the threshold (or `NA`) is not significant.
+#' @param res an `rmedsem` object with elements `med.data` and `sobel`
+#' @return one of `"none"` (STEP 1 or STEP 2 not significant), `"complete"`
+#'   (Sobel significant, STEP 3 not), `"partial"` (all significant),
+#'   `"partial_sobel_ns"` (STEP 3 significant, Sobel not) or
+#'   `"partial_all_ns"` (neither STEP 3 nor Sobel significant)
+#' @keywords internal
+bk_type <- function(res){
+  d <- res$med.data
+  sig <- function(p) isTRUE(p < d$sig_thresh)
+  if (!sig(d$pvals$moi) || !sig(d$pvals$dom))
+    return("none")
+  sobel.sig <- sig(res$sobel[["pval"]])
+  step3.sig <- sig(d$pvals$doi)
+  if (sobel.sig && !step3.sig) "complete"
+  else if (sobel.sig && step3.sig) "partial"
+  else if (step3.sig) "partial_sobel_ns"
+  else "partial_all_ns"
+}
+
+
+#' Type of Mediation According to Zhao, Lynch & Chen
+#'
+#' The test of the indirect effect is based on the method returned by
+#' [zlc_method()]. A p-value is considered significant if it is strictly
+#' smaller than the threshold; a p-value equal to the threshold (or `NA`) is
+#' not significant.
+#' @param res an `rmedsem` object with element `med.data`
+#' @return one of `"indirect-only"`, `"direct-only"`, `"no-effect"`,
+#'   `"complementary"` or `"competitive"`
+#' @keywords internal
+zlc_type <- function(res){
+  d <- res$med.data
+  sig <- function(p) isTRUE(p < d$sig_thresh)
+  ind.sig <- sig(res[[zlc_method(res)]][["pval"]])
+  dir.sig <- sig(d$pvals$doi)
+  if (ind.sig && !dir.sig) "indirect-only"
+  else if (!ind.sig && dir.sig) "direct-only"
+  else if (!ind.sig && !dir.sig) "no-effect"
+  else if (with(d$coefs, moi*dom*doi) > 0) "complementary"
+  else "competitive"
+}
+
+
+#' Print the Baron and Kenny Mediation Steps
+#'
 #' @param res an `rmedsem` object
 #' @param indent an integer, number of spaces to indent
 #' @return `NULL` (invisibly)
 #' @keywords internal
 print_bk <- function(res, indent=3){
   d <- res$med.data
-  sig <- function(p) isTRUE(p < d$sig_thresh)
   indstr <- strrep(" ", indent)
   indent.conclusion <- indent + 9
 
@@ -116,30 +169,24 @@ print_bk <- function(res, indent=3){
   step3 <- sprintf("%sSTEP 3 - '%s:%s' (X -> Y) with B=%5.3f and p=%5.3f\n",
                    indstr, res$vars$indep, res$vars$dep, d$coefs$doi, d$pvals$doi)
 
-  if (!sig(d$pvals$moi) || !sig(d$pvals$dom)) {
-    conclusion <- c(
+  type <- bk_type(res)
+  steps <- if (type == "none") c(step1, step2) else c(step1, step2, step3)
+  conclusion <- switch(type,
+    none = c(
       "As either STEP 1 or STEP 2 (or both) are not significant,\n",
-      "there is no mediation.\n"
-    )
-    steps <- c(step1, step2)
-  } else {
-    steps <- c(step1, step2, step3)
-    sobel.sig <- sig(res$sobel[["pval"]])
-    step3.sig <- sig(d$pvals$doi)
-    conclusion <- if (sobel.sig && !step3.sig) c(
+      "there is no mediation.\n"),
+    complete = c(
       "As STEP 1, STEP 2 and the Sobel's test above are significant\n",
-      "and STEP 3 is not significant the mediation is complete.\n"
-    ) else if (sobel.sig && step3.sig) c(
+      "and STEP 3 is not significant the mediation is complete.\n"),
+    partial = c(
       "As STEP 1, STEP 2 and STEP 3 as well as the Sobel's test above\n",
-      "are significant the mediation is partial.\n"
-    ) else if (step3.sig) c(
+      "are significant the mediation is partial.\n"),
+    partial_sobel_ns = c(
       "As STEP 1, STEP 2 and STEP 3 are all significant and the\n",
-      "Sobel's test above is not significant the mediation is partial.\n"
-    ) else c(
+      "Sobel's test above is not significant the mediation is partial.\n"),
+    partial_all_ns = c(
       "As STEP 1 and STEP 2 are significant and neither STEP 3 nor\n",
-      "the Sobel's test above is significant the mediation is partial.\n"
-    )
-  }
+      "the Sobel's test above is significant the mediation is partial.\n"))
   cat(steps, pre_indent_merge(conclusion, indent.conclusion), "\n", sep="")
   invisible(NULL)
 }
@@ -147,48 +194,39 @@ print_bk <- function(res, indent=3){
 
 #' Print the Zhao, Lynch & Chen Mediation Steps
 #'
-#' The test of the indirect effect is based on the method returned by
-#' [zlc_method()]. A p-value is considered significant if it is strictly
-#' smaller than the threshold; a p-value equal to the threshold (or `NA`) is
-#' not significant.
 #' @param res an `rmedsem` object
 #' @param indent an integer, number of spaces to indent
 #' @return `NULL` (invisibly)
 #' @keywords internal
 print_zlc <- function(res, indent=3){
   d <- res$med.data
-  sig <- function(p) isTRUE(p < d$sig_thresh)
   indent.conclusion <- indent + 9
 
-  zlc.met <- zlc_method(res)
-  zlc.lab <- method_label(zlc.met)
+  zlc.lab <- method_label(zlc_method(res))
   cat("Zhao, Lynch & Chen's approach to testing mediation\n")
   cat(sprintf("Based on p-value estimated using %s\n", zlc.lab))
 
   step1 <- sprintf("  STEP 1 - '%s:%s' (X -> Y) with B=%5.3f and p=%5.3f\n",
                    res$vars$indep, res$vars$dep, d$coefs$doi, d$pvals$doi)
-  ind.sig <- sig(res[[zlc.met]][["pval"]])
-  dir.sig <- sig(d$pvals$doi)
-  axbxc <- with(d$coefs, moi*dom*doi)
 
-  conclusion <- if (ind.sig && !dir.sig) c(
-    sprintf("As the %s test above is significant and STEP 1 is not\n", zlc.lab),
-    "significant there is indirect-only mediation (full mediation).\n"
-  ) else if (!ind.sig && dir.sig) c(
-    sprintf("As the %s test above is not significant and STEP 1 is\n", zlc.lab),
-    "significant there is direct-only nonmediation (no mediation).\n"
-  ) else if (!ind.sig && !dir.sig) c(
-    sprintf("As the %s test above is not significant and STEP 1 is\n", zlc.lab),
-    "not significant there is no effect nonmediation (no mediation).\n"
-  ) else if (axbxc > 0) c(
-    sprintf("As the %s test above is significant, STEP 1 is\n", zlc.lab),
-    "significant and their coefficients point in same direction,\n",
-    "there is complementary mediation (partial mediation).\n"
-  ) else c(
-    sprintf("As the %s test above is significant, STEP 1 is\n", zlc.lab),
-    "significant and their coefficients point in opposite\n",
-    "direction, there is competitive mediation (partial mediation).\n"
-  )
+  conclusion <- switch(zlc_type(res),
+    "indirect-only" = c(
+      sprintf("As the %s test above is significant and STEP 1 is not\n", zlc.lab),
+      "significant there is indirect-only mediation (full mediation).\n"),
+    "direct-only" = c(
+      sprintf("As the %s test above is not significant and STEP 1 is\n", zlc.lab),
+      "significant there is direct-only nonmediation (no mediation).\n"),
+    "no-effect" = c(
+      sprintf("As the %s test above is not significant and STEP 1 is\n", zlc.lab),
+      "not significant there is no effect nonmediation (no mediation).\n"),
+    complementary = c(
+      sprintf("As the %s test above is significant, STEP 1 is\n", zlc.lab),
+      "significant and their coefficients point in same direction,\n",
+      "there is complementary mediation (partial mediation).\n"),
+    competitive = c(
+      sprintf("As the %s test above is significant, STEP 1 is\n", zlc.lab),
+      "significant and their coefficients point in opposite\n",
+      "direction, there is competitive mediation (partial mediation).\n"))
   cat(step1, pre_indent_merge(conclusion, indent.conclusion), "\n", sep="")
   invisible(NULL)
 }
@@ -240,8 +278,10 @@ print_effectsize <- function(res, digits=3, indent=3){
     cat(sprintf("%sv(unadj) = %5.3f, v(adj) = %5.3f\n",
                 indesstr, es$upsilon$unadjusted, es$upsilon$adjusted))
     if(!is.null(es$upsilon$posterior_mean)){
-      cat(sprintf("%sPosterior mean(v) = %5.3f, median(v) = %5.3f, 95%% CI [%5.3f, %5.3f]\n",
+      ci.level <- if (is.null(res$ci.level)) 0.95 else res$ci.level
+      cat(sprintf("%sPosterior mean(v) = %5.3f, median(v) = %5.3f, %s CI [%5.3f, %5.3f]\n",
                   indesstr, es$upsilon$posterior_mean, es$upsilon$posterior_median,
+                  format_percent(ci.level),
                   es$upsilon$lower, es$upsilon$upper))
     }
   }
