@@ -122,6 +122,13 @@ class `summary.rmedsem`, a list with elements
   a named numeric vector with the requested effect sizes (`RIT`, `RID`,
   `upsilon` (adjusted) and `upsilon.unadjusted`).
 
+- `effect.size.problems`:
+
+  a named character vector with an entry for each of `RIT` and `RID`
+  that should not be interpreted (see
+  [effect-sizes](https://ihrke.github.io/rmedsem/reference/effect-sizes.md)),
+  describing the reason; empty if there is none.
+
 [`coef()`](https://rdrr.io/r/stats/coef.html) returns a named numeric
 vector with elements `indirect`, `direct` and `total`.
 

@@ -68,6 +68,11 @@ A data frame with 200 rows and 13 columns:
 
   Class ID
 
+## Source
+
+UCLA Statistical Methods and Data Analytics,
+<https://stats.oarc.ucla.edu/stat/data/hsbdemo.dta>
+
 ## Examples
 
 ``` r

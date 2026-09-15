@@ -50,6 +50,11 @@
 - Very small p-values are no longer printed as `0`
 - [`plot_effect()`](https://ihrke.github.io/rmedsem/reference/plot.rmedsem.md)
   title and caption are wrapped to fit small figures
+- [`summary()`](https://rdrr.io/r/base/summary.html) and
+  [`plot_effect()`](https://ihrke.github.io/rmedsem/reference/plot.rmedsem.md)
+  flag RIT and RID values that should not be interpreted
+- Clearer printed output
+- Dependencies on dplyr and purrr removed
 
 ### Documentation
 
@@ -58,8 +63,8 @@
   `?rmedsem-methods`, `?effect-sizes` and
   [`?plot.rmedsem`](https://ihrke.github.io/rmedsem/reference/plot.rmedsem.md)
 - Examples for all backends
-- Corrected and completed the documentation of the `hsbdemo` and
-  `mchoice` datasets.
+- Corrected and completed the documentation of the datasets
+  (incl. sources and response scales)
 - New article “Working with the results”
 - Added CRAN badge to README
 

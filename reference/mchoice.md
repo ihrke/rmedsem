@@ -93,6 +93,11 @@ A data frame with 1067 rows and 15 columns:
   How well does this describe you as a partner? (sociable), \[1\] very
   bad - \[5\] very well
 
+## Source
+
+Survey collected in Norway in 2021 using a convenience sampling
+procedure.
+
 ## Examples
 
 ``` r

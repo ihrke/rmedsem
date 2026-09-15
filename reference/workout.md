@@ -1,6 +1,10 @@
 # Fitness Center Survey Data from Trondheim
 
-Data from a survey in a fitness center in Trondheim.
+Data from a survey among the members of a fitness center in Trondheim,
+Norway. Participants rated how important different reasons for working
+out are to them and how well two physical features describe them. All
+items except `age` are measured on a scale from 1 to 6. The data contain
+missing values; 187 of the 246 rows are complete.
 
 ## Usage
 
@@ -20,47 +24,62 @@ A data frame with 246 rows and 12 columns:
 
 - lweight:
 
-  How important is following to workout- to loose weight
+  How important is the following to you to work out: to lose weight,
+  \[1\] not important at all - \[6\] very important
 
 - calories:
 
-  How important is following to workout- to burn calories
+  How important is the following to you to work out: to burn calories,
+  \[1\] not important at all - \[6\] very important
 
 - cweight:
 
-  How important is following to workout- to control my weight
+  How important is the following to you to work out: to control my
+  weight, \[1\] not important at all - \[6\] very important
 
 - body:
 
-  How important is following to workout- to have a good body
+  How important is the following to you to work out: to have a good
+  body, \[1\] not important at all - \[6\] very important
 
 - appear:
 
-  How important is following to workout- to improve my appearance
+  How important is the following to you to work out: to improve my
+  appearance, \[1\] not important at all - \[6\] very important
 
 - attract:
 
-  How important is following to workout- to look more attractive
+  How important is the following to you to work out: to look more
+  attractive, \[1\] not important at all - \[6\] very important
 
 - muscle:
 
-  How important is following to workout- to develop my muscles
+  How important is the following to you to work out: to develop my
+  muscles, \[1\] not important at all - \[6\] very important
 
 - strength:
 
-  How important is following to workout- to get stronger
+  How important is the following to you to work out: to get stronger,
+  \[1\] not important at all - \[6\] very important
 
 - endur:
 
-  How important is following to workout- to increase my endurance
+  How important is the following to you to work out: to increase my
+  endurance, \[1\] not important at all - \[6\] very important
 
 - face:
 
-  How well does the following describe you as a person - attractive face
+  How well does the following describe you as a person: attractive face,
+  \[1\] very badly - \[6\] very well
 
 - sexy:
 
-  How well does the following describe you as a person - sexy
+  How well does the following describe you as a person: sexy, \[1\] very
+  badly - \[6\] very well
+
+## Source
+
+Survey among the members of a fitness center in Trondheim, Norway.
 
 ## Examples
 
