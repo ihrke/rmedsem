@@ -7,10 +7,21 @@
 \format{
 \subsection{\code{hsbdemo}}{
 
-A data frame with 20 rows and 13 columns:
+A data frame with 200 rows and 13 columns:
 \describe{
 \item{id}{Student ID}
-\item{female}{}
+\item{female}{Gender, \code{"female"} or \code{"male"}}
+\item{ses}{Socio-economic status, \code{"low"}, \code{"middle"} or \code{"high"}}
+\item{schtyp}{School type, \code{"public"} or \code{"private"}}
+\item{prog}{Type of program, \code{"general"}, \code{"academic"} or \code{"vocation"}}
+\item{read}{Reading score}
+\item{write}{Writing score}
+\item{math}{Math score}
+\item{science}{Science score}
+\item{socst}{Social studies score}
+\item{honors}{Enrollment in honors program, \code{"enrolled"} or \code{"not enrolled"}}
+\item{awards}{Number of awards}
+\item{cid}{Class ID}
 }
 }
 }
@@ -18,6 +29,14 @@ A data frame with 20 rows and 13 columns:
 hsbdemo
 }
 \description{
-High School and Beyond Demo Dataset
+Demographic information and standardized test scores of 200 students from
+the High School and Beyond survey, as distributed by the UCLA Statistical
+Methods and Data Analytics group.
+}
+\examples{
+str(hsbdemo)
+
+mod <- lavaan::sem("read ~ math\nscience ~ read + math", data=hsbdemo)
+rmedsem(mod, indep="math", med="read", dep="science")
 }
 \keyword{datasets}

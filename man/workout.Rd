@@ -30,4 +30,17 @@ workout
 \description{
 Data from a survey in a fitness center in Trondheim.
 }
+\examples{
+str(workout)
+
+mod.txt <- "
+  Attractive =~ face + sexy
+  Appearance =~ body + appear + attract
+  Muscle     =~ muscle + strength + endur
+  Appearance ~ Attractive + age
+  Muscle     ~ Appearance + Attractive + age
+"
+mod <- lavaan::sem(mod.txt, data=workout)
+rmedsem(mod, indep="Attractive", med="Appearance", dep="Muscle")
+}
 \keyword{datasets}

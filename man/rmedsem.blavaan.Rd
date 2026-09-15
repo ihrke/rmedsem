@@ -41,21 +41,20 @@ A \code{rmedsem} structure containing the results from the analysis
 Mediation Analysis for Blavaan Models
 }
 \examples{
-\dontrun{
-# Requires blavaan and a MCMC backend (Stan/JAGS)
-model02 <- "
-  # measurement model
-    ind60 =~ x1 + x2 + x3
-    dem60 =~ y1 + y2 + y3 + y4
-    dem65 =~ y5 + y6 + y7 + y8
-  # regressions
-    dem60 ~ ind60
-    dem65 ~ ind60 + dem60
-"
-mod <- blavaan::bsem(model02, data=lavaan::PoliticalDemocracy, std.lv=TRUE,
-            meanstructure=TRUE, n.chains=1,
-            save.lvs=TRUE, burnin=500, sample=500)
-out <- rmedsem(mod,  indep="ind60", med="dem60", dep="dem65")
-print(out)
+\donttest{
+if (requireNamespace("blavaan", quietly = TRUE)) {
+  # blavaan's fitting functions need the package to be attached
+  library(blavaan)
+  mod.txt <- "
+    read ~ math
+    science ~ read + math
+  "
+  # short single chain to keep the example fast; use more chains and
+  # iterations in practice
+  mod <- bsem(mod.txt, data=rmedsem::hsbdemo, n.chains=1,
+              burnin=500, sample=500, seed=1, bcontrol=list(refresh=0))
+  out <- rmedsem(mod, indep="math", med="read", dep="science")
+  print(out)
+}
 }
 }

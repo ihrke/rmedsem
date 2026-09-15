@@ -45,3 +45,23 @@ A \code{rmedsem} structure containing the results from the analysis
 \description{
 Mediation Analysis for cSEM Models
 }
+\examples{
+\donttest{
+if (requireNamespace("cSEM", quietly = TRUE)) {
+  model <- "
+    # measurement model
+    OwnLook  =~ smv_attr_face + smv_attr_body + smv_sexy
+    SelfEst  =~ ses_satis + ses_qualities + ses_able_todo
+    MentWell =~ mwb_optimistic + mwb_useful + mwb_energy
+    # structural model
+    SelfEst  ~ OwnLook
+    MentWell ~ OwnLook + SelfEst
+  "
+  mod <- cSEM::csem(rmedsem::mchoice, model)
+  # small number of bootstrap samples to keep the example fast
+  out <- rmedsem(mod, indep="OwnLook", med="SelfEst", dep="MentWell",
+                 nbootstrap=200)
+  print(out)
+}
+}
+}

@@ -41,6 +41,12 @@
 * lavaan and modsem models with labelled regression paths (e.g.,
   `read ~ a*math`) now work (previously "subscript out of bounds").
 * lavaan: a warning is given if the model did not converge.
+* Examples: `rmedsem.blavaan()` now has a runnable example (`\donttest{}`
+  instead of `\dontrun{}`), `rmedsem.cSEMResults()` has a new example, and
+  the datasets `hsbdemo`, `mchoice` and `workout` have examples.
+* Corrected the documentation of the `hsbdemo` (200 rows; all columns now
+  described) and `mchoice` (1067 rows, 15 columns) datasets.
+* `plot_coef()` no longer emits a `position_dodge()` warning.
 * cSEM: the bootstrap confidence intervals of the indirect and total effects
   now respect `ci.two.tailed` (previously always 95%), and the correct row is
   selected in models with several indirect effects.

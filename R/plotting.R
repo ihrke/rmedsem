@@ -85,7 +85,7 @@ plot_coef <- function(res){
                   ypos=as.numeric(effect)+(ymet>0)*0.1*(ymet-ceiling(length(res$est.methods)/2))) ->d
 
   ggplot2::ggplot(d, ggplot2::aes(x=ypos, y=coef, ymin=lower, ymax=upper, color=method))+
-    ggplot2::geom_pointrange(position=ggplot2::position_dodge(width=0.5))+
+    ggplot2::geom_pointrange()+
     ggplot2::geom_hline(yintercept=0, linetype="dashed")+
     ggplot2::coord_flip()+
     ggplot2::theme_bw()+

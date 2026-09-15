@@ -5,8 +5,10 @@ This is a resubmission. In this version I have:
 - Added `\value` tags to all exported function documentation (RIT, RID, Upsilon)
 - Added a new effect-size estimate "upsilon" to the package
 - Replaced `T`/`F` with `TRUE`/`FALSE` throughout
-- The `rmedsem.blavaan` example uses `\dontrun{}` because it requires
-  the blavaan package and a working MCMC backend (Stan or JAGS) to execute
+- The `rmedsem.blavaan`, `rmedsem.cSEMResults` and `rmedsem.modsem` examples
+  use `\donttest{}` (with a `requireNamespace()` guard) because they depend
+  on suggested packages and take more than a few seconds (MCMC sampling,
+  bootstrapping, LMS estimation)
 
 ## R CMD check results
 
