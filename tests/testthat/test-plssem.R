@@ -8,8 +8,9 @@ pls_fits <- new.env()
 
 fit_pls <- function(name, paths, ...) {
   if (is.null(pls_fits[[name]]))
-    pls_fits[[name]] <- plssem::pls(paste(pls_base, paths), rmedsem::mchoice,
-                                    ...)
+    # plssem warns about kept inadmissible bootstrap replicates
+    pls_fits[[name]] <- suppressWarnings(
+      plssem::pls(paste(pls_base, paths), rmedsem::mchoice, ...))
   pls_fits[[name]]
 }
 
@@ -136,4 +137,82 @@ test_that("plssem: print, summary and accessors work", {
   expect_s3_class(as.data.frame(out), "data.frame")
   expect_s3_class(plot(out), "ggplot")
   expect_lte(max(nchar(c(output, capture.output(print(s))))), 80)
+})
+
+
+# --- MC-PLS models (interaction model with ordinal indicators) ---
+
+pls_int_paths <- "
+  OwnPers =~ smv_kind + smv_caring + smv_understanding +
+    smv_make_laughh + smv_funny + smv_sociable
+  SelfEst ~ OwnLook + OwnPers + OwnPers:OwnLook
+  MentWell ~ OwnLook + SelfEst + OwnPers + OwnPers:OwnLook
+"
+
+test_that("plssem: MC-PLS with delta SEs uses a Monte-Carlo test", {
+  skip_on_cran()
+  skip_if_not_installed("plssem")
+
+  fit <- fit_pls("mcpls_delta", pls_int_paths,
+                 ordered = names(rmedsem::mchoice),
+                 bootstrap = TRUE, boot.R = 50, boot.iseed = 1)
+  expect_true(plssem::is_mcpls(fit))
+
+  set.seed(1)
+  out <- rmedsem(fit, indep = "OwnPers:OwnLook", med = "SelfEst", dep = "MentWell")
+  expect_equal(out$est.methods, c("sobel", "delta", "montc"))
+  expect_equal(out$zlc.method, "montc")
+  expect_null(out$boot)
+  expect_null(out$nboot)
+  expect_equal(out$mcreps, 5000)
+
+  # the Monte-Carlo test refers to the corrected estimates and their vcov:
+  # interval around the point estimate, SE close to the delta-method SE
+  mid <- mean(out$montc[c("lower", "upper")])
+  expect_lt(abs(mid - out$montc[["coef"]]), out$montc[["se"]])
+  expect_equal(out$montc[["se"]], out$delta[["se"]], tolerance = 0.15)
+
+  # the uncorrected bootstrap samples of plssem would give a clearly smaller SE
+  B <- unclass(plssem::boot(fit))
+  boot_se <- sd(B[, "SelfEst~OwnPers:OwnLook"] * B[, "MentWell~SelfEst"], na.rm = TRUE)
+  expect_lt(boot_se, out$montc[["se"]])
+
+  # reproducible with set.seed(), mcreps is used and checked
+  set.seed(1)
+  out2 <- rmedsem(fit, indep = "OwnPers:OwnLook", med = "SelfEst", dep = "MentWell")
+  expect_equal(out2$montc, out$montc)
+  out3 <- rmedsem(fit, indep = "OwnPers:OwnLook", med = "SelfEst", dep = "MentWell",
+                  mcreps = 100)
+  expect_equal(out3$mcreps, 100)
+  expect_error(rmedsem(fit, indep = "OwnPers:OwnLook", med = "SelfEst",
+                       dep = "MentWell", mcreps = 0), "'mcreps'")
+
+  output <- capture.output(print(out))
+  expect_true(any(grepl("Based on p-value estimated using Monte-Carlo", output)))
+  expect_lte(max(nchar(output)), 80)
+})
+
+test_that("plssem: MC-PLS without delta SEs uses the bootstrap samples", {
+  skip_on_cran()
+  skip_if_not_installed("plssem")
+
+  fit <- fit_pls("mcpls_boot", pls_int_paths,
+                 ordered = names(rmedsem::mchoice),
+                 bootstrap = TRUE, boot.R = 5, boot.iseed = 1,
+                 mc.delta.se = FALSE)
+  out <- rmedsem(fit, indep = "OwnPers:OwnLook", med = "SelfEst", dep = "MentWell")
+  expect_equal(out$est.methods, c("sobel", "delta", "boot"))
+  expect_equal(out$zlc.method, "boot")
+})
+
+test_that("plssem: ordinal indicators without interaction use the bootstrap", {
+  skip_on_cran()
+  skip_if_not_installed("plssem")
+
+  fit <- fit_pls("ordinal_linear", "SelfEst ~ OwnLook\nMentWell ~ OwnLook + SelfEst",
+                 ordered = names(rmedsem::mchoice),
+                 bootstrap = TRUE, boot.R = 30, boot.iseed = 1)
+  expect_false(plssem::is_mcpls(fit))
+  out <- rmedsem(fit, indep = "OwnLook", med = "SelfEst", dep = "MentWell")
+  expect_equal(out$zlc.method, "boot")
 })

@@ -89,6 +89,7 @@ rmedsem(
   approach = c("bk", "zlc"),
   p.threshold = 0.05,
   effect.size = c("RIT", "RID", "upsilon"),
+  mcreps = 5000,
   ci.two.tailed = 0.95,
   ...
 )
@@ -140,8 +141,10 @@ generator, so that results can be reproduced with \code{\link[=set.seed]{set.see
 standardized coefficients (default \code{TRUE}). \code{cSEM} and \code{blavaan} results
 are always standardized.}
 
-\item{mcreps}{(\code{lavaan}, \code{modsem}) the number of Monte-Carlo samples, a
-positive integer (default 5000)}
+\item{mcreps}{(\code{lavaan}, \code{modsem}, \code{PlsModel}) the number of Monte-Carlo
+samples, a positive integer (default 5000). For \code{PlsModel} objects, only
+used for MC-PLS models with delta-method standard errors (see section
+'Backends').}
 
 \item{moderator}{(\code{modsem}) \code{NULL} (default) or a string, the name of the
 moderator W for moderated mediation. The model must contain an
@@ -191,7 +194,15 @@ results are reproducible with its \code{boot.iseed} argument. The indirect
 effect is tested with the Sobel, Delta and bootstrap methods, where the
 bootstrap test uses the bootstrap samples of \pkg{plssem}. The Zhao, Lynch
 & Chen approach is based on the bootstrap test. Mediated moderation (an
-interaction term as \code{indep}) is supported.}
+interaction term as \code{indep}) is supported. For MC-PLS models (e.g.,
+interaction models with ordinal indicators) estimated with
+delta-method standard errors (the default \code{mc.delta.se = TRUE} in
+\code{\link[plssem:pls]{plssem::pls()}}), the bootstrap samples of \pkg{plssem} do not refer to
+the Monte-Carlo corrected estimates; a Monte-Carlo test based on the
+estimates and their variance-covariance matrix (\code{mcreps} samples) is
+used instead of the bootstrap test, also for the Zhao, Lynch & Chen
+approach. For ordinal indicators, all effects refer to the standardized
+latent variables.}
 }
 Multi-group and multilevel models are not supported.
 }

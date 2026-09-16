@@ -3,11 +3,12 @@
 rmedsem.PlsModel <- function(mod, indep, med, dep,
                              approach=c("bk", "zlc"), p.threshold=0.05,
                              effect.size=c("RIT","RID","upsilon"),
-                             ci.two.tailed=0.95, ...){
+                             mcreps=5000, ci.two.tailed=0.95, ...){
   if (!requireNamespace("plssem", quietly = TRUE))
     stop("Package 'plssem' is required for this method. Please install it.")
   validate_rmedsem_args(indep, med, dep, approach, p.threshold, effect.size)
   check_ci_level(ci.two.tailed)
+  mcreps <- resolve_mcreps(mcreps)
   if (isTRUE(mod@info$is.mlm))
     stop("Multilevel models are not supported by rmedsem().", call.=FALSE)
   ci.width <- stats::qnorm(1-(1-ci.two.tailed)/2)
@@ -73,18 +74,33 @@ rmedsem.PlsModel <- function(mod, indep, med, dep,
   delta_lci <- prodterm - ci.width*delta_se
   delta_uci <- prodterm + ci.width*delta_se
 
-  # bootstrap: indirect and total effects from plssem's bootstrap samples
-  # (inadmissible bootstrap samples may be NA)
-  ind_samp <- boot.samples[, moi] * boot.samples[, dom]
-  tot_samp <- ind_samp + boot.samples[, doi]
-  ok <- is.finite(ind_samp) & is.finite(tot_samp)
-  ind_samp <- ind_samp[ok]
-  tot_samp <- tot_samp[ok]
+  # Third test of the indirect effect. The bootstrap samples of plssem are
+  # used if they are samples of the reported estimator. This is not the case
+  # for MC-PLS models (e.g., interaction models with ordinal indicators) with
+  # delta-method standard errors (plssem's default, `mc.delta.se = TRUE`): the
+  # bootstrap replicates are then estimated without the Monte-Carlo correction
+  # and only the delta-method vcov refers to the reported estimates. In that
+  # case, a Monte-Carlo test based on the estimates and their vcov is used.
+  use.boot <- !(isTRUE(plssem::is_mcpls(mod)) && isTRUE(mod@info$mc.args$delta.se))
+  if (use.boot) {
+    samples <- boot.samples[, c(moi, dom, doi), drop = FALSE]
+    # failed or dropped bootstrap replicates are NA
+    samples <- samples[stats::complete.cases(samples), , drop = FALSE]
+    third.method <- "boot"
+  } else {
+    sigma <- V[c(moi, dom, doi), c(moi, dom, doi)]
+    samples <- mvtnorm::rmvnorm(n=mcreps, mean=c(coef_moi, coef_dom, coef_doi),
+                                sigma=sigma)
+    colnames(samples) <- c(moi, dom, doi)
+    third.method <- "montc"
+  }
+  ind_samp <- samples[, moi] * samples[, dom]
+  tot_samp <- ind_samp + samples[, doi]
 
-  boot_se  <- stats::sd(ind_samp)
-  boot_z   <- prodterm/boot_se
-  boot_pv  <- 2*stats::pnorm(-abs(boot_z))
-  boot_qs  <- unname(stats::quantile(ind_samp, probs))
+  third_se <- stats::sd(ind_samp)
+  third_z  <- prodterm/third_se
+  third_pv <- 2*stats::pnorm(-abs(third_z))
+  third_qs <- unname(stats::quantile(ind_samp, probs))
 
   coef_tot <- prodterm + coef_doi
   se_tot   <- stats::sd(tot_samp)
@@ -115,20 +131,22 @@ rmedsem.PlsModel <- function(mod, indep, med, dep,
   res <- list(package="plssem", standardized=TRUE, nobs=N,
               ci.level=ci.two.tailed,
               vars=list(med=med, indep=indep, dep=dep),
-              est.methods=c("sobel", "delta", "boot"),
-              zlc.method="boot",
-              nboot=length(ind_samp),
+              est.methods=c("sobel", "delta", third.method),
+              zlc.method=third.method,
+              nboot=if (use.boot) length(ind_samp) else NULL,
+              mcreps=if (use.boot) NULL else mcreps,
               direct.effect=c(coef=coef_doi, se=se_doi, pval=pval_doi, lower=lci_doi, upper=uci_doi),
               total.effect=c(coef=coef_tot, se=se_tot, lower=tot_qs[1], upper=tot_qs[2]),
               sobel=c(coef=prodterm, se=sobel_se, zval=sobel_z, pval=sobel_pv, lower=sobel_lci, upper=sobel_uci),
               delta=c(coef=prodterm, se=delta_se, zval=delta_z, pval=delta_pv, lower=delta_lci, upper=delta_uci),
-              boot=c(coef=prodterm, se=boot_se, zval=boot_z, pval=boot_pv, lower=boot_qs[1], upper=boot_qs[2]),
               med.approach=approach,
               effect.size=es,
               med.data=list(sig_thresh=p.threshold,
                             coefs=list(moi=coef_moi, dom=coef_dom, doi=coef_doi),
                             pvals=list(moi=pval_moi, dom=pval_dom, doi=pval_doi))
   )
+  res[[third.method]] <- c(coef=prodterm, se=third_se, zval=third_z, pval=third_pv,
+                           lower=third_qs[1], upper=third_qs[2])
   class(res) <- c("rmedsem_plssem", "rmedsem")
   res
 }

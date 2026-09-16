@@ -38,8 +38,10 @@ utils::globalVariables(c(
 #' @param standardized (`lavaan`, `modsem`) a logical, whether to use
 #'   standardized coefficients (default `TRUE`). `cSEM` and `blavaan` results
 #'   are always standardized.
-#' @param mcreps (`lavaan`, `modsem`) the number of Monte-Carlo samples, a
-#'   positive integer (default 5000)
+#' @param mcreps (`lavaan`, `modsem`, `PlsModel`) the number of Monte-Carlo
+#'   samples, a positive integer (default 5000). For `PlsModel` objects, only
+#'   used for MC-PLS models with delta-method standard errors (see section
+#'   'Backends').
 #' @param ci.two.tailed a number between 0 and 1, the level of all confidence
 #'   (or, for `blavaan`, credible) intervals (default 0.95)
 #' @param nbootstrap (`cSEM`) the number of bootstrap samples (default 1000)
@@ -87,7 +89,15 @@ utils::globalVariables(c(
 #'     effect is tested with the Sobel, Delta and bootstrap methods, where the
 #'     bootstrap test uses the bootstrap samples of \pkg{plssem}. The Zhao, Lynch
 #'     & Chen approach is based on the bootstrap test. Mediated moderation (an
-#'     interaction term as `indep`) is supported.}
+#'     interaction term as `indep`) is supported. For MC-PLS models (e.g.,
+#'     interaction models with ordinal indicators) estimated with
+#'     delta-method standard errors (the default `mc.delta.se = TRUE` in
+#'     [plssem::pls()]), the bootstrap samples of \pkg{plssem} do not refer to
+#'     the Monte-Carlo corrected estimates; a Monte-Carlo test based on the
+#'     estimates and their variance-covariance matrix (`mcreps` samples) is
+#'     used instead of the bootstrap test, also for the Zhao, Lynch & Chen
+#'     approach. For ordinal indicators, all effects refer to the standardized
+#'     latent variables.}
 #' }
 #' Multi-group and multilevel models are not supported.
 #'

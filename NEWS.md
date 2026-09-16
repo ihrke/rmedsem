@@ -1,10 +1,6 @@
 # rmedsem (development version)
 
-* New backend for PLS-SEM and PLSc-SEM models estimated with
-  [plssem](https://kss2k.github.io/plssem/) (`rmedsem.PlsModel()`), including
-  mediated moderation with latent interaction terms. The indirect effect is
-  tested with the Sobel, Delta and bootstrap methods, using the bootstrap
-  samples of plssem.
+* New backend for PLS-SEM and PLSc-SEM models estimated with [plssem](https://kss2k.github.io/plssem/) 
 
 # rmedsem 1.1.0
 
