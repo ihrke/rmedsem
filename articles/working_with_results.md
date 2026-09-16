@@ -250,30 +250,30 @@ out.hdi <- rmedsem(bmod, indep = "math", med = "read", dep = "science",
 
 confint(out.ci)
 #>              2.5 %    97.5 %
-#> indirect 0.1612465 0.3453186
-#> direct   0.2419574 0.5018078
-#> total    0.5455176 0.6975530
+#> indirect 0.1573832 0.3398089
+#> direct   0.2428480 0.5059463
+#> total    0.5425477 0.6988324
 confint(out.hdi)
 #>              lower     upper
-#> indirect 0.1578379 0.3412939
-#> direct   0.2404421 0.4997919
-#> total    0.5539862 0.7042719
+#> indirect 0.1591007 0.3412056
+#> direct   0.2464126 0.5102203
+#> total    0.5507015 0.7025515
 summary(out.hdi)
 #> Mediation analysis: 'math' -> 'read' -> 'science'
 #> Estimated with 'blavaan' (standardized), N = 200
 #> 
 #> Effects (95% HDI):
 #>                  Estimate Std. Err. z-value p-value Lower Upper
-#> Indirect (Bayes)    0.250     0.047   5.292   0.000 0.158 0.341
-#> Direct              0.378     0.066           0.000 0.240 0.500
-#> Total               0.629     0.039                 0.554 0.704
+#> Indirect (Bayes)    0.248     0.046   5.359   0.000 0.159 0.341
+#> Direct              0.380     0.067           0.000 0.246 0.510
+#> Total               0.629     0.039                 0.551 0.703
 #> For Bayesian estimates, 'p-value' is the posterior probability of
 #> the opposite sign.
 #> 
 #> 
 #> Effect sizes:
-#>   RIT = 0.398
-#>   RID = 0.661
+#>   RIT = 0.395
+#>   RID = 0.653
 #>   Upsilon = 0.060
-#>   Upsilon (unadj.) = 0.063
+#>   Upsilon (unadj.) = 0.062
 ```

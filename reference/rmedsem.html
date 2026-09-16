@@ -3,17 +3,17 @@
 variable Y through a mediator M in a fitted structural equation model
 (SEM), and determines the type of mediation using the Baron and Kenny
 (1986) and/or Zhao, Lynch &amp;amp; Chen (2010) approaches. Models estimated with
-lavaan (covariance-based SEM), cSEM (PLS-SEM), blavaan
-(Bayesian SEM) and modsem (models with latent interactions) are
-supported. The model must contain the regression paths X -&amp;gt; M, M -&amp;gt; Y and
-X -&amp;gt; Y."><meta property="og:description" content="Tests the indirect effect of an independent variable X on a dependent
+lavaan (covariance-based SEM), cSEM and plssem
+(PLS-SEM), blavaan (Bayesian SEM) and modsem (models with
+latent interactions) are supported. The model must contain the regression
+paths X -&amp;gt; M, M -&amp;gt; Y and X -&amp;gt; Y."><meta property="og:description" content="Tests the indirect effect of an independent variable X on a dependent
 variable Y through a mediator M in a fitted structural equation model
 (SEM), and determines the type of mediation using the Baron and Kenny
 (1986) and/or Zhao, Lynch &amp;amp; Chen (2010) approaches. Models estimated with
-lavaan (covariance-based SEM), cSEM (PLS-SEM), blavaan
-(Bayesian SEM) and modsem (models with latent interactions) are
-supported. The model must contain the regression paths X -&amp;gt; M, M -&amp;gt; Y and
-X -&amp;gt; Y."><meta property="og:image" content="https://ihrke.github.io/rmedsem/logo.png"><script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script><script>
+lavaan (covariance-based SEM), cSEM and plssem
+(PLS-SEM), blavaan (Bayesian SEM) and modsem (models with
+latent interactions) are supported. The model must contain the regression
+paths X -&amp;gt; M, M -&amp;gt; Y and X -&amp;gt; Y."><meta property="og:image" content="https://ihrke.github.io/rmedsem/logo.png"><script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script><script>
   document.addEventListener("DOMContentLoaded", function() {
     document.querySelectorAll("pre.mermaid").forEach(function(pre) {
       var code = pre.querySelector("code");
@@ -29,7 +29,7 @@ X -&amp;gt; Y."><meta property="og:image" content="https://ihrke.github.io/rmeds
 
     <a class="navbar-brand me-2" href="../index.html">rmedsem</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -57,7 +57,7 @@ X -&amp;gt; Y."><meta property="og:image" content="https://ihrke.github.io/rmeds
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Mediation Analysis for Structural Equation Models</h1>
-      <small class="dont-index">Source: <a href="https://github.com/ihrke/rmedsem/blob/master/R/rmedsem.R" class="external-link"><code>R/rmedsem.R</code></a>, <a href="https://github.com/ihrke/rmedsem/blob/master/R/rmedsem_blavaan.R" class="external-link"><code>R/rmedsem_blavaan.R</code></a>, <a href="https://github.com/ihrke/rmedsem/blob/master/R/rmedsem_csem.R" class="external-link"><code>R/rmedsem_csem.R</code></a>, and 2 more</small>
+      <small class="dont-index">Source: <a href="https://github.com/ihrke/rmedsem/blob/master/R/rmedsem.R" class="external-link"><code>R/rmedsem.R</code></a>, <a href="https://github.com/ihrke/rmedsem/blob/master/R/rmedsem_blavaan.R" class="external-link"><code>R/rmedsem_blavaan.R</code></a>, <a href="https://github.com/ihrke/rmedsem/blob/master/R/rmedsem_csem.R" class="external-link"><code>R/rmedsem_csem.R</code></a>, and 3 more</small>
       <div class="d-none name"><code>rmedsem.Rd</code></div>
     </div>
 
@@ -66,10 +66,10 @@ X -&amp;gt; Y."><meta property="og:image" content="https://ihrke.github.io/rmeds
 variable Y through a mediator M in a fitted structural equation model
 (SEM), and determines the type of mediation using the Baron and Kenny
 (1986) and/or Zhao, Lynch &amp; Chen (2010) approaches. Models estimated with
-<span class="pkg">lavaan</span> (covariance-based SEM), <span class="pkg">cSEM</span> (PLS-SEM), <span class="pkg">blavaan</span>
-(Bayesian SEM) and <span class="pkg">modsem</span> (models with latent interactions) are
-supported. The model must contain the regression paths X -&gt; M, M -&gt; Y and
-X -&gt; Y.</p>
+<span class="pkg">lavaan</span> (covariance-based SEM), <span class="pkg">cSEM</span> and <span class="pkg">plssem</span>
+(PLS-SEM), <span class="pkg">blavaan</span> (Bayesian SEM) and <span class="pkg">modsem</span> (models with
+latent interactions) are supported. The model must contain the regression
+paths X -&gt; M, M -&gt; Y and X -&gt; Y.</p>
     </div>
 
     <div class="section level2">
@@ -146,6 +146,19 @@ X -&gt; Y.</p>
 <span>  mcreps <span class="op">=</span> <span class="fl">5000</span>,</span>
 <span>  ci.two.tailed <span class="op">=</span> <span class="fl">0.95</span>,</span>
 <span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for class 'PlsModel'</span></span>
+<span><span class="fu">rmedsem</span><span class="op">(</span></span>
+<span>  <span class="va">mod</span>,</span>
+<span>  <span class="va">indep</span>,</span>
+<span>  <span class="va">med</span>,</span>
+<span>  <span class="va">dep</span>,</span>
+<span>  approach <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"bk"</span>, <span class="st">"zlc"</span><span class="op">)</span>,</span>
+<span>  p.threshold <span class="op">=</span> <span class="fl">0.05</span>,</span>
+<span>  effect.size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"RIT"</span>, <span class="st">"RID"</span>, <span class="st">"upsilon"</span><span class="op">)</span>,</span>
+<span>  ci.two.tailed <span class="op">=</span> <span class="fl">0.95</span>,</span>
+<span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -155,13 +168,15 @@ X -&gt; Y.</p>
 
 <dl><dt id="arg-mod">mod<a class="anchor" aria-label="anchor" href="#arg-mod"></a></dt>
 <dd><p>a fitted SEM: an object of class <code>lavaan</code>, <code>cSEMResults</code>,
-<code>blavaan</code> or <code>modsem</code>. <code>blavaan</code> models containing latent variables must
-be fitted with <code>save.lvs = TRUE</code>.</p></dd>
+<code>blavaan</code>, <code>modsem</code> or <code>PlsModel</code> (<span class="pkg">plssem</span>). <code>blavaan</code> models
+containing latent variables must be fitted with <code>save.lvs = TRUE</code>;
+<code>PlsModel</code> objects must be fitted with <code>bootstrap = TRUE</code>.</p></dd>
 
 
 <dt id="arg-indep">indep<a class="anchor" aria-label="anchor" href="#arg-indep"></a></dt>
 <dd><p>a string, the name of the independent variable (X). For
-<code>modsem</code> models, this can be an interaction term such as <code>"W:X"</code>.</p></dd>
+<code>modsem</code> and <code>PlsModel</code> models, this can be an interaction term such as
+<code>"W:X"</code>.</p></dd>
 
 
 <dt id="arg-med">med<a class="anchor" aria-label="anchor" href="#arg-med"></a></dt>
@@ -237,7 +252,8 @@ interaction of the moderator with <code>indep</code> and/or <code>med</code>.</p
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>an object of class <code>c("rmedsem_&lt;pkg&gt;", "rmedsem")</code>, where <code>&lt;pkg&gt;</code>
-identifies the backend (<code>lavaan</code>, <code>cSEM</code>, <code>blavaan</code> or <code>modsem</code>). See
+identifies the backend (<code>lavaan</code>, <code>cSEM</code>, <code>blavaan</code>, <code>modsem</code> or
+<code>plssem</code>). See
 <a href="rmedsem-methods.html">rmedsem-methods</a> for functions to print, summarize and extract results,
 <a href="effect-sizes.html">effect-sizes</a> for effect sizes and <code><a href="plot.rmedsem.html">plot.rmedsem()</a></code> for plots. The
 structure of the object is described in section 'Adding a backend'.</p>
@@ -268,6 +284,17 @@ Lynch &amp; Chen approaches are not applied.</p></dd>
 <dd><p>As for <code>lavaan</code>. In addition, moderated mediation (via
 <code>moderator</code>) and mediated moderation (an interaction term as <code>indep</code>)
 are supported.</p></dd>
+
+<dt><code>PlsModel</code></dt>
+<dd><p>Models estimated with <code><a href="https://kss2k.github.io/plssem/reference/pls.html" class="external-link">plssem::pls()</a></code> (PLS-SEM and
+consistent PLSc-SEM, including models with interaction terms and ordinal
+indicators). The model must be estimated with <code>bootstrap = TRUE</code>; the
+number of bootstrap samples is set in <code><a href="https://kss2k.github.io/plssem/reference/pls.html" class="external-link">plssem::pls()</a></code> (<code>boot.R</code>), and
+results are reproducible with its <code>boot.iseed</code> argument. The indirect
+effect is tested with the Sobel, Delta and bootstrap methods, where the
+bootstrap test uses the bootstrap samples of <span class="pkg">plssem</span>. The Zhao, Lynch
+&amp; Chen approach is based on the bootstrap test. Mediated moderation (an
+interaction term as <code>indep</code>) is supported.</p></dd>
 
 
 </dl><p>Multi-group and multilevel models are not supported.</p>
@@ -512,20 +539,20 @@ Myths and truths about mediation analysis. <em>Journal of Consumer Research</em>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                          Sobel          Delta    Monte-Carlo</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Indirect effect          0.253          0.253          0.253</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Std. Err.                0.029          0.029          0.029</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> z-value                  8.843          8.832          8.711</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> z-value                  8.847          8.836          8.715</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> p-value                 &lt;2e-16         &lt;2e-16         &lt;2e-16</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> CI              [0.197, 0.309] [0.197, 0.309] [0.199, 0.311]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Baron and Kenny approach to testing mediation</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    STEP 1 - 'OwnLook' -&gt; 'SelfEst' (X -&gt; M) with B=0.485 and p&lt;0.001</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    STEP 1 - 'OwnLook' -&gt; 'SelfEst' (X -&gt; M) with B=0.486 and p&lt;0.001</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    STEP 2 - 'SelfEst' -&gt; 'MentWell' (M -&gt; Y) with B=0.521 and p&lt;0.001</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    STEP 3 - 'OwnLook' -&gt; 'MentWell' (X -&gt; Y) with B=0.011 and p=0.808</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    STEP 3 - 'OwnLook' -&gt; 'MentWell' (X -&gt; Y) with B=0.011 and p=0.809</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             As STEP 1, STEP 2 and the Sobel's test above are significant</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             and STEP 3 is not significant the mediation is complete.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Zhao, Lynch &amp; Chen's approach to testing mediation</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Based on p-value estimated using Monte-Carlo</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   STEP 1 - 'OwnLook' -&gt; 'MentWell' (X -&gt; Y) with B=0.011 and p=0.808</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   STEP 1 - 'OwnLook' -&gt; 'MentWell' (X -&gt; Y) with B=0.011 and p=0.809</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             As the Monte-Carlo test above is significant and STEP 1 is not</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             significant there is indirect-only mediation (full mediation).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -535,20 +562,72 @@ Myths and truths about mediation analysis. <em>Journal of Consumer Research</em>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          Meaning that about 96% of the effect of 'OwnLook'</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          on 'MentWell' is mediated by 'SelfEst'</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    RID = (Indirect effect / Direct effect)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          RID is not reported: direct effect 0.011 is not significant (p = 0.808)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          RID is not reported: direct effect 0.011 is not significant (p = 0.809)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    Upsilon (v) = Variance in Y explained indirectly by X through M</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          v(unadj) = 0.064, v(adj) = 0.063</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Direct moderation effects</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    OwnLook -&gt; SelfEst             | smv: B = -0.136, se = 0.029, p = 0.000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    OwnLook -&gt; MentWell            | smv: B = -0.008, se = 0.035, p = 0.813</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    OwnLook -&gt; MentWell            | smv: B = -0.008, se = 0.034, p = 0.813</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Indirect moderation effect</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    OwnLook -&gt; SelfEst -&gt; MentWell | smv: B = -0.071, se = 0.017, p = 0.000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Total moderation effect</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    OwnLook -&gt; MentWell            | smv: B = -0.079, se = 0.036, p = 0.026</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## plssem (PLS-SEM)</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"plssem"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">model</span> <span class="op">&lt;-</span> <span class="st">"</span></span></span>
+<span class="r-in"><span><span class="st">    OwnLook  =~ smv_attr_face + smv_attr_body + smv_sexy</span></span></span>
+<span class="r-in"><span><span class="st">    SelfEst  =~ ses_satis + ses_qualities + ses_able_todo</span></span></span>
+<span class="r-in"><span><span class="st">    MentWell =~ mwb_optimistic + mwb_useful + mwb_energy</span></span></span>
+<span class="r-in"><span><span class="st">    SelfEst  ~ OwnLook</span></span></span>
+<span class="r-in"><span><span class="st">    MentWell ~ OwnLook + SelfEst</span></span></span>
+<span class="r-in"><span><span class="st">  "</span></span></span>
+<span class="r-in"><span>  <span class="co"># small number of bootstrap samples to keep the example fast</span></span></span>
+<span class="r-in"><span>  <span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu">plssem</span><span class="fu">::</span><span class="fu"><a href="https://kss2k.github.io/plssem/reference/pls.html" class="external-link">pls</a></span><span class="op">(</span><span class="va">model</span>, <span class="fu">rmedsem</span><span class="fu">::</span><span class="va"><a href="mchoice.html">mchoice</a></span>, bootstrap <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>                     boot.R <span class="op">=</span> <span class="fl">200</span>, boot.iseed <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu">rmedsem</span><span class="op">(</span><span class="va">fit</span>, indep <span class="op">=</span> <span class="st">"OwnLook"</span>, med <span class="op">=</span> <span class="st">"SelfEst"</span>, dep <span class="op">=</span> <span class="st">"MentWell"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Significance testing of indirect effect (standardized)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Model estimated with package 'plssem'</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Mediation effect: 'OwnLook' -&gt; 'SelfEst' -&gt; 'MentWell'</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                          Sobel          Delta      Bootstrap</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Indirect effect          0.316          0.316          0.316</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Std. Err.                0.031          0.032          0.032</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> z-value                 10.152          9.915          9.828</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> p-value                 &lt;2e-16         &lt;2e-16         &lt;2e-16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> CI              [0.255, 0.377] [0.253, 0.378] [0.261, 0.388]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Baron and Kenny approach to testing mediation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    STEP 1 - 'OwnLook' -&gt; 'SelfEst' (X -&gt; M) with B=0.578 and p&lt;0.001</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    STEP 2 - 'SelfEst' -&gt; 'MentWell' (M -&gt; Y) with B=0.546 and p&lt;0.001</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    STEP 3 - 'OwnLook' -&gt; 'MentWell' (X -&gt; Y) with B=0.088 and p=0.031</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             As STEP 1, STEP 2 and STEP 3 as well as the Sobel's test above</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             are significant the mediation is partial.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Zhao, Lynch &amp; Chen's approach to testing mediation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Based on p-value estimated using Bootstrap</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   STEP 1 - 'OwnLook' -&gt; 'MentWell' (X -&gt; Y) with B=0.088 and p=0.031</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             As the Bootstrap test above is significant, STEP 1 is</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             significant and their coefficients point in same direction,</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             there is complementary mediation (partial mediation).</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Effect sizes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    RIT = (Indirect effect / Total effect)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          (0.316/0.404) = 0.781</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          Meaning that about 78% of the effect of 'OwnLook'</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          on 'MentWell' is mediated by 'SelfEst'</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    RID = (Indirect effect / Direct effect)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          (0.316/0.088) = 3.570</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          That is, the mediated effect is about 3.6 times as</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          large as the direct effect of 'OwnLook' on 'MentWell'</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Upsilon (v) = Variance in Y explained indirectly by X through M</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          v(unadj) = 0.100, v(adj) = 0.099</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## blavaan</span></span></span>
@@ -577,27 +656,27 @@ Myths and truths about mediation analysis. <em>Journal of Consumer Research</em>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Prior (regression coefs): normal(0,10)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                          Bayes</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Indirect effect          0.248</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Posterior SD             0.047</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Indirect effect          0.246</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Posterior SD             0.044</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> P(&gt;0)                    1.000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> P(&lt;0)                    0.000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ER+                          ∞</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ER-                          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> HDI             [0.155, 0.334]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> HDI             [0.172, 0.338]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Effect sizes</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    RIT = (Indirect effect / Total effect)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          (0.248/0.629) = 0.395</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          Meaning that about 40% of the effect of 'math'</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          (0.246/0.629) = 0.391</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          Meaning that about 39% of the effect of 'math'</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          on 'science' is mediated by 'read'</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    RID = (Indirect effect / Direct effect)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          (0.248/0.380) = 0.653</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          That is, the mediated effect is about 0.7 times as</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          (0.246/0.383) = 0.643</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          That is, the mediated effect is about 0.6 times as</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          large as the direct effect of 'math' on 'science'</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    Upsilon (v) = Variance in Y explained indirectly by X through M</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          v(unadj) = 0.062, v(adj) = 0.059</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          Posterior mean(v) = 0.064, median(v) = 0.062</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          95% HDI [0.024, 0.112]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          v(unadj) = 0.061, v(adj) = 0.059</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          Posterior mean(v) = 0.063, median(v) = 0.061</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          95% HDI [0.024, 0.104]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
