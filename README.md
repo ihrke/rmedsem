@@ -20,7 +20,8 @@ package supports:
 - covariance-based SEM estimated with the
   [lavaan](https://lavaan.ugent.be/) package
 - PLS-SEM estimated using
-  [cSEM](https://cran.r-project.org/package=cSEM)
+  [cSEM](https://cran.r-project.org/package=cSEM) or
+  [plssem](https://cran.r-project.org/package=plssem)
 - Bayesian SEM estimated using
   [blavaan](https://cran.r-project.org/package=blavaan)
 

@@ -11,16 +11,18 @@ utils::globalVariables(c(
 #' variable Y through a mediator M in a fitted structural equation model
 #' (SEM), and determines the type of mediation using the Baron and Kenny
 #' (1986) and/or Zhao, Lynch & Chen (2010) approaches. Models estimated with
-#' \pkg{lavaan} (covariance-based SEM), \pkg{cSEM} (PLS-SEM), \pkg{blavaan}
-#' (Bayesian SEM) and \pkg{modsem} (models with latent interactions) are
-#' supported. The model must contain the regression paths X -> M, M -> Y and
-#' X -> Y.
+#' \pkg{lavaan} (covariance-based SEM), \pkg{cSEM} and \pkg{plssem}
+#' (PLS-SEM), \pkg{blavaan} (Bayesian SEM) and \pkg{modsem} (models with
+#' latent interactions) are supported. The model must contain the regression
+#' paths X -> M, M -> Y and X -> Y.
 #'
 #' @param mod a fitted SEM: an object of class `lavaan`, `cSEMResults`,
-#'   `blavaan` or `modsem`. `blavaan` models containing latent variables must
-#'   be fitted with `save.lvs = TRUE`.
+#'   `blavaan`, `modsem` or `PlsModel` (\pkg{plssem}). `blavaan` models
+#'   containing latent variables must be fitted with `save.lvs = TRUE`;
+#'   `PlsModel` objects must be fitted with `bootstrap = TRUE`.
 #' @param indep a string, the name of the independent variable (X). For
-#'   `modsem` models, this can be an interaction term such as `"W:X"`.
+#'   `modsem` and `PlsModel` models, this can be an interaction term such as
+#'   `"W:X"`.
 #' @param med a string, the name of the mediator (M)
 #' @param dep a string, the name of the dependent variable (Y)
 #' @param approach approach(es) to determine the type of mediation: `"bk"`
@@ -54,7 +56,8 @@ utils::globalVariables(c(
 #' @param ... additional arguments passed to methods (currently unused)
 #'
 #' @return an object of class `c("rmedsem_<pkg>", "rmedsem")`, where `<pkg>`
-#'   identifies the backend (`lavaan`, `cSEM`, `blavaan` or `modsem`). See
+#'   identifies the backend (`lavaan`, `cSEM`, `blavaan`, `modsem` or
+#'   `plssem`). See
 #'   [rmedsem-methods] for functions to print, summarize and extract results,
 #'   [effect-sizes] for effect sizes and [plot.rmedsem()] for plots. The
 #'   structure of the object is described in section 'Adding a backend'.
@@ -76,6 +79,15 @@ utils::globalVariables(c(
 #'   \item{`modsem`}{As for `lavaan`. In addition, moderated mediation (via
 #'     `moderator`) and mediated moderation (an interaction term as `indep`)
 #'     are supported.}
+#'   \item{`PlsModel`}{Models estimated with [plssem::pls()] (PLS-SEM and
+#'     consistent PLSc-SEM, including models with interaction terms and ordinal
+#'     indicators). The model must be estimated with `bootstrap = TRUE`; the
+#'     number of bootstrap samples is set in [plssem::pls()] (`boot.R`), and
+#'     results are reproducible with its `boot.iseed` argument. The indirect
+#'     effect is tested with the Sobel, Delta and bootstrap methods, where the
+#'     bootstrap test uses the bootstrap samples of \pkg{plssem}. The Zhao, Lynch
+#'     & Chen approach is based on the bootstrap test. Mediated moderation (an
+#'     interaction term as `indep`) is supported.}
 #' }
 #' Multi-group and multilevel models are not supported.
 #'
@@ -182,6 +194,21 @@ utils::globalVariables(c(
 #'           moderator = "smv")
 #' }
 #'
+#' ## plssem (PLS-SEM)
+#' if (requireNamespace("plssem", quietly = TRUE)) {
+#'   model <- "
+#'     OwnLook  =~ smv_attr_face + smv_attr_body + smv_sexy
+#'     SelfEst  =~ ses_satis + ses_qualities + ses_able_todo
+#'     MentWell =~ mwb_optimistic + mwb_useful + mwb_energy
+#'     SelfEst  ~ OwnLook
+#'     MentWell ~ OwnLook + SelfEst
+#'   "
+#'   # small number of bootstrap samples to keep the example fast
+#'   fit <- plssem::pls(model, rmedsem::mchoice, bootstrap = TRUE,
+#'                      boot.R = 200, boot.iseed = 1)
+#'   rmedsem(fit, indep = "OwnLook", med = "SelfEst", dep = "MentWell")
+#' }
+#'
 #' ## blavaan
 #' if (requireNamespace("blavaan", quietly = TRUE)) {
 #'   # blavaan's fitting functions need the package to be attached
@@ -212,7 +239,7 @@ rmedsem <- function (mod, indep, med, dep,
 rmedsem.default <- function(mod, indep, med, dep, ...){
   stop(sprintf(paste0("rmedsem() does not support objects of class '%s'.\n",
                       "Supported model classes are 'lavaan', 'blavaan', ",
-                      "'cSEMResults' and 'modsem'."),
+                      "'cSEMResults', 'modsem' and 'PlsModel' (plssem)."),
                paste(class(mod), collapse="', '")), call.=FALSE)
 }
 

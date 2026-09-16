@@ -152,7 +152,7 @@ Upsilon.rmedsem <- function(res, adjusted=TRUE, ...) {
 #' different standard errors and intervals. By default, `coef()` and
 #' `confint()` use the method that also underlies the Zhao, Lynch & Chen
 #' approach: `"montc"` (Monte-Carlo) for `lavaan` and `modsem`, `"boot"`
-#' (bootstrap) for `cSEM` and `"bayes"` for `blavaan`.
+#' (bootstrap) for `cSEM` and `plssem`, and `"bayes"` for `blavaan`.
 #'
 #' @section Extending the printed output:
 #' `print.rmedsem()` handles all backends that provide the elements described

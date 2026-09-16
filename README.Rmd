@@ -28,7 +28,7 @@ knitr::opts_chunk$set(
 The goal of rmedsem is to conduct a mediation analysis based on a structural equation model (SEM), including observed and/or latent variables as well as combination of observed and latent variables. The package supports: 
 
 - covariance-based SEM estimated with the [lavaan](https://lavaan.ugent.be/) package
-- PLS-SEM estimated using [cSEM](https://cran.r-project.org/package=cSEM)
+- PLS-SEM estimated using [cSEM](https://cran.r-project.org/package=cSEM) or [plssem](https://cran.r-project.org/package=plssem)
 - Bayesian SEM estimated using [blavaan](https://cran.r-project.org/package=blavaan)
 
 The `rmedsem` package also supports estimating [moderated mediation and mediated moderation](https://ihrke.github.io/rmedsem/articles/moderated_mediation.html) models using the [modsem](https://modsem.org) package.

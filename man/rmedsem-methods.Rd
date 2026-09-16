@@ -130,7 +130,7 @@ The indirect effect is estimated with several methods (see
 different standard errors and intervals. By default, \code{coef()} and
 \code{confint()} use the method that also underlies the Zhao, Lynch & Chen
 approach: \code{"montc"} (Monte-Carlo) for \code{lavaan} and \code{modsem}, \code{"boot"}
-(bootstrap) for \code{cSEM} and \code{"bayes"} for \code{blavaan}.
+(bootstrap) for \code{cSEM} and \code{plssem}, and \code{"bayes"} for \code{blavaan}.
 }
 
 \section{Extending the printed output}{

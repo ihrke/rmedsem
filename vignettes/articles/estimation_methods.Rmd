@@ -20,6 +20,7 @@ The currently supported estimation methods are:
 - covariance-based SEM estimated with the
   [lavaan](https://lavaan.ugent.be/) package
 - PLS-SEM estimated using [cSEM](https://m-e-rademaker.github.io/cSEM/)
+  or [plssem](https://kss2k.github.io/plssem/)
 - Bayesian SEM estimated using
   [blavaan](https://ecmerkle.github.io/blavaan/index.html)
 
@@ -163,6 +164,54 @@ mod <- cSEM::csem(.model=model03, .data=na.omit(rmedsem::workout),
                   .resample_method = "bootstrap", .R = 200)
 rmedsem(mod, indep="Attractive", med="Appearance", dep="Muscle",
         approach = c("bk","zlc"))
+```
+
+
+
+## plssem
+
+Models estimated with [plssem](https://kss2k.github.io/plssem/) (PLS-SEM and
+consistent PLSc-SEM, also with interaction terms and ordinal indicators) must
+be fitted with `bootstrap = TRUE`. The indirect effect is tested with the
+Sobel, Delta and bootstrap methods, where the bootstrap test uses the bootstrap
+samples of plssem. The number of bootstrap samples is set with `boot.R`, and
+`boot.iseed` makes the results reproducible.
+
+### Example 1 (plssem)
+
+```{r, message=F}
+library(plssem)
+
+model.pls <- "
+  OwnLook  =~ smv_attr_face + smv_attr_body + smv_sexy
+  SelfEst  =~ ses_satis + ses_qualities + ses_able_todo
+  MentWell =~ mwb_optimistic + mwb_useful + mwb_energy
+  SelfEst  ~ OwnLook
+  MentWell ~ OwnLook + SelfEst
+"
+fit <- pls(model.pls, data = rmedsem::mchoice, bootstrap = TRUE,
+           boot.R = 500, boot.iseed = 2025)
+rmedsem(fit, indep = "OwnLook", med = "SelfEst", dep = "MentWell")
+```
+
+### Example 2 (plssem, mediated moderation)
+
+The interaction term of a latent interaction model can be used as the
+independent variable:
+
+```{r, message=F}
+model.int <- "
+  OwnLook  =~ smv_attr_face + smv_attr_body + smv_sexy
+  OwnPers  =~ smv_kind + smv_caring + smv_understanding +
+              smv_make_laughh + smv_funny + smv_sociable
+  SelfEst  =~ ses_satis + ses_qualities + ses_able_todo
+  MentWell =~ mwb_optimistic + mwb_useful + mwb_energy
+  SelfEst  ~ OwnLook + OwnPers + OwnPers:OwnLook
+  MentWell ~ OwnLook + SelfEst + OwnPers + OwnPers:OwnLook
+"
+fit.int <- pls(model.int, data = rmedsem::mchoice, bootstrap = TRUE,
+               boot.R = 500, boot.iseed = 2025)
+rmedsem(fit.int, indep = "OwnPers:OwnLook", med = "SelfEst", dep = "MentWell")
 ```
 
 
