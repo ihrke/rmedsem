@@ -5,17 +5,10 @@ This is an update of rmedsem (1.0.0 -> 1.1.0). The main changes are:
 - An extensible S3 method system for printing, a `summary()` method that
   returns an object, and new `coef()`, `confint()` and `nobs()` methods.
 - Informative argument and model checks in all exported functions.
-- Bug fixes (labelled model parameters, Bayesian output table, bootstrap
-  intervals and reproducibility with cSEM, confidence levels of
-  simulation-based intervals).
+- Bug fixes.
 - Merged, more compact help pages and examples for all supported backends.
 
 See NEWS.md for details.
-
-The examples for the `cSEM`, `modsem` and `blavaan` backends in `?rmedsem`
-are wrapped in `\donttest{}` (with a `requireNamespace()` guard) because
-they depend on suggested packages and take more than a few seconds (MCMC
-sampling, bootstrapping, LMS estimation).
 
 ## R CMD check results
 
@@ -23,10 +16,12 @@ sampling, bootstrapping, LMS estimation).
 
 ## Test environments
 
-* local Ubuntu 25.04, R 4.5.3
+* local Ubuntu 25.04, R 4.5.3 (`R CMD check --as-cran`, also with
+  `_R_CHECK_DEPENDS_ONLY_=true`)
 * GitHub Actions: Ubuntu (R release, R devel), macOS (R release),
   Windows (R release)
 * win-builder (R devel)
+* macOS builder (R release)
 
 ## Reverse dependencies
 
