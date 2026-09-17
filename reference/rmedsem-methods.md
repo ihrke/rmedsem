@@ -178,8 +178,8 @@ different standard errors and intervals. By default,
 [`coef()`](https://rdrr.io/r/stats/coef.html) and
 [`confint()`](https://rdrr.io/r/stats/confint.html) use the method that
 also underlies the Zhao, Lynch & Chen approach: `"montc"` (Monte-Carlo)
-for `lavaan` and `modsem`, `"boot"` (bootstrap) for `cSEM` and `"bayes"`
-for `blavaan`.
+for `lavaan` and `modsem`, `"boot"` (bootstrap) for `cSEM` and `plssem`,
+and `"bayes"` for `blavaan`.
 
 ## Extending the printed output
 

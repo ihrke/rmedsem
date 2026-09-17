@@ -15,7 +15,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">rmedsem</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -43,7 +43,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Methods for rmedsem Objects</h1>
-      <small class="dont-index">Source: <a href="https://github.com/ihrke/rmedsem/blob/v1.1.0/R/accessors.R" class="external-link"><code>R/accessors.R</code></a>, <a href="https://github.com/ihrke/rmedsem/blob/v1.1.0/R/printing.R" class="external-link"><code>R/printing.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/ihrke/rmedsem/blob/master/R/accessors.R" class="external-link"><code>R/accessors.R</code></a>, <a href="https://github.com/ihrke/rmedsem/blob/master/R/printing.R" class="external-link"><code>R/printing.R</code></a></small>
       <div class="d-none name"><code>rmedsem-methods.Rd</code></div>
     </div>
 
@@ -209,7 +209,7 @@ returns the estimates of the indirect effect for all estimation methods.</p>
 different standard errors and intervals. By default, <code><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef()</a></code> and
 <code><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint()</a></code> use the method that also underlies the Zhao, Lynch &amp; Chen
 approach: <code>"montc"</code> (Monte-Carlo) for <code>lavaan</code> and <code>modsem</code>, <code>"boot"</code>
-(bootstrap) for <code>cSEM</code> and <code>"bayes"</code> for <code>blavaan</code>.</p>
+(bootstrap) for <code>cSEM</code> and <code>plssem</code>, and <code>"bayes"</code> for <code>blavaan</code>.</p>
     </div>
     <div class="section level2">
     <h2 id="extending-the-printed-output">Extending the printed output<a class="anchor" aria-label="anchor" href="#extending-the-printed-output"></a></h2>

@@ -71,20 +71,20 @@ rmedsem(indep="OwnPers:OwnLook", dep="MentWell", med="SelfEst", mod=est)
 #>                            Sobel            Delta      Monte-Carlo
 #> Indirect effect           -0.081           -0.081           -0.081
 #> Std. Err.                  0.020            0.020            0.020
-#> z-value                   -4.017           -4.018           -4.031
-#> p-value                 5.89e-05         5.86e-05         5.54e-05
-#> CI              [-0.121, -0.041] [-0.121, -0.041] [-0.121, -0.043]
+#> z-value                   -4.019           -4.020           -4.033
+#> p-value                 5.84e-05         5.82e-05         5.50e-05
+#> CI              [-0.121, -0.042] [-0.121, -0.042] [-0.121, -0.043]
 #> 
 #> Baron and Kenny approach to testing mediation
 #>    STEP 1 - 'OwnPers:OwnLook' -> 'SelfEst' (X -> M) with B=-0.155 and p<0.001
-#>    STEP 2 - 'SelfEst' -> 'MentWell' (M -> Y) with B=0.522 and p<0.001
-#>    STEP 3 - 'OwnPers:OwnLook' -> 'MentWell' (X -> Y) with B=-0.007 and p=0.815
+#>    STEP 2 - 'SelfEst' -> 'MentWell' (M -> Y) with B=0.521 and p<0.001
+#>    STEP 3 - 'OwnPers:OwnLook' -> 'MentWell' (X -> Y) with B=-0.007 and p=0.812
 #>             As STEP 1, STEP 2 and the Sobel's test above are significant
 #>             and STEP 3 is not significant the mediation is complete.
 #> 
 #> Zhao, Lynch & Chen's approach to testing mediation
 #> Based on p-value estimated using Monte-Carlo
-#>   STEP 1 - 'OwnPers:OwnLook' -> 'MentWell' (X -> Y) with B=-0.007 and p=0.815
+#>   STEP 1 - 'OwnPers:OwnLook' -> 'MentWell' (X -> Y) with B=-0.007 and p=0.812
 #>             As the Monte-Carlo test above is significant and STEP 1 is not
 #>             significant there is indirect-only mediation (full mediation).
 #> 
@@ -92,7 +92,7 @@ rmedsem(indep="OwnPers:OwnLook", dep="MentWell", med="SelfEst", mod=est)
 #>    RIT = (Indirect effect / Total effect)
 #>          RIT is not reported: total effect 0.088 is too small (< 0.2)
 #>    RID = (Indirect effect / Direct effect)
-#>          RID is not reported: direct effect 0.007 is not significant (p = 0.815)
+#>          RID is not reported: direct effect 0.007 is not significant (p = 0.812)
 #>    Upsilon (v) = Variance in Y explained indirectly by X through M
 #>          v(unadj) = 0.007, v(adj) = 0.006
 ```
@@ -115,21 +115,21 @@ rmedsem(indep="OwnLook", dep="MentWell", med="SelfEst", mod=est,
 #> 
 #>                          Sobel          Delta    Monte-Carlo
 #> Indirect effect          0.253          0.253          0.253
-#> Std. Err.                0.029          0.029          0.029
-#> z-value                  8.822          8.811          8.839
+#> Std. Err.                0.028          0.028          0.028
+#> z-value                  8.897          8.886          8.916
 #> p-value                 <2e-16         <2e-16         <2e-16
-#> CI              [0.197, 0.310] [0.197, 0.310] [0.198, 0.312]
+#> CI              [0.197, 0.309] [0.197, 0.309] [0.198, 0.311]
 #> 
 #> Baron and Kenny approach to testing mediation
 #>    STEP 1 - 'OwnLook' -> 'SelfEst' (X -> M) with B=0.486 and p<0.001
-#>    STEP 2 - 'SelfEst' -> 'MentWell' (M -> Y) with B=0.522 and p<0.001
-#>    STEP 3 - 'OwnLook' -> 'MentWell' (X -> Y) with B=0.011 and p=0.810
+#>    STEP 2 - 'SelfEst' -> 'MentWell' (M -> Y) with B=0.521 and p<0.001
+#>    STEP 3 - 'OwnLook' -> 'MentWell' (X -> Y) with B=0.011 and p=0.809
 #>             As STEP 1, STEP 2 and the Sobel's test above are significant
 #>             and STEP 3 is not significant the mediation is complete.
 #> 
 #> Zhao, Lynch & Chen's approach to testing mediation
 #> Based on p-value estimated using Monte-Carlo
-#>   STEP 1 - 'OwnLook' -> 'MentWell' (X -> Y) with B=0.011 and p=0.810
+#>   STEP 1 - 'OwnLook' -> 'MentWell' (X -> Y) with B=0.011 and p=0.809
 #>             As the Monte-Carlo test above is significant and STEP 1 is not
 #>             significant there is indirect-only mediation (full mediation).
 #> 
@@ -139,20 +139,20 @@ rmedsem(indep="OwnLook", dep="MentWell", med="SelfEst", mod=est,
 #>          Meaning that about 96% of the effect of 'OwnLook'
 #>          on 'MentWell' is mediated by 'SelfEst'
 #>    RID = (Indirect effect / Direct effect)
-#>          RID is not reported: direct effect 0.011 is not significant (p = 0.810)
+#>          RID is not reported: direct effect 0.011 is not significant (p = 0.809)
 #>    Upsilon (v) = Variance in Y explained indirectly by X through M
 #>          v(unadj) = 0.064, v(adj) = 0.063
 #> 
 #> 
 #> Direct moderation effects
 #>    OwnLook -> SelfEst             | OwnPers: B = -0.155, se = 0.037, p = 0.000
-#>    OwnLook -> MentWell            | OwnPers: B = -0.007, se = 0.030, p = 0.815
+#>    OwnLook -> MentWell            | OwnPers: B = -0.007, se = 0.030, p = 0.812
 #> 
 #> Indirect moderation effect
 #>    OwnLook -> SelfEst -> MentWell | OwnPers: B = -0.081, se = 0.020, p = 0.000
 #> 
 #> Total moderation effect
-#>    OwnLook -> MentWell            | OwnPers: B = -0.088, se = 0.034, p = 0.010
+#>    OwnLook -> MentWell            | OwnPers: B = -0.088, se = 0.034, p = 0.009
 ```
 
 In this case the difference between a *moderated mediation* and
@@ -199,20 +199,20 @@ rmedsem(indep="OwnLook", dep="MentWell", med="SelfEst", mod=est2,
 #>                          Sobel          Delta    Monte-Carlo
 #> Indirect effect          0.250          0.250          0.250
 #> Std. Err.                0.028          0.028          0.028
-#> z-value                  8.875          8.927          8.921
+#> z-value                  8.820          8.873          8.866
 #> p-value                 <2e-16         <2e-16         <2e-16
-#> CI              [0.195, 0.306] [0.195, 0.305] [0.197, 0.306]
+#> CI              [0.195, 0.306] [0.195, 0.306] [0.197, 0.306]
 #> 
 #> Baron and Kenny approach to testing mediation
 #>    STEP 1 - 'OwnLook' -> 'SelfEst' (X -> M) with B=0.488 and p<0.001
 #>    STEP 2 - 'SelfEst' -> 'MentWell' (M -> Y) with B=0.513 and p<0.001
-#>    STEP 3 - 'OwnLook' -> 'MentWell' (X -> Y) with B=0.031 and p=0.521
+#>    STEP 3 - 'OwnLook' -> 'MentWell' (X -> Y) with B=0.031 and p=0.523
 #>             As STEP 1, STEP 2 and the Sobel's test above are significant
 #>             and STEP 3 is not significant the mediation is complete.
 #> 
 #> Zhao, Lynch & Chen's approach to testing mediation
 #> Based on p-value estimated using Monte-Carlo
-#>   STEP 1 - 'OwnLook' -> 'MentWell' (X -> Y) with B=0.031 and p=0.521
+#>   STEP 1 - 'OwnLook' -> 'MentWell' (X -> Y) with B=0.031 and p=0.523
 #>             As the Monte-Carlo test above is significant and STEP 1 is not
 #>             significant there is indirect-only mediation (full mediation).
 #> 
@@ -222,7 +222,7 @@ rmedsem(indep="OwnLook", dep="MentWell", med="SelfEst", mod=est2,
 #>          Meaning that about 89% of the effect of 'OwnLook'
 #>          on 'MentWell' is mediated by 'SelfEst'
 #>    RID = (Indirect effect / Direct effect)
-#>          RID is not reported: direct effect 0.031 is not significant (p = 0.521)
+#>          RID is not reported: direct effect 0.031 is not significant (p = 0.523)
 #>    Upsilon (v) = Variance in Y explained indirectly by X through M
 #>          v(unadj) = 0.063, v(adj) = 0.062
 #> 
@@ -230,11 +230,11 @@ rmedsem(indep="OwnLook", dep="MentWell", med="SelfEst", mod=est2,
 #> Direct moderation effects
 #>    OwnLook -> SelfEst             | OwnPers: B = -0.137, se = 0.029, p = 0.000
 #>    SelfEst -> MentWell            | OwnPers: B = 0.082, se = 0.045, p = 0.069
-#>    OwnLook -> MentWell            | OwnPers: B = -0.085, se = 0.054, p = 0.118
+#>    OwnLook -> MentWell            | OwnPers: B = -0.085, se = 0.054, p = 0.116
 #> 
 #> Indirect moderation effect
 #>    OwnLook -> SelfEst -> MentWell | OwnPers: B = -0.042, se = 0.024, p = 0.082
 #> 
 #> Total moderation effect
-#>    OwnLook -> MentWell            | OwnPers: B = -0.126, se = 0.046, p = 0.006
+#>    OwnLook -> MentWell            | OwnPers: B = -0.126, se = 0.045, p = 0.005
 ```

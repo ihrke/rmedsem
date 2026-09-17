@@ -34,7 +34,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">rmedsem</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -75,7 +75,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>Examples using the supported estimation methods</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/ihrke/rmedsem/blob/v1.1.0/vignettes/articles/estimation_methods.Rmd" class="external-link"><code>vignettes/articles/estimation_methods.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/ihrke/rmedsem/blob/master/vignettes/articles/estimation_methods.Rmd" class="external-link"><code>vignettes/articles/estimation_methods.Rmd</code></a></small>
       <div class="d-none name"><code>estimation_methods.Rmd</code></div>
     </div>
 
@@ -86,7 +86,7 @@
 <p>The currently supported estimation methods are:</p>
 <ul>
 <li>covariance-based SEM estimated with the <a href="https://lavaan.ugent.be/" class="external-link">lavaan</a> package</li>
-<li>PLS-SEM estimated using <a href="https://m-e-rademaker.github.io/cSEM/" class="external-link">cSEM</a>
+<li>PLS-SEM estimated using <a href="https://m-e-rademaker.github.io/cSEM/" class="external-link">cSEM</a> or <a href="https://kss2k.github.io/plssem/" class="external-link">plssem</a>
 </li>
 <li>Bayesian SEM estimated using <a href="https://ecmerkle.github.io/blavaan/index.html" class="external-link">blavaan</a>
 </li>
@@ -537,12 +537,123 @@
 </div>
 </div>
 <div class="section level2">
+<h2 id="plssem">plssem<a class="anchor" aria-label="anchor" href="#plssem"></a>
+</h2>
+<p>Models estimated with <a href="https://kss2k.github.io/plssem/" class="external-link">plssem</a> (PLS-SEM and
+consistent PLSc-SEM, also with interaction terms and ordinal indicators)
+must be fitted with <code>bootstrap = TRUE</code>. The indirect effect
+is tested with the Sobel, Delta and bootstrap methods, where the
+bootstrap test uses the bootstrap samples of plssem. The number of
+bootstrap samples is set with <code>boot.R</code>, and
+<code>boot.iseed</code> makes the results reproducible.</p>
+<div class="section level3">
+<h3 id="example-1-plssem">Example 1 (plssem)<a class="anchor" aria-label="anchor" href="#example-1-plssem"></a>
+</h3>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/kss2k/plssem" class="external-link">plssem</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">model.pls</span> <span class="op">&lt;-</span> <span class="st">"</span></span>
+<span><span class="st">  OwnLook  =~ smv_attr_face + smv_attr_body + smv_sexy</span></span>
+<span><span class="st">  SelfEst  =~ ses_satis + ses_qualities + ses_able_todo</span></span>
+<span><span class="st">  MentWell =~ mwb_optimistic + mwb_useful + mwb_energy</span></span>
+<span><span class="st">  SelfEst  ~ OwnLook</span></span>
+<span><span class="st">  MentWell ~ OwnLook + SelfEst</span></span>
+<span><span class="st">"</span></span>
+<span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://kss2k.github.io/plssem/reference/pls.html" class="external-link">pls</a></span><span class="op">(</span><span class="va">model.pls</span>, data <span class="op">=</span> <span class="fu">rmedsem</span><span class="fu">::</span><span class="va"><a href="../reference/mchoice.html">mchoice</a></span>, bootstrap <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>           boot.R <span class="op">=</span> <span class="fl">500</span>, boot.iseed <span class="op">=</span> <span class="fl">2025</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/rmedsem.html">rmedsem</a></span><span class="op">(</span><span class="va">fit</span>, indep <span class="op">=</span> <span class="st">"OwnLook"</span>, med <span class="op">=</span> <span class="st">"SelfEst"</span>, dep <span class="op">=</span> <span class="st">"MentWell"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Significance testing of indirect effect (standardized)</span></span>
+<span><span class="co">#&gt; Model estimated with package 'plssem'</span></span>
+<span><span class="co">#&gt; Mediation effect: 'OwnLook' -&gt; 'SelfEst' -&gt; 'MentWell'</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;                          Sobel          Delta      Bootstrap</span></span>
+<span><span class="co">#&gt; Indirect effect          0.316          0.316          0.316</span></span>
+<span><span class="co">#&gt; Std. Err.                0.031          0.031          0.031</span></span>
+<span><span class="co">#&gt; z-value                 10.280         10.316         10.272</span></span>
+<span><span class="co">#&gt; p-value                 &lt;2e-16         &lt;2e-16         &lt;2e-16</span></span>
+<span><span class="co">#&gt; CI              [0.255, 0.376] [0.256, 0.376] [0.260, 0.376]</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Baron and Kenny approach to testing mediation</span></span>
+<span><span class="co">#&gt;    STEP 1 - 'OwnLook' -&gt; 'SelfEst' (X -&gt; M) with B=0.578 and p&lt;0.001</span></span>
+<span><span class="co">#&gt;    STEP 2 - 'SelfEst' -&gt; 'MentWell' (M -&gt; Y) with B=0.546 and p&lt;0.001</span></span>
+<span><span class="co">#&gt;    STEP 3 - 'OwnLook' -&gt; 'MentWell' (X -&gt; Y) with B=0.088 and p=0.054</span></span>
+<span><span class="co">#&gt;             As STEP 1, STEP 2 and the Sobel's test above are significant</span></span>
+<span><span class="co">#&gt;             and STEP 3 is not significant the mediation is complete.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Zhao, Lynch &amp; Chen's approach to testing mediation</span></span>
+<span><span class="co">#&gt; Based on p-value estimated using Bootstrap</span></span>
+<span><span class="co">#&gt;   STEP 1 - 'OwnLook' -&gt; 'MentWell' (X -&gt; Y) with B=0.088 and p=0.054</span></span>
+<span><span class="co">#&gt;             As the Bootstrap test above is significant and STEP 1 is not</span></span>
+<span><span class="co">#&gt;             significant there is indirect-only mediation (full mediation).</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Effect sizes</span></span>
+<span><span class="co">#&gt;    RIT = (Indirect effect / Total effect)</span></span>
+<span><span class="co">#&gt;          (0.316/0.404) = 0.781</span></span>
+<span><span class="co">#&gt;          Meaning that about 78% of the effect of 'OwnLook'</span></span>
+<span><span class="co">#&gt;          on 'MentWell' is mediated by 'SelfEst'</span></span>
+<span><span class="co">#&gt;    RID = (Indirect effect / Direct effect)</span></span>
+<span><span class="co">#&gt;          RID is not reported: direct effect 0.088 is not significant (p = 0.054)</span></span>
+<span><span class="co">#&gt;    Upsilon (v) = Variance in Y explained indirectly by X through M</span></span>
+<span><span class="co">#&gt;          v(unadj) = 0.100, v(adj) = 0.099</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="example-2-plssem-mediated-moderation">Example 2 (plssem, mediated moderation)<a class="anchor" aria-label="anchor" href="#example-2-plssem-mediated-moderation"></a>
+</h3>
+<p>The interaction term of a latent interaction model can be used as the
+independent variable:</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">model.int</span> <span class="op">&lt;-</span> <span class="st">"</span></span>
+<span><span class="st">  OwnLook  =~ smv_attr_face + smv_attr_body + smv_sexy</span></span>
+<span><span class="st">  OwnPers  =~ smv_kind + smv_caring + smv_understanding +</span></span>
+<span><span class="st">              smv_make_laughh + smv_funny + smv_sociable</span></span>
+<span><span class="st">  SelfEst  =~ ses_satis + ses_qualities + ses_able_todo</span></span>
+<span><span class="st">  MentWell =~ mwb_optimistic + mwb_useful + mwb_energy</span></span>
+<span><span class="st">  SelfEst  ~ OwnLook + OwnPers + OwnPers:OwnLook</span></span>
+<span><span class="st">  MentWell ~ OwnLook + SelfEst + OwnPers + OwnPers:OwnLook</span></span>
+<span><span class="st">"</span></span>
+<span><span class="va">fit.int</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://kss2k.github.io/plssem/reference/pls.html" class="external-link">pls</a></span><span class="op">(</span><span class="va">model.int</span>, data <span class="op">=</span> <span class="fu">rmedsem</span><span class="fu">::</span><span class="va"><a href="../reference/mchoice.html">mchoice</a></span>, bootstrap <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>               boot.R <span class="op">=</span> <span class="fl">500</span>, boot.iseed <span class="op">=</span> <span class="fl">2025</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/rmedsem.html">rmedsem</a></span><span class="op">(</span><span class="va">fit.int</span>, indep <span class="op">=</span> <span class="st">"OwnPers:OwnLook"</span>, med <span class="op">=</span> <span class="st">"SelfEst"</span>, dep <span class="op">=</span> <span class="st">"MentWell"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Significance testing of indirect effect (standardized)</span></span>
+<span><span class="co">#&gt; Model estimated with package 'plssem'</span></span>
+<span><span class="co">#&gt; Mediation effect: 'OwnPers:OwnLook' -&gt; 'SelfEst' -&gt; 'MentWell'</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;                            Sobel            Delta        Bootstrap</span></span>
+<span><span class="co">#&gt; Indirect effect           -0.052           -0.052           -0.052</span></span>
+<span><span class="co">#&gt; Std. Err.                  0.016            0.016            0.017</span></span>
+<span><span class="co">#&gt; z-value                   -3.252           -3.169           -3.120</span></span>
+<span><span class="co">#&gt; p-value                  0.00115          0.00153          0.00181</span></span>
+<span><span class="co">#&gt; CI              [-0.083, -0.021] [-0.084, -0.020] [-0.090, -0.025]</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Baron and Kenny approach to testing mediation</span></span>
+<span><span class="co">#&gt;    STEP 1 - 'OwnPers:OwnLook' -&gt; 'SelfEst' (X -&gt; M) with B=-0.104 and p&lt;0.001</span></span>
+<span><span class="co">#&gt;    STEP 2 - 'SelfEst' -&gt; 'MentWell' (M -&gt; Y) with B=0.496 and p&lt;0.001</span></span>
+<span><span class="co">#&gt;    STEP 3 - 'OwnPers:OwnLook' -&gt; 'MentWell' (X -&gt; Y) with B=-0.016 and p=0.642</span></span>
+<span><span class="co">#&gt;             As STEP 1, STEP 2 and the Sobel's test above are significant</span></span>
+<span><span class="co">#&gt;             and STEP 3 is not significant the mediation is complete.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Zhao, Lynch &amp; Chen's approach to testing mediation</span></span>
+<span><span class="co">#&gt; Based on p-value estimated using Bootstrap</span></span>
+<span><span class="co">#&gt;   STEP 1 - 'OwnPers:OwnLook' -&gt; 'MentWell' (X -&gt; Y) with B=-0.016 and p=0.642</span></span>
+<span><span class="co">#&gt;             As the Bootstrap test above is significant and STEP 1 is not</span></span>
+<span><span class="co">#&gt;             significant there is indirect-only mediation (full mediation).</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Effect sizes</span></span>
+<span><span class="co">#&gt;    RIT = (Indirect effect / Total effect)</span></span>
+<span><span class="co">#&gt;          RIT is not reported: total effect 0.068 is too small (&lt; 0.2)</span></span>
+<span><span class="co">#&gt;    RID = (Indirect effect / Direct effect)</span></span>
+<span><span class="co">#&gt;          RID is not reported: direct effect 0.016 is not significant (p = 0.642)</span></span>
+<span><span class="co">#&gt;    Upsilon (v) = Variance in Y explained indirectly by X through M</span></span>
+<span><span class="co">#&gt;          v(unadj) = 0.003, v(adj) = 0.002</span></span></code></pre></div>
+</div>
+</div>
+<div class="section level2">
 <h2 id="blavaan">blavaan<a class="anchor" aria-label="anchor" href="#blavaan"></a>
 </h2>
 <div class="section level3">
 <h3 id="example-1-blavaan">Example 1 (blavaan)<a class="anchor" aria-label="anchor" href="#example-1-blavaan"></a>
 </h3>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://blavaan.org" class="external-link">blavaan</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ihrke/rmedsem" class="external-link">rmedsem</a></span><span class="op">)</span></span>
 <span></span>
@@ -560,7 +671,7 @@
 Highest density intervals (HDI) can be requested with
 <code>hdi = TRUE</code> (requires the <a href="https://cran.r-project.org/package=HDInterval" class="external-link">HDInterval</a>
 package):</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out.hdi</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rmedsem.html">rmedsem</a></span><span class="op">(</span><span class="va">mod</span>, indep<span class="op">=</span><span class="st">"math"</span>, med<span class="op">=</span><span class="st">"read"</span>, dep<span class="op">=</span><span class="st">"science"</span>, hdi<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">out.hdi</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Mediation analysis: 'math' -&gt; 'read' -&gt; 'science'</span></span>
@@ -568,23 +679,23 @@ package):</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Effects (95% HDI):</span></span>
 <span><span class="co">#&gt;                  Estimate Std. Err. z-value p-value Lower Upper</span></span>
-<span><span class="co">#&gt; Indirect (Bayes)    0.248     0.046   5.368   0.000 0.167 0.342</span></span>
-<span><span class="co">#&gt; Direct              0.382     0.065           0.000 0.264 0.513</span></span>
-<span><span class="co">#&gt; Total               0.630     0.039                 0.557 0.707</span></span>
+<span><span class="co">#&gt; Indirect (Bayes)    0.251     0.046   5.499   0.000 0.166 0.341</span></span>
+<span><span class="co">#&gt; Direct              0.376     0.065           0.000 0.237 0.491</span></span>
+<span><span class="co">#&gt; Total               0.627     0.039                 0.546 0.698</span></span>
 <span><span class="co">#&gt; For Bayesian estimates, 'p-value' is the posterior probability of</span></span>
 <span><span class="co">#&gt; the opposite sign.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Effect sizes:</span></span>
-<span><span class="co">#&gt;   RIT = 0.394</span></span>
-<span><span class="co">#&gt;   RID = 0.649</span></span>
-<span><span class="co">#&gt;   Upsilon = 0.059</span></span>
-<span><span class="co">#&gt;   Upsilon (unadj.) = 0.061</span></span></code></pre></div>
+<span><span class="co">#&gt;   RIT = 0.400</span></span>
+<span><span class="co">#&gt;   RID = 0.666</span></span>
+<span><span class="co">#&gt;   Upsilon = 0.061</span></span>
+<span><span class="co">#&gt;   Upsilon (unadj.) = 0.063</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="example-2-blavaan">Example 2 (blavaan)<a class="anchor" aria-label="anchor" href="#example-2-blavaan"></a>
 </h3>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model02</span> <span class="op">&lt;-</span> <span class="st">"</span></span>
 <span><span class="st"> # measurement model</span></span>
 <span><span class="st">   ind60 =~ x1 + x2 + x3</span></span>

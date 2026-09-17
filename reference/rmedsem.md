@@ -4,9 +4,10 @@ Tests the indirect effect of an independent variable X on a dependent
 variable Y through a mediator M in a fitted structural equation model
 (SEM), and determines the type of mediation using the Baron and Kenny
 (1986) and/or Zhao, Lynch & Chen (2010) approaches. Models estimated
-with lavaan (covariance-based SEM), cSEM (PLS-SEM), blavaan (Bayesian
-SEM) and modsem (models with latent interactions) are supported. The
-model must contain the regression paths X -\> M, M -\> Y and X -\> Y.
+with lavaan (covariance-based SEM), cSEM and plssem (PLS-SEM), blavaan
+(Bayesian SEM) and modsem (models with latent interactions) are
+supported. The model must contain the regression paths X -\> M, M -\> Y
+and X -\> Y.
 
 ## Usage
 
@@ -84,20 +85,35 @@ rmedsem(
   ci.two.tailed = 0.95,
   ...
 )
+
+# S3 method for class 'PlsModel'
+rmedsem(
+  mod,
+  indep,
+  med,
+  dep,
+  approach = c("bk", "zlc"),
+  p.threshold = 0.05,
+  effect.size = c("RIT", "RID", "upsilon"),
+  mcreps = 5000,
+  ci.two.tailed = 0.95,
+  ...
+)
 ```
 
 ## Arguments
 
 - mod:
 
-  a fitted SEM: an object of class `lavaan`, `cSEMResults`, `blavaan` or
-  `modsem`. `blavaan` models containing latent variables must be fitted
-  with `save.lvs = TRUE`.
+  a fitted SEM: an object of class `lavaan`, `cSEMResults`, `blavaan`,
+  `modsem` or `PlsModel` (plssem). `blavaan` models containing latent
+  variables must be fitted with `save.lvs = TRUE`; `PlsModel` objects
+  must be fitted with `bootstrap = TRUE`.
 
 - indep:
 
-  a string, the name of the independent variable (X). For `modsem`
-  models, this can be an interaction term such as `"W:X"`.
+  a string, the name of the independent variable (X). For `modsem` and
+  `PlsModel` models, this can be an interaction term such as `"W:X"`.
 
 - med:
 
@@ -162,8 +178,10 @@ rmedsem(
 
 - mcreps:
 
-  (`lavaan`, `modsem`) the number of Monte-Carlo samples, a positive
-  integer (default 5000)
+  (`lavaan`, `modsem`, `PlsModel`) the number of Monte-Carlo samples, a
+  positive integer (default 5000). For `PlsModel` objects, only used for
+  MC-PLS models with delta-method standard errors (see section
+  'Backends').
 
 - moderator:
 
@@ -174,7 +192,8 @@ rmedsem(
 ## Value
 
 an object of class `c("rmedsem_<pkg>", "rmedsem")`, where `<pkg>`
-identifies the backend (`lavaan`, `cSEM`, `blavaan` or `modsem`). See
+identifies the backend (`lavaan`, `cSEM`, `blavaan`, `modsem` or
+`plssem`). See
 [rmedsem-methods](https://ihrke.github.io/rmedsem/reference/rmedsem-methods.md)
 for functions to print, summarize and extract results,
 [effect-sizes](https://ihrke.github.io/rmedsem/reference/effect-sizes.md)
@@ -211,6 +230,30 @@ backend'.
   As for `lavaan`. In addition, moderated mediation (via `moderator`)
   and mediated moderation (an interaction term as `indep`) are
   supported.
+
+- `PlsModel`:
+
+  Models estimated with
+  [`plssem::pls()`](https://kss2k.github.io/plssem/reference/pls.html)
+  (PLS-SEM and consistent PLSc-SEM, including models with interaction
+  terms and ordinal indicators). The model must be estimated with
+  `bootstrap = TRUE`; the number of bootstrap samples is set in
+  [`plssem::pls()`](https://kss2k.github.io/plssem/reference/pls.html)
+  (`boot.R`), and results are reproducible with its `boot.iseed`
+  argument. The indirect effect is tested with the Sobel, Delta and
+  bootstrap methods, where the bootstrap test uses the bootstrap samples
+  of plssem. The Zhao, Lynch & Chen approach is based on the bootstrap
+  test. Mediated moderation (an interaction term as `indep`) is
+  supported. For MC-PLS models (e.g., interaction models with ordinal
+  indicators) estimated with delta-method standard errors (the default
+  `mc.delta.se = TRUE` in
+  [`plssem::pls()`](https://kss2k.github.io/plssem/reference/pls.html)),
+  the bootstrap samples of plssem do not refer to the Monte-Carlo
+  corrected estimates; a Monte-Carlo test based on the estimates and
+  their variance-covariance matrix (`mcreps` samples) is used instead of
+  the bootstrap test, also for the Zhao, Lynch & Chen approach. For
+  ordinal indicators, all effects refer to the standardized latent
+  variables.
 
 Multi-group and multilevel models are not supported.
 
@@ -476,20 +519,20 @@ if (requireNamespace("modsem", quietly = TRUE)) {
 #>                          Sobel          Delta    Monte-Carlo
 #> Indirect effect          0.253          0.253          0.253
 #> Std. Err.                0.029          0.029          0.029
-#> z-value                  8.843          8.832          8.711
+#> z-value                  8.847          8.836          8.715
 #> p-value                 <2e-16         <2e-16         <2e-16
 #> CI              [0.197, 0.309] [0.197, 0.309] [0.199, 0.311]
 #> 
 #> Baron and Kenny approach to testing mediation
-#>    STEP 1 - 'OwnLook' -> 'SelfEst' (X -> M) with B=0.485 and p<0.001
+#>    STEP 1 - 'OwnLook' -> 'SelfEst' (X -> M) with B=0.486 and p<0.001
 #>    STEP 2 - 'SelfEst' -> 'MentWell' (M -> Y) with B=0.521 and p<0.001
-#>    STEP 3 - 'OwnLook' -> 'MentWell' (X -> Y) with B=0.011 and p=0.808
+#>    STEP 3 - 'OwnLook' -> 'MentWell' (X -> Y) with B=0.011 and p=0.809
 #>             As STEP 1, STEP 2 and the Sobel's test above are significant
 #>             and STEP 3 is not significant the mediation is complete.
 #> 
 #> Zhao, Lynch & Chen's approach to testing mediation
 #> Based on p-value estimated using Monte-Carlo
-#>   STEP 1 - 'OwnLook' -> 'MentWell' (X -> Y) with B=0.011 and p=0.808
+#>   STEP 1 - 'OwnLook' -> 'MentWell' (X -> Y) with B=0.011 and p=0.809
 #>             As the Monte-Carlo test above is significant and STEP 1 is not
 #>             significant there is indirect-only mediation (full mediation).
 #> 
@@ -499,20 +542,72 @@ if (requireNamespace("modsem", quietly = TRUE)) {
 #>          Meaning that about 96% of the effect of 'OwnLook'
 #>          on 'MentWell' is mediated by 'SelfEst'
 #>    RID = (Indirect effect / Direct effect)
-#>          RID is not reported: direct effect 0.011 is not significant (p = 0.808)
+#>          RID is not reported: direct effect 0.011 is not significant (p = 0.809)
 #>    Upsilon (v) = Variance in Y explained indirectly by X through M
 #>          v(unadj) = 0.064, v(adj) = 0.063
 #> 
 #> 
 #> Direct moderation effects
 #>    OwnLook -> SelfEst             | smv: B = -0.136, se = 0.029, p = 0.000
-#>    OwnLook -> MentWell            | smv: B = -0.008, se = 0.035, p = 0.813
+#>    OwnLook -> MentWell            | smv: B = -0.008, se = 0.034, p = 0.813
 #> 
 #> Indirect moderation effect
 #>    OwnLook -> SelfEst -> MentWell | smv: B = -0.071, se = 0.017, p = 0.000
 #> 
 #> Total moderation effect
 #>    OwnLook -> MentWell            | smv: B = -0.079, se = 0.036, p = 0.026
+#> 
+
+## plssem (PLS-SEM)
+if (requireNamespace("plssem", quietly = TRUE)) {
+  model <- "
+    OwnLook  =~ smv_attr_face + smv_attr_body + smv_sexy
+    SelfEst  =~ ses_satis + ses_qualities + ses_able_todo
+    MentWell =~ mwb_optimistic + mwb_useful + mwb_energy
+    SelfEst  ~ OwnLook
+    MentWell ~ OwnLook + SelfEst
+  "
+  # small number of bootstrap samples to keep the example fast
+  fit <- plssem::pls(model, rmedsem::mchoice, bootstrap = TRUE,
+                     boot.R = 200, boot.iseed = 1)
+  rmedsem(fit, indep = "OwnLook", med = "SelfEst", dep = "MentWell")
+}
+#> Significance testing of indirect effect (standardized)
+#> Model estimated with package 'plssem'
+#> Mediation effect: 'OwnLook' -> 'SelfEst' -> 'MentWell'
+#> 
+#>                          Sobel          Delta      Bootstrap
+#> Indirect effect          0.316          0.316          0.316
+#> Std. Err.                0.031          0.032          0.032
+#> z-value                 10.152          9.915          9.828
+#> p-value                 <2e-16         <2e-16         <2e-16
+#> CI              [0.255, 0.377] [0.253, 0.378] [0.261, 0.388]
+#> 
+#> Baron and Kenny approach to testing mediation
+#>    STEP 1 - 'OwnLook' -> 'SelfEst' (X -> M) with B=0.578 and p<0.001
+#>    STEP 2 - 'SelfEst' -> 'MentWell' (M -> Y) with B=0.546 and p<0.001
+#>    STEP 3 - 'OwnLook' -> 'MentWell' (X -> Y) with B=0.088 and p=0.031
+#>             As STEP 1, STEP 2 and STEP 3 as well as the Sobel's test above
+#>             are significant the mediation is partial.
+#> 
+#> Zhao, Lynch & Chen's approach to testing mediation
+#> Based on p-value estimated using Bootstrap
+#>   STEP 1 - 'OwnLook' -> 'MentWell' (X -> Y) with B=0.088 and p=0.031
+#>             As the Bootstrap test above is significant, STEP 1 is
+#>             significant and their coefficients point in same direction,
+#>             there is complementary mediation (partial mediation).
+#> 
+#> Effect sizes
+#>    RIT = (Indirect effect / Total effect)
+#>          (0.316/0.404) = 0.781
+#>          Meaning that about 78% of the effect of 'OwnLook'
+#>          on 'MentWell' is mediated by 'SelfEst'
+#>    RID = (Indirect effect / Direct effect)
+#>          (0.316/0.088) = 3.570
+#>          That is, the mediated effect is about 3.6 times as
+#>          large as the direct effect of 'OwnLook' on 'MentWell'
+#>    Upsilon (v) = Variance in Y explained indirectly by X through M
+#>          v(unadj) = 0.100, v(adj) = 0.099
 #> 
 
 ## blavaan
@@ -541,27 +636,27 @@ if (requireNamespace("blavaan", quietly = TRUE)) {
 #> 
 #> Prior (regression coefs): normal(0,10)
 #>                          Bayes
-#> Indirect effect          0.248
-#> Posterior SD             0.047
+#> Indirect effect          0.246
+#> Posterior SD             0.044
 #> P(>0)                    1.000
 #> P(<0)                    0.000
 #> ER+                          ∞
 #> ER-                          0
-#> HDI             [0.155, 0.334]
+#> HDI             [0.172, 0.338]
 #> 
 #> Effect sizes
 #>    RIT = (Indirect effect / Total effect)
-#>          (0.248/0.629) = 0.395
-#>          Meaning that about 40% of the effect of 'math'
+#>          (0.246/0.629) = 0.391
+#>          Meaning that about 39% of the effect of 'math'
 #>          on 'science' is mediated by 'read'
 #>    RID = (Indirect effect / Direct effect)
-#>          (0.248/0.380) = 0.653
-#>          That is, the mediated effect is about 0.7 times as
+#>          (0.246/0.383) = 0.643
+#>          That is, the mediated effect is about 0.6 times as
 #>          large as the direct effect of 'math' on 'science'
 #>    Upsilon (v) = Variance in Y explained indirectly by X through M
-#>          v(unadj) = 0.062, v(adj) = 0.059
-#>          Posterior mean(v) = 0.064, median(v) = 0.062
-#>          95% HDI [0.024, 0.112]
+#>          v(unadj) = 0.061, v(adj) = 0.059
+#>          Posterior mean(v) = 0.063, median(v) = 0.061
+#>          95% HDI [0.024, 0.104]
 #> 
 # }
 ```
