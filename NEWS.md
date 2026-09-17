@@ -1,6 +1,6 @@
 # rmedsem 1.1.1
 
-* New backend for PLS-SEM and PLSc-SEM models estimated with [plssem](https://kss2k.github.io/plssem/) 
+* New backend for PLS-SEM and PLSc-SEM models estimated with [plssem](https://kss2k.github.io/plssem/)  
 
 # rmedsem 1.1.0
 
