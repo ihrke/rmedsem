@@ -1,6 +1,6 @@
 Package: rmedsem
 Title: Statistical Mediation Analysis for SEMs
-Version: 1.1.0.9000
+Version: 1.1.1
 Authors@R: c(
     person("Mehmet", "Mehmetoglu", email="mehmet.mehmetoglu@ntnu.no", role = c("aut"),
            comment = c(ORCID = "0000-0002-6092-8551")),
@@ -40,7 +40,7 @@ Suggests:
     cSEM,
     HDInterval,
     modsem,
-    plssem,
+    plssem (>= 0.1.4),
     testthat (>= 3.0.0)
 Config/Needs/website: semPlot, rmarkdown
 Config/testthat/edition: 3
