@@ -1,10 +1,5 @@
 # Changelog
 
-## rmedsem (development version)
-
-- New backend for PLS-SEM and PLSc-SEM models estimated with
-  [plssem](https://kss2k.github.io/plssem/)
-
 ## rmedsem 1.1.0
 
 CRAN release: 2026-09-16

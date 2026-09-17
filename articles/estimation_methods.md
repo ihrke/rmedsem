@@ -10,7 +10,6 @@ The currently supported estimation methods are:
 - covariance-based SEM estimated with the
   [lavaan](https://lavaan.ugent.be/) package
 - PLS-SEM estimated using [cSEM](https://m-e-rademaker.github.io/cSEM/)
-  or [plssem](https://kss2k.github.io/plssem/)
 - Bayesian SEM estimated using
   [blavaan](https://ecmerkle.github.io/blavaan/index.html)
 
@@ -470,119 +469,6 @@ rmedsem(mod, indep="Attractive", med="Appearance", dep="Muscle",
 #>          v(unadj) = 0.013, v(adj) = 0.011
 ```
 
-## plssem
-
-Models estimated with [plssem](https://kss2k.github.io/plssem/) (PLS-SEM
-and consistent PLSc-SEM, also with interaction terms and ordinal
-indicators) must be fitted with `bootstrap = TRUE`. The indirect effect
-is tested with the Sobel, Delta and bootstrap methods, where the
-bootstrap test uses the bootstrap samples of plssem. The number of
-bootstrap samples is set with `boot.R`, and `boot.iseed` makes the
-results reproducible.
-
-### Example 1 (plssem)
-
-``` r
-
-library(plssem)
-
-model.pls <- "
-  OwnLook  =~ smv_attr_face + smv_attr_body + smv_sexy
-  SelfEst  =~ ses_satis + ses_qualities + ses_able_todo
-  MentWell =~ mwb_optimistic + mwb_useful + mwb_energy
-  SelfEst  ~ OwnLook
-  MentWell ~ OwnLook + SelfEst
-"
-fit <- pls(model.pls, data = rmedsem::mchoice, bootstrap = TRUE,
-           boot.R = 500, boot.iseed = 2025)
-rmedsem(fit, indep = "OwnLook", med = "SelfEst", dep = "MentWell")
-#> Significance testing of indirect effect (standardized)
-#> Model estimated with package 'plssem'
-#> Mediation effect: 'OwnLook' -> 'SelfEst' -> 'MentWell'
-#> 
-#>                          Sobel          Delta      Bootstrap
-#> Indirect effect          0.316          0.316          0.316
-#> Std. Err.                0.031          0.031          0.031
-#> z-value                 10.280         10.316         10.272
-#> p-value                 <2e-16         <2e-16         <2e-16
-#> CI              [0.255, 0.376] [0.256, 0.376] [0.260, 0.376]
-#> 
-#> Baron and Kenny approach to testing mediation
-#>    STEP 1 - 'OwnLook' -> 'SelfEst' (X -> M) with B=0.578 and p<0.001
-#>    STEP 2 - 'SelfEst' -> 'MentWell' (M -> Y) with B=0.546 and p<0.001
-#>    STEP 3 - 'OwnLook' -> 'MentWell' (X -> Y) with B=0.088 and p=0.054
-#>             As STEP 1, STEP 2 and the Sobel's test above are significant
-#>             and STEP 3 is not significant the mediation is complete.
-#> 
-#> Zhao, Lynch & Chen's approach to testing mediation
-#> Based on p-value estimated using Bootstrap
-#>   STEP 1 - 'OwnLook' -> 'MentWell' (X -> Y) with B=0.088 and p=0.054
-#>             As the Bootstrap test above is significant and STEP 1 is not
-#>             significant there is indirect-only mediation (full mediation).
-#> 
-#> Effect sizes
-#>    RIT = (Indirect effect / Total effect)
-#>          (0.316/0.404) = 0.781
-#>          Meaning that about 78% of the effect of 'OwnLook'
-#>          on 'MentWell' is mediated by 'SelfEst'
-#>    RID = (Indirect effect / Direct effect)
-#>          RID is not reported: direct effect 0.088 is not significant (p = 0.054)
-#>    Upsilon (v) = Variance in Y explained indirectly by X through M
-#>          v(unadj) = 0.100, v(adj) = 0.099
-```
-
-### Example 2 (plssem, mediated moderation)
-
-The interaction term of a latent interaction model can be used as the
-independent variable:
-
-``` r
-
-model.int <- "
-  OwnLook  =~ smv_attr_face + smv_attr_body + smv_sexy
-  OwnPers  =~ smv_kind + smv_caring + smv_understanding +
-              smv_make_laughh + smv_funny + smv_sociable
-  SelfEst  =~ ses_satis + ses_qualities + ses_able_todo
-  MentWell =~ mwb_optimistic + mwb_useful + mwb_energy
-  SelfEst  ~ OwnLook + OwnPers + OwnPers:OwnLook
-  MentWell ~ OwnLook + SelfEst + OwnPers + OwnPers:OwnLook
-"
-fit.int <- pls(model.int, data = rmedsem::mchoice, bootstrap = TRUE,
-               boot.R = 500, boot.iseed = 2025)
-rmedsem(fit.int, indep = "OwnPers:OwnLook", med = "SelfEst", dep = "MentWell")
-#> Significance testing of indirect effect (standardized)
-#> Model estimated with package 'plssem'
-#> Mediation effect: 'OwnPers:OwnLook' -> 'SelfEst' -> 'MentWell'
-#> 
-#>                            Sobel            Delta        Bootstrap
-#> Indirect effect           -0.052           -0.052           -0.052
-#> Std. Err.                  0.016            0.016            0.017
-#> z-value                   -3.252           -3.169           -3.120
-#> p-value                  0.00115          0.00153          0.00181
-#> CI              [-0.083, -0.021] [-0.084, -0.020] [-0.090, -0.025]
-#> 
-#> Baron and Kenny approach to testing mediation
-#>    STEP 1 - 'OwnPers:OwnLook' -> 'SelfEst' (X -> M) with B=-0.104 and p<0.001
-#>    STEP 2 - 'SelfEst' -> 'MentWell' (M -> Y) with B=0.496 and p<0.001
-#>    STEP 3 - 'OwnPers:OwnLook' -> 'MentWell' (X -> Y) with B=-0.016 and p=0.642
-#>             As STEP 1, STEP 2 and the Sobel's test above are significant
-#>             and STEP 3 is not significant the mediation is complete.
-#> 
-#> Zhao, Lynch & Chen's approach to testing mediation
-#> Based on p-value estimated using Bootstrap
-#>   STEP 1 - 'OwnPers:OwnLook' -> 'MentWell' (X -> Y) with B=-0.016 and p=0.642
-#>             As the Bootstrap test above is significant and STEP 1 is not
-#>             significant there is indirect-only mediation (full mediation).
-#> 
-#> Effect sizes
-#>    RIT = (Indirect effect / Total effect)
-#>          RIT is not reported: total effect 0.068 is too small (< 0.2)
-#>    RID = (Indirect effect / Direct effect)
-#>          RID is not reported: direct effect 0.016 is not significant (p = 0.642)
-#>    Upsilon (v) = Variance in Y explained indirectly by X through M
-#>          v(unadj) = 0.003, v(adj) = 0.002
-```
-
 ## blavaan
 
 ### Example 1 (blavaan)
@@ -617,18 +503,18 @@ summary(out.hdi)
 #> 
 #> Effects (95% HDI):
 #>                  Estimate Std. Err. z-value p-value Lower Upper
-#> Indirect (Bayes)    0.251     0.046   5.499   0.000 0.166 0.341
-#> Direct              0.376     0.065           0.000 0.237 0.491
-#> Total               0.627     0.039                 0.546 0.698
+#> Indirect (Bayes)    0.248     0.046   5.368   0.000 0.167 0.342
+#> Direct              0.382     0.065           0.000 0.264 0.513
+#> Total               0.630     0.039                 0.557 0.707
 #> For Bayesian estimates, 'p-value' is the posterior probability of
 #> the opposite sign.
 #> 
 #> 
 #> Effect sizes:
-#>   RIT = 0.400
-#>   RID = 0.666
-#>   Upsilon = 0.061
-#>   Upsilon (unadj.) = 0.063
+#>   RIT = 0.394
+#>   RID = 0.649
+#>   Upsilon = 0.059
+#>   Upsilon (unadj.) = 0.061
 ```
 
 ### Example 2 (blavaan)

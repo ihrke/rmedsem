@@ -160,10 +160,10 @@ rmedsem(mod, indep = "Attractive", med = "Appearance", dep = "Muscle")
 #> 
 #>                          Sobel          Delta    Monte-Carlo
 #> Indirect effect          0.077          0.077          0.077
-#> Std. Err.                0.034          0.035          0.036
-#> z-value                  2.245          2.222          2.210
-#> p-value                 0.0247         0.0263         0.0271
-#> CI              [0.010, 0.145] [0.009, 0.146] [0.017, 0.155]
+#> Std. Err.                0.034          0.035          0.035
+#> z-value                  2.245          2.222          2.207
+#> p-value                 0.0247         0.0263         0.0273
+#> CI              [0.010, 0.145] [0.009, 0.146] [0.015, 0.154]
 #> 
 #> Baron and Kenny approach to testing mediation
 #>    STEP 1 - 'Attractive' -> 'Appearance' (X -> M) with B=0.190 and p=0.012
