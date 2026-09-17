@@ -95,6 +95,7 @@ rmedsem(
   approach = c("bk", "zlc"),
   p.threshold = 0.05,
   effect.size = c("RIT", "RID", "upsilon"),
+  mcreps = 5000,
   ci.two.tailed = 0.95,
   ...
 )
@@ -177,8 +178,10 @@ rmedsem(
 
 - mcreps:
 
-  (`lavaan`, `modsem`) the number of Monte-Carlo samples, a positive
-  integer (default 5000)
+  (`lavaan`, `modsem`, `PlsModel`) the number of Monte-Carlo samples, a
+  positive integer (default 5000). For `PlsModel` objects, only used for
+  MC-PLS models with delta-method standard errors (see section
+  'Backends').
 
 - moderator:
 
@@ -241,7 +244,16 @@ backend'.
   bootstrap methods, where the bootstrap test uses the bootstrap samples
   of plssem. The Zhao, Lynch & Chen approach is based on the bootstrap
   test. Mediated moderation (an interaction term as `indep`) is
-  supported.
+  supported. For MC-PLS models (e.g., interaction models with ordinal
+  indicators) estimated with delta-method standard errors (the default
+  `mc.delta.se = TRUE` in
+  [`plssem::pls()`](https://kss2k.github.io/plssem/reference/pls.html)),
+  the bootstrap samples of plssem do not refer to the Monte-Carlo
+  corrected estimates; a Monte-Carlo test based on the estimates and
+  their variance-covariance matrix (`mcreps` samples) is used instead of
+  the bootstrap test, also for the Zhao, Lynch & Chen approach. For
+  ordinal indicators, all effects refer to the standardized latent
+  variables.
 
 Multi-group and multilevel models are not supported.
 
